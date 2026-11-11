@@ -11,6 +11,7 @@ const actions: Record<FileOperation, string> = {
 const reasons: Record<string, string> = {
   TOO_LARGE: "文件超过 5 MB，请选择较小的文件。",
   INVALID_JSON: "文件内容无法识别，请选择完整的 JSON 文件。",
+  INVALID_PACKAGE: "文件不是有效的 .aeproj 项目包。",
   NOT_FILE: "请选择文件，而不是文件夹。",
   NOT_FOUND: "找不到文件或文件夹，请重新选择位置。",
   PERMISSION: "无法访问该位置，请检查权限或选择其他文件夹。",
@@ -28,7 +29,7 @@ export function fileErrorMessage(error: unknown, operation: FileOperation): stri
     };
     const reason = operation === "import"
       ? importReasons[error.message] ?? "方案文件不完整或不受支持，请重新选择或重新导出方案。"
-      : "项目文件不完整或不受支持，请重新选择或重新导出项目。";
+      : `项目文件不完整或不受支持（${error.message}），请重新选择或重新导出项目。`;
     return `${actions[operation]}。${reason}`;
   }
   if (error instanceof UserInputError) return `${actions[operation]}：${error.message}`;

@@ -12,7 +12,6 @@ import {
   exampleProject,
   makeDrone,
   makeModel,
-  parseProject,
   removeObject,
   uid,
 } from "./project";
@@ -24,7 +23,7 @@ import type {
   Tool,
   Vec3,
 } from "./types";
-import { persistProject, type AutosaveStatus } from "./feedback";
+import type { AutosaveStatus } from "./feedback";
 import {
   jumpHistory,
   pushHistory,
@@ -44,35 +43,10 @@ import {
   type TransformTarget,
 } from "./transform";
 
-const STORAGE = "p15.project.v1";
-type InitialHistory = History & {
-  loadError?: string;
-  autosavePaused?: boolean;
-};
-function initial(): InitialHistory {
-  try {
-    const saved = localStorage.getItem(STORAGE);
-    return startHistory(saved ? parseProject(saved) : exampleProject(), saved ? "恢复本机暂存" : "打开示例");
-  } catch {
-    let autosavePaused = false;
-    try {
-      const raw = localStorage.getItem(STORAGE);
-      if (raw) localStorage.setItem(STORAGE + ".recovery", raw);
-    } catch {
-      autosavePaused = true;
-    }
-    return {
-      ...startHistory(exampleProject(), "打开示例"),
-      autosavePaused,
-      loadError: autosavePaused
-        ? "本机暂存不可用。请保存项目文件，以免丢失修改。"
-        : "无法恢复上次的项目，已保留原始数据。请打开已保存的项目文件。",
-    };
-  }
-}
 function useEditorState() {
-  const [initialHistory] = useState(initial);
-  const [history, setHistory] = useState<History>(initialHistory),
+  // Nothing is shown or autosaved until a session is started from the start screen.
+  const [active, setActive] = useState(false);
+  const [history, setHistory] = useState<History>(() => startHistory(emptyProject(), "新建项目")),
     [checkpoints, setCheckpointsState] = useState<Checkpoint[]>([]),
     [selection, setSelectionState] = useState<Selection>(null);
   const [tool, setToolState] = useState<Tool>("select"),
@@ -83,8 +57,8 @@ function useEditorState() {
     [preview, setPreviewState] = useState(false);
   const [candidate, setCandidateState] = useState<Project | null>(null),
     [message, setMessage] = useState(""),
-    [recoveryNotice, setRecoveryNotice] = useState(initialHistory.loadError ?? ""),
-    [autosaveStatus, setAutosaveStatus] = useState<AutosaveStatus>(initialHistory.autosavePaused ? "paused" : "saving"),
+    [recoveryNotice, setRecoveryNotice] = useState(""),
+    [autosaveStatus, setAutosaveStatus] = useState<AutosaveStatus>("saved"),
     [focusTick, setFocusTick] = useState(0);
   const [transientDraft, setTransientDraft] = useState<Project | null>(null),
     [transformTarget, setTransformTargetState] = useState<TransformTarget>("position"),
@@ -101,24 +75,6 @@ function useEditorState() {
   function readProject() {
     return candidateRef.current ?? transformSessionRef.current?.draft ?? historyRef.current.present.project;
   }
-  const [autosavePaused] = useState(!!initialHistory.autosavePaused);
-  useEffect(() => {
-    if (autosavePaused) return;
-    setAutosaveStatus("saving");
-    const persist = () => {
-      try {
-        setAutosaveStatus(persistProject(localStorage, STORAGE, history.present.project));
-      } catch {
-        setAutosaveStatus("error");
-      }
-    };
-    const id = setTimeout(persist, 450);
-    window.addEventListener("beforeunload", persist);
-    return () => {
-      clearTimeout(id);
-      window.removeEventListener("beforeunload", persist);
-    };
-  }, [history.present]);
   useEffect(() => {
     if (!message) return;
     const id = setTimeout(() => setMessage(""), 4500);
@@ -372,6 +328,7 @@ function useEditorState() {
     historyRef.current = session.history;
     setHistory(session.history);
     writeCheckpoints(() => session.checkpoints);
+    setActive(true);
   }
   function remove() {
     const selected = selectionRef.current;
@@ -466,7 +423,13 @@ function useEditorState() {
     message,
     setMessage,
     autosaveStatus,
+    setAutosaveStatus,
     recoveryNotice,
+    setRecoveryNotice,
+    /** False until a project has been opened, created or resumed. */
+    active,
+    /** Committed history and checkpoints; changes whenever either changes. */
+    history,
     dismissRecoveryNotice: () => setRecoveryNotice(""),
     focusTick,
     focus,

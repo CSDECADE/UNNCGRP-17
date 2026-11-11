@@ -291,7 +291,7 @@ export function App() {
         <input
           ref={fileInput}
           type="file"
-          accept=".json,.p15"
+          accept=".aeproj,.json"
           hidden
           onChange={(ev) => void readFile(ev.target.files?.[0])}
         />
