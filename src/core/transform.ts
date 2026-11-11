@@ -1,5 +1,6 @@
 import { clearTiming } from "./project.ts";
 import type { Project, Selection, Vec3 } from "./types.ts";
+import { pushHistory, type History } from "./history.ts";
 
 export type TransformTarget = "position" | "target";
 export type TransformOptions = {
@@ -91,11 +92,10 @@ export function finishTransformSession(session: TransformSession): Project | nul
     : { ...session.draft, source: "用户手动编排" };
 }
 
-type TransformHistory = { past: Project[]; present: Project; future: Project[] };
 /** Reject stale or cancelled completions and append exactly one history entry. */
-export function commitTransformHistory<T extends TransformHistory>(history: T, session: TransformSession | null): T {
-  if (!session || history.present !== session.base) return history;
+export function commitTransformHistory(history: History, session: TransformSession | null, label = "调整对象"): History {
+  if (!session || history.present.project !== session.base) return history;
   const project = finishTransformSession(session);
   if (!project) return history;
-  return { ...history, past: [...history.past, history.present].slice(-60), present: project, future: [] };
+  return pushHistory(history, project, label);
 }
