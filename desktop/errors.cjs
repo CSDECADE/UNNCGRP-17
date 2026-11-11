@@ -1,4 +1,4 @@
-const knownCodes = new Set(["TOO_LARGE", "INVALID_JSON", "NOT_FILE", "EXPIRED"]);
+const knownCodes = new Set(["TOO_LARGE", "INVALID_JSON", "INVALID_PACKAGE", "NOT_FILE", "EXPIRED"]);
 function fileError(code) {
   const error = new Error(code === "TOO_LARGE" ? "文件不得超过 5 MB" : code);
   error.code = code;

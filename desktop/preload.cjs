@@ -10,6 +10,12 @@ contextBridge.exposeInMainWorld("p15Desktop", {
   acceptOpen: (token) => invoke("p15:accept-open", token),
   saveFile: (request) => invoke("p15:save", request),
   resetDocument: () => invoke("p15:reset-document"),
+  openProject: () => invoke("p15:open-project"),
+  openRecent: (id) => invoke("p15:open-recent", id),
+  acceptProject: (token, name) => invoke("p15:accept-project", token, name),
+  savePackage: (request) => invoke("p15:save-package", request),
+  recentProjects: () => invoke("p15:recent-list"),
+  removeRecent: (id) => invoke("p15:recent-remove", id),
   onCommand: (callback) => {
     const listener = (_event, command) => callback(command);
     ipcRenderer.on("p15:command", listener);
