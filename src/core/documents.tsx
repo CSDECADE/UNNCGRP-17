@@ -58,7 +58,7 @@ function useDocumentState() {
           name: h.present.project.name,
           savedAt: record.savedAt,
           fileName: record.fileName,
-          steps: h.past.length,
+          steps: h.past.length + h.future.length,
           checkpoints: record.session.checkpoints.length,
         });
       })
@@ -69,25 +69,40 @@ function useDocumentState() {
   }, []);
 
   // Autosave the whole session (history + checkpoints) once a project is active.
+  const pending = useRef<AutosaveRecord | null>(null);
+  function flush() {
+    const record = pending.current;
+    if (!record) return;
+    pending.current = null;
+    saveAutosave(record)
+      .then(() => e.setAutosaveStatus("saved"))
+      .catch((err) => {
+        console.error(err);
+        e.setAutosaveStatus("error");
+      });
+  }
   useEffect(() => {
     if (!e.active) return;
     e.setAutosaveStatus("saving");
-    const record: AutosaveRecord = {
+    pending.current = {
       session: { history: e.history, checkpoints: e.checkpoints },
       savedAt: Date.now(),
       fileName: fileNameRef.current,
       createdAt: createdAt.current,
     };
-    const id = setTimeout(() => {
-      saveAutosave(record)
-        .then(() => e.setAutosaveStatus("saved"))
-        .catch((err) => {
-          console.error(err);
-          e.setAutosaveStatus("error");
-        });
-    }, 450);
+    const id = setTimeout(flush, 450);
     return () => clearTimeout(id);
   }, [e.active, e.history, e.checkpoints, fileName]);
+  // Start the pending write before the page goes away so the last edit is not lost.
+  useEffect(() => {
+    const onHide = () => flush();
+    window.addEventListener("pagehide", onHide);
+    window.addEventListener("beforeunload", onHide);
+    return () => {
+      window.removeEventListener("pagehide", onHide);
+      window.removeEventListener("beforeunload", onHide);
+    };
+  }, []);
 
   function begin(session: Session, name: string | null, created?: string) {
     createdAt.current = created;
