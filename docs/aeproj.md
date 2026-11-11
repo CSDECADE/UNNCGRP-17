@@ -1,6 +1,6 @@
 # 项目包 `.aeproj` 与历史 / 检查点
 
-维护：基础框架。实现：`src/core/history.ts`、`src/core/aeproj/`、`src/core/documents.tsx`、`src/core/localStore.ts`、`desktop/recent.cjs`。
+维护：基础框架。各模块的对接事项见 [handoff-history-aeproj.md](handoff-history-aeproj.md)。实现：`src/core/history.ts`、`src/core/aeproj/`、`src/core/documents.tsx`、`src/core/localStore.ts`、`desktop/recent.cjs`。
 
 ## 历史与检查点
 
