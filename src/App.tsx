@@ -11,6 +11,7 @@ import {
 import type { CameraView, ModelKind, Selection, Tool } from "./core/types";
 import { Scene } from "./Scene";
 import { Inspector as SceneInspector } from "./Inspector";
+import { HistoryPanel } from "./HistoryPanel";
 import { Icon } from "./ui/Icon";
 import { TextField, ToolButton } from "./ui/Controls";
 import { productName } from "../package.json";
@@ -54,7 +55,7 @@ export function App() {
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
-  const [tab, setTab] = useState<"layers" | "assets">("layers"),
+  const [tab, setTab] = useState<"layers" | "assets" | "history">("layers"),
     [leftOpen, setLeftOpen] = useState(true),
     [rightOpen, setRightOpen] = useState(true),
     [search, setSearch] = useState("");
@@ -411,6 +412,12 @@ export function App() {
               >
                 资源
               </button>
+              <button
+                className={tab === "history" ? "tab-active" : ""}
+                onClick={() => setTab("history")}
+              >
+                历史
+              </button>
               <ToolButton
                 icon="search"
                 label="搜索对象"
@@ -553,6 +560,8 @@ export function App() {
                   </div>
                 )}
               </div>
+            ) : tab === "history" ? (
+              <HistoryPanel />
             ) : (
               <div className="assets-scroll">
                 <div className="section-heading">
