@@ -1,0 +1,10 @@
+.route-analysis { display: grid; gap: 12px; font-size: 12px; }
+.analysis-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.analysis-actions > button { padding: 6px 10px; border-radius: 4px; background: #444c56; }
+.analysis-table { max-height: 200px; overflow: auto; }
+.analysis-table table { width: 100%; border-collapse: collapse; text-align: left; }
+.analysis-table :is(th, td) { padding: 6px 5px; border-bottom: 1px solid #4d535c; }
+.analysis-table tbody th { font-weight: normal; }
+.analysis-threshold { display: flex; align-items: center; gap: 8px; }
+.analysis-threshold input { width: 65px; }
+.analysis-note { color: #aeb6c0; }
