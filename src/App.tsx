@@ -365,7 +365,7 @@ export function App() {
                         icon="flask"
                         onSelect={() => analysis ? setDialog("algorithm") : e.setMessage("请先加载多机路径分析模块。")}
                       >
-                        导入 / 导出方案
+                        多机路径分析
                       </MenuItem>
                       <MenuItem icon="help" onSelect={() => setDialog("help")}>
                         操作说明
@@ -772,7 +772,7 @@ export function App() {
             <div className="toolbar-divider" />
             <ToolButton
               icon="flask"
-              label="导入 / 导出方案"
+              label="多机路径分析"
               onClick={() => analysis ? setDialog("algorithm") : e.setMessage("请先加载多机路径分析模块。")}
               disabled={locked}
             />
@@ -877,7 +877,7 @@ export function App() {
                   {dialog === "project"
                     ? "项目"
                     : dialog === "algorithm"
-                      ? "导入 / 导出方案"
+                      ? "多机路径分析"
                       : "操作说明"}
                 </Dialog.Title>
                 <Dialog.Close asChild>
@@ -890,7 +890,7 @@ export function App() {
                 {dialog === "project"
                   ? "用模型搭建场景，为无人机安排拍摄任务。"
                   : dialog === "algorithm"
-                    ? "导出场景，或导入航拍方案并预览。"
+                    ? "查看每架无人机的航线指标和最近间距，或导入候选航线进行比较。"
                     : "搭建场景、安排拍摄点，再预演航线。"}
               </Dialog.Description>
               {fileError && (
