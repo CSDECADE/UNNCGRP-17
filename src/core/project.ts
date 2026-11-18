@@ -251,8 +251,48 @@ export function clearTiming(p: Project): Project {
     viewpoints: p.viewpoints.map(({ time: _, ...v }) => v),
   };
 }
+// Distance in metres from each path point to its camera target along the normal.
+export const PATH_TARGET_DISTANCE = 10;
+// Path files are a bare array of { id, x, y, z, normal: { x, y, z } } points, ordered by id.
+// They carry no drone, so the route goes to the first drone (created if the scene has none);
+// other drones keep their routes.
+function importPath(input: unknown[], p: Project): Project {
+  if (!input.length) throw new UserInputError("路径中没有拍摄点。");
+  const points = array(input, 2000).map((x) => {
+    const v = record(x), n = record(v.normal);
+    const position: Vec3 = [finite(v.x), finite(v.y), finite(v.z)];
+    const normal: Vec3 = [finite(n.x), finite(n.y), finite(n.z)];
+    const length = Math.hypot(...normal);
+    if (length < 1e-6) fail("镜头朝向无效");
+    return {
+      id: finite(v.id, -1e9, 1e9),
+      position,
+      target: position.map((c, i) => c + (normal[i] / length) * PATH_TARGET_DISTANCE) as Vec3,
+    };
+  });
+  if (new Set(points.map((x) => x.id)).size !== points.length) fail("对象标识重复");
+  points.sort((a, b) => a.id - b.id);
+  let drones = p.drones;
+  if (!drones.length) {
+    const drone = makeDrone(1);
+    drone.position = points[0].position;
+    drones = [drone];
+  }
+  const droneId = drones[0].id;
+  return validateProject({
+    ...p,
+    drones,
+    viewpoints: [
+      ...p.viewpoints.filter((v) => v.droneId !== droneId),
+      ...points.map((x, i) => ({ id: uid(), droneId, name: `拍摄点 ${i + 1}`, position: x.position, target: x.target })),
+    ],
+    source: "导入的算法结果",
+  });
+}
 export function importPlan(text: string, p: Project): Project {
-  const result = record(parseFile(text));
+  const parsed = parseFile(text);
+  if (Array.isArray(parsed)) return importPath(parsed, p);
+  const result = record(parsed);
   if (result.version !== 1) fail("不支持此方案版本");
   return validateProject({
     ...p,
