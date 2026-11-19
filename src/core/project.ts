@@ -6,8 +6,10 @@ import type {
   Vec3,
   Viewpoint,
 } from "./types.ts";
-import { ProjectValidationError, UserInputError } from "./feedback.ts";
+import { ProjectValidationError, UserInputError } from "./errors.ts";
 import { validateBackground } from "./background.ts";
+import { validateObjResources } from "./obj-resource.ts";
+export const MAX_PROJECT_BYTES = 5_000_000;
 export const uid = () => crypto.randomUUID();
 export const droneColors = ["#55c4c0", "#f2a35a", "#a78bfa", "#ec8aa6"];
 export function makeModel(kind: ModelKind, n: number): Model {
@@ -123,7 +125,14 @@ const array = (x: unknown, limit: number): unknown[] =>
   Array.isArray(x) && x.length <= limit ? x : fail("对象数量或列表格式无效");
 export function validateProject(input: unknown): Project {
   const p = record(input);
-  if (p.version !== 1) fail("不支持此项目版本");
+  if (p.version !== 1 && p.version !== 2) fail("不支持此项目版本");
+  // A v1 reader would silently discard an extension. Require an explicit v2 file.
+  if (p.version === 1 && Object.hasOwn(p, "objResources")) fail("OBJ 资源需要项目版本 2");
+  if (p.version === 2 && Object.keys(p).some(key =>
+    !["version", "name", "models", "drones", "viewpoints", "source", "background", "objResources"].includes(key)))
+    fail("项目包含不支持的字段");
+  // Apply the same byte budget to in-memory inputs as to files, before copying geometry.
+  projectJson(input);
   const models: Model[] = array(p.models, 500).map((x) => {
     const m = record(x);
     if (!["box", "cylinder", "building"].includes(String(m.kind)))
@@ -181,15 +190,31 @@ export function validateProject(input: unknown): Project {
   )
     ? (p.source as Project["source"])
     : fail("方案来源无效");
-  const project: Project = { version: 1, name: str(p.name), models, drones, viewpoints, source };
+  const base = { name: str(p.name), models, drones, viewpoints, source };
+  const project: Project = p.version === 2
+    ? { ...base, version: 2, objResources: validateObjResources(p.objResources) }
+    : { ...base, version: 1 };
   if (p.background !== undefined) project.background = validateBackground(p.background);
   return project;
 }
 export function parseProject(text: string): Project {
   return validateProject(parseFile(text));
 }
+/** Shared file/autosave encoder: validate before writing, and keep resources inline. */
+export function serializeProject(project: Project): string {
+  return projectJson(validateProject(project));
+}
+function projectJson(input: unknown): string {
+  let text: string | undefined;
+  try { text = JSON.stringify(input); }
+  catch { throw new ProjectValidationError("项目数据无法序列化"); }
+  if (text === undefined) throw new ProjectValidationError("项目数据无法序列化");
+  if (new TextEncoder().encode(text).byteLength > MAX_PROJECT_BYTES)
+    throw new UserInputError("文件超过 5 MB，请选择较小的文件。");
+  return text;
+}
 function parseFile(text: string): unknown {
-  if (new TextEncoder().encode(text).byteLength > 5_000_000)
+  if (new TextEncoder().encode(text).byteLength > MAX_PROJECT_BYTES)
     throw new UserInputError("文件超过 5 MB，请选择较小的文件。");
   try { return JSON.parse(text); }
   catch { throw new UserInputError("文件内容无法识别，请选择完整的 JSON 文件。"); }

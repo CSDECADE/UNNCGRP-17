@@ -1,8 +1,9 @@
 import type { Project } from "./types.ts";
+import { ProjectValidationError, UserInputError } from "./errors.ts";
+import { serializeProject } from "./project.ts";
 
 // Only explicitly authored messages may be shown; arbitrary exception text stays in logs.
-export class UserInputError extends Error {}
-export class ProjectValidationError extends Error {}
+export { ProjectValidationError, UserInputError } from "./errors.ts";
 export type FileOperation = "open" | "import" | "save" | "export" | "new";
 const actions: Record<FileOperation, string> = {
   open: "无法打开项目", import: "无法导入方案", save: "保存失败",
@@ -52,7 +53,7 @@ export const autosaveLabels: Record<AutosaveStatus, string> = {
 };
 export function persistProject(storage: Pick<Storage, "setItem">, key: string, project: Project): AutosaveStatus {
   try {
-    storage.setItem(key, JSON.stringify(project));
+    storage.setItem(key, serializeProject(project));
     return "saved";
   } catch {
     return "error";

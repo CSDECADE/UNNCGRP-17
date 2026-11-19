@@ -40,15 +40,36 @@ export type SceneBackground = {
     height: number;
   };
 };
+// Resource-local identities are independent of any future GPU buffer layout.
+export type ObjVertex = { id: string; position: Vec3 };
+export type ObjMesh = {
+  id: string;
+  name: string;
+  // Each consecutive triple references vertices in the owning resource.
+  triangles: number[];
+  // Optional attributes are per triangle corner, preserving UV/normal seams.
+  uvs?: number[];
+  normals?: number[];
+};
+export type ObjResource = {
+  id: string;
+  name: string;
+  format: "obj";
+  // Geometry is in local metres; object placement is not baked into vertices.
+  vertices: ObjVertex[];
+  meshes: ObjMesh[];
+};
 export type Project = {
-  version: 1;
   name: string;
   models: Model[];
   drones: Drone[];
   viewpoints: Viewpoint[];
   source: Source;
   background?: SceneBackground;
-};
+} & (
+  | { version: 1; objResources?: never }
+  | { version: 2; objResources: ObjResource[] }
+);
 export type Selection = {
   type: "model" | "drone" | "viewpoint";
   id: string;

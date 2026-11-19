@@ -1,5 +1,5 @@
 import type { SceneBackground } from "./types.ts";
-import { ProjectValidationError } from "./feedback.ts";
+import { ProjectValidationError } from "./errors.ts";
 
 export const DEFAULT_SCENE_BACKGROUND: SceneBackground = {
   mode: "color",
