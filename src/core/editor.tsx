@@ -12,7 +12,6 @@ import {
   exampleProject,
   makeDrone,
   makeModel,
-  parseProject,
   removeObject,
   uid,
 } from "./project";
@@ -25,7 +24,18 @@ import type {
   Tool,
   Vec3,
 } from "./types";
-import { persistProject, type AutosaveStatus } from "./feedback";
+import type { AutosaveStatus } from "./feedback";
+import {
+  jumpHistory,
+  pushHistory,
+  redoHistory,
+  startHistory,
+  timeline,
+  undoHistory,
+  type Checkpoint,
+  type History,
+  type Session,
+} from "./history";
 import {
   beginTransformSession,
   updateTransformSession,
@@ -34,43 +44,11 @@ import {
   type TransformTarget,
 } from "./transform";
 
-const STORAGE = "p15.project.v1";
-type History = {
-  past: Project[];
-  present: Project;
-  future: Project[];
-  loadError?: string;
-  autosavePaused?: boolean;
-};
-function initial(): History {
-  try {
-    const saved = localStorage.getItem(STORAGE);
-    return {
-      past: [],
-      present: saved ? parseProject(saved) : exampleProject(),
-      future: [],
-    };
-  } catch {
-    let autosavePaused = false;
-    try {
-      const raw = localStorage.getItem(STORAGE);
-      if (raw) localStorage.setItem(STORAGE + ".recovery", raw);
-    } catch {
-      autosavePaused = true;
-    }
-    return {
-      past: [],
-      present: exampleProject(),
-      future: [],
-      autosavePaused,
-      loadError: autosavePaused
-        ? "本机暂存不可用。请保存项目文件，以免丢失修改。"
-        : "无法恢复上次的项目，已保留原始数据。请打开已保存的项目文件。",
-    };
-  }
-}
 function useEditorState() {
-  const [history, setHistory] = useState(initial),
+  // Nothing is shown or autosaved until a session is started from the start screen.
+  const [active, setActive] = useState(false);
+  const [history, setHistory] = useState<History>(() => startHistory(emptyProject(), "新建项目")),
+    [checkpoints, setCheckpointsState] = useState<Checkpoint[]>([]),
     [selection, setSelectionState] = useState<Selection>(null);
   const [tool, setToolState] = useState<Tool>("select"),
     [view, setViewState] = useState<CameraView>("perspective");
@@ -80,42 +58,24 @@ function useEditorState() {
     [preview, setPreviewState] = useState(false);
   const [candidate, setCandidateState] = useState<Project | null>(null),
     [message, setMessage] = useState(""),
-    [recoveryNotice, setRecoveryNotice] = useState(history.loadError ?? ""),
-    [autosaveStatus, setAutosaveStatus] = useState<AutosaveStatus>(history.autosavePaused ? "paused" : "saving"),
+    [recoveryNotice, setRecoveryNotice] = useState(""),
+    [autosaveStatus, setAutosaveStatus] = useState<AutosaveStatus>("saved"),
     [focusTick, setFocusTick] = useState(0);
   const [transientDraft, setTransientDraft] = useState<Project | null>(null),
     [transformTarget, setTransformTargetState] = useState<TransformTarget>("position"),
     [snap, setSnapState] = useState(0),
     [lockHeight, setLockHeightState] = useState(false);
   // Event callbacks can run before React renders again; these refs cancel or finish synchronously.
-  const historyRef = useRef(history), selectionRef = useRef(selection),
+  const historyRef = useRef(history), checkpointsRef = useRef(checkpoints), selectionRef = useRef(selection),
     toolRef = useRef(tool), viewRef = useRef(view), previewRef = useRef(preview),
     playingRef = useRef(playing), candidateRef = useRef(candidate),
     transformTargetRef = useRef(transformTarget), snapRef = useRef(snap),
     lockHeightRef = useRef(lockHeight), transformSessionRef = useRef<TransformSession | null>(null);
-  const project = candidate ?? transientDraft ?? history.present;
+  const project = candidate ?? transientDraft ?? history.present.project;
   // Native canvas events can arrive before the separate R3F root receives context updates.
   function readProject() {
-    return candidateRef.current ?? transformSessionRef.current?.draft ?? historyRef.current.present;
+    return candidateRef.current ?? transformSessionRef.current?.draft ?? historyRef.current.present.project;
   }
-  const [autosavePaused] = useState(!!history.autosavePaused);
-  useEffect(() => {
-    if (autosavePaused) return;
-    setAutosaveStatus("saving");
-    const persist = () => {
-      try {
-        setAutosaveStatus(persistProject(localStorage, STORAGE, history.present));
-      } catch {
-        setAutosaveStatus("error");
-      }
-    };
-    const id = setTimeout(persist, 450);
-    window.addEventListener("beforeunload", persist);
-    return () => {
-      clearTimeout(id);
-      window.removeEventListener("beforeunload", persist);
-    };
-  }, [history.present]);
   useEffect(() => {
     if (!message) return;
     const id = setTimeout(() => setMessage(""), 4500);
@@ -123,8 +83,21 @@ function useEditorState() {
   }, [message]);
   function writeHistory(update: (h: History) => History) {
     const next = update(historyRef.current);
+    if (next === historyRef.current) return;
     historyRef.current = next;
     setHistory(next);
+  }
+  function writeCheckpoints(update: (list: Checkpoint[]) => Checkpoint[]) {
+    const next = update(checkpointsRef.current);
+    checkpointsRef.current = next;
+    setCheckpointsState(next);
+  }
+  /** Reset transient UI state whenever the committed state jumps (undo, redo, restore, open). */
+  function settle() {
+    cancelTransform();
+    setPlaying(false);
+    setCandidate(null);
+    setProgress(0);
   }
   function cancelTransform() {
     transformSessionRef.current = null;
@@ -187,7 +160,7 @@ function useEditorState() {
   }
   function beginTransform(next: Selection): boolean {
     if (transformSessionRef.current || candidateRef.current || previewRef.current || playingRef.current) return false;
-    const session = beginTransformSession(historyRef.current.present, next, {
+    const session = beginTransformSession(historyRef.current.present.project, next, {
       target: transformTargetRef.current, snap: snapRef.current, lockHeight: lockHeightRef.current,
     });
     if (!session) return false;
@@ -212,19 +185,15 @@ function useEditorState() {
     setProgress(0);
     writeHistory(() => next);
   }
-  function commit(next: Project | ((p: Project) => Project), manual = true) {
+  function commit(next: Project | ((p: Project) => Project), manual = true, label?: string) {
     cancelTransform();
     if (candidateRef.current) return;
     setPlaying(false);
     setProgress(0);
     writeHistory((h) => {
-      const p = typeof next === "function" ? next(h.present) : next;
-      if (p === h.present) return h;
-      return {
-        past: [...h.past, h.present].slice(-60),
-        present: manual ? { ...p, source: "用户手动编排" } : p,
-        future: [],
-      };
+      const p = typeof next === "function" ? next(h.present.project) : next;
+      if (p === h.present.project) return h;
+      return pushHistory(h, manual ? { ...p, source: "用户手动编排" } : p, label);
     });
   }
   function patch(
@@ -252,16 +221,16 @@ function useEditorState() {
           v.id === id ? { ...v, ...values } : v,
         ),
       });
-    });
+    }, true, "修改属性");
   }
   function addModel(model: ModelKind | Model) {
     if (candidateRef.current) return;
     setPreview(false);
     if (viewRef.current === "drone") setView("perspective");
     const m = typeof model === "string"
-      ? makeModel(model, historyRef.current.present.models.length + 1)
+      ? makeModel(model, historyRef.current.present.project.models.length + 1)
       : model;
-    commit((p) => ({ ...p, models: [...p.models, m] }));
+    commit((p) => ({ ...p, models: [...p.models, m] }), true, `添加${m.name}`);
     select({ type: "model", id: m.id });
     setTool("translate");
   }
@@ -269,8 +238,8 @@ function useEditorState() {
     if (candidateRef.current) return;
     setPreview(false);
     if (view === "drone") setView("perspective");
-    const d = makeDrone(historyRef.current.present.drones.length + 1);
-    commit((p) => ({ ...p, drones: [...p.drones, d] }));
+    const d = makeDrone(historyRef.current.present.project.drones.length + 1);
+    commit((p) => ({ ...p, drones: [...p.drones, d] }), true, `添加${d.name}`);
     select({ type: "drone", id: d.id });
     setTool("translate");
   }
@@ -289,7 +258,7 @@ function useEditorState() {
   function addPoint(position?: Vec3) {
     if (candidateRef.current) return;
     cancelTransform();
-    const current = historyRef.current.present;
+    const current = historyRef.current.present.project;
     const d = chosenDrone(current);
     if (!d) {
       setMessage("请先添加一架无人机。");
@@ -302,56 +271,83 @@ function useEditorState() {
       position: position ?? ([...d.position] as Vec3),
       target: [0, 8, 0] as Vec3,
     };
-    commit((p) => clearTiming({ ...p, viewpoints: [...p.viewpoints, v] }));
+    commit((p) => clearTiming({ ...p, viewpoints: [...p.viewpoints, v] }), true, `添加${v.name}`);
     select({ type: "viewpoint", id: v.id });
     setTool("translate");
     setMessage("拍摄点已添加，可调整高度或指定镜头目标。");
   }
   function undo() {
-    cancelTransform();
-    setPlaying(false);
-    setCandidate(null);
-    setProgress(0);
-    writeHistory((h) =>
-      h.past.length
-        ? {
-            past: h.past.slice(0, -1),
-            present: h.past.at(-1)!,
-            future: [h.present, ...h.future],
-          }
-        : h,
-    );
+    settle();
+    writeHistory(undoHistory);
   }
   function redo() {
-    cancelTransform();
-    setCandidate(null);
-    setPlaying(false);
-    setProgress(0);
-    writeHistory((h) =>
-      h.future.length
-        ? {
-            past: [...h.past, h.present],
-            present: h.future[0],
-            future: h.future.slice(1),
-          }
-        : h,
-    );
+    settle();
+    writeHistory(redoHistory);
+  }
+  /** Jump to any entry of the timeline returned by `historyEntries`. */
+  function jumpTo(index: number) {
+    settle();
+    writeHistory((h) => jumpHistory(h, index));
+  }
+  function createCheckpoint(name?: string): Checkpoint {
+    const list = checkpointsRef.current;
+    const checkpoint: Checkpoint = {
+      id: uid(),
+      name: name?.trim().slice(0, 160) || `检查点 ${list.length + 1}`,
+      createdAt: Date.now(),
+      project: historyRef.current.present.project,
+    };
+    writeCheckpoints((all) => [...all, checkpoint]);
+    setMessage(`已创建「${checkpoint.name}」。`);
+    return checkpoint;
+  }
+  /** Restoring is itself an undoable edit, so no history is lost. */
+  function restoreCheckpoint(id: string) {
+    const checkpoint = checkpointsRef.current.find((c) => c.id === id);
+    if (!checkpoint) return;
+    settle();
+    select(null);
+    writeHistory((h) => pushHistory(h, checkpoint.project, `恢复「${checkpoint.name}」`));
+    setMessage(`已恢复到「${checkpoint.name}」，可撤销。`);
+  }
+  function renameCheckpoint(id: string, name: string) {
+    const clean = name.trim().slice(0, 160);
+    if (!clean) return;
+    writeCheckpoints((all) => all.map((c) => (c.id === id ? { ...c, name: clean } : c)));
+  }
+  function deleteCheckpoint(id: string) {
+    writeCheckpoints((all) => all.filter((c) => c.id !== id));
+  }
+  /** Snapshot of the committed session, used for .aeproj packages and autosave. */
+  function exportSession(): Session {
+    return { history: historyRef.current, checkpoints: checkpointsRef.current };
+  }
+  /** Replace the whole session, e.g. after opening a package. */
+  function loadSession(session: Session) {
+    settle();
+    select(null);
+    setTool("select");
+    setPreview(false);
+    historyRef.current = session.history;
+    setHistory(session.history);
+    writeCheckpoints(() => session.checkpoints);
+    setActive(true);
   }
   function remove() {
     const selected = selectionRef.current;
     if (!selected || candidateRef.current) return;
-    const m = historyRef.current.present.models.find((m) => m.id === selected.id);
+    const m = historyRef.current.present.project.models.find((m) => m.id === selected.id);
     if (m?.locked) {
       setMessage("请先解锁对象。");
       return;
     }
-    commit((p) => clearTiming(removeObject(p, selected.type, selected.id)));
+    commit((p) => clearTiming(removeObject(p, selected.type, selected.id)), true, "删除对象");
     select(null);
   }
   function duplicate() {
     const selected = selectionRef.current;
     if (!selected || candidateRef.current) return;
-    const source = historyRef.current.present;
+    const source = historyRef.current.present.project;
     if (selected.type === "model") {
       const m = source.models.find((m) => m.id === selected.id);
       if (!m || m.locked) return;
@@ -361,7 +357,7 @@ function useEditorState() {
         name: m.name + " 副本",
         position: [m.position[0] + 5, m.position[1], m.position[2] + 5] as Vec3,
       };
-      commit((p) => ({ ...p, models: [...p.models, copy] }));
+      commit((p) => ({ ...p, models: [...p.models, copy] }), true, `复制${m.name}`);
       select({ type: "model", id: copy.id });
     }
     if (selected.type === "drone") {
@@ -381,13 +377,13 @@ function useEditorState() {
               droneId: copy.id,
             })),
         ],
-      }));
+      }), true, `复制${d.name}`);
       select({ type: "drone", id: copy.id });
     }
   }
-  function replace(p: Project) {
+  function replace(p: Project, label = "替换场景") {
     setCandidate(null);
-    commit(p, false);
+    commit(p, false, label);
     select(null);
     setTool("select");
     setPreview(false);
@@ -399,7 +395,7 @@ function useEditorState() {
   return {
     project,
     readProject,
-    committedProject: history.present,
+    committedProject: history.present.project,
     isTransforming: transientDraft !== null,
     beginTransform,
     updateTransform,
@@ -430,7 +426,13 @@ function useEditorState() {
     message,
     setMessage,
     autosaveStatus,
+    setAutosaveStatus,
     recoveryNotice,
+    setRecoveryNotice,
+    /** False until a project has been opened, created or resumed. */
+    active,
+    /** Committed history and checkpoints; changes whenever either changes. */
+    history,
     dismissRecoveryNotice: () => setRecoveryNotice(""),
     focusTick,
     focus,
@@ -447,8 +449,17 @@ function useEditorState() {
     replace,
     canUndo: history.past.length > 0,
     canRedo: history.future.length > 0,
-    newProject: () => replace(emptyProject()),
-    example: () => replace(exampleProject()),
+    historyEntries: timeline(history),
+    jumpTo,
+    checkpoints,
+    createCheckpoint,
+    restoreCheckpoint,
+    renameCheckpoint,
+    deleteCheckpoint,
+    exportSession,
+    loadSession,
+    newProject: () => loadSession({ history: startHistory(emptyProject(), "新建项目"), checkpoints: [] }),
+    example: () => loadSession({ history: startHistory(exampleProject(), "打开示例"), checkpoints: [] }),
   };
 }
 const EditorContext = createContext<ReturnType<typeof useEditorState> | null>(

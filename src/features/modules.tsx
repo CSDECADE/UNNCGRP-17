@@ -1,5 +1,6 @@
-import { useRef, type ComponentType, type ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { useEditor } from "../core/editor";
+import { useDocuments } from "../core/documents";
 import type { AnalysisPanelProps, Editor, ProjectFileControls } from "./contracts";
 
 // Each optional entry is discovered at build time. Missing modules have shell fallbacks.
@@ -16,15 +17,24 @@ export const manualInspector = import.meta.glob<{ Inspector: ComponentType }>(".
 export const manualControls = import.meta.glob<{ EditorControls: ComponentType<{ children: ReactNode }> }>("./manual/EditorControls.tsx", { eager: true })["./manual/EditorControls.tsx"];
 const help = import.meta.glob<{ Help: ComponentType }>("./project-files/Help.tsx", { eager: true })["./project-files/Help.tsx"];
 
+// Projects are .aeproj packages handled by core/documents; plan import/export needs the files module.
 function useBaseProjectFiles(close: () => void): ProjectFileControls {
   const e = useEditor();
-  const fileInput = useRef<HTMLInputElement>(null);
+  const docs = useDocuments();
   const unavailable = async () => { e.setMessage("请先加载导出和文档模块。"); };
   return {
-    fileInput, fileError: "", setFileError: () => {},
-    openFile: unavailable, readFile: unavailable, save: unavailable, exportFile: unavailable,
+    fileInput: { current: null }, fileError: docs.error, setFileError: docs.setError,
+    openFile: async (mode) => {
+      if (mode === "plan") return unavailable();
+      if (await docs.open()) close();
+    },
+    readFile: async (file) => {
+      if (await docs.readFile(file)) close();
+    },
+    save: async (saveAs = false) => { await docs.save(saveAs); },
+    exportFile: unavailable,
     startProject: async (example = false) => {
-      example ? e.example() : e.newProject();
+      await docs.start(example);
       close();
     },
   };
