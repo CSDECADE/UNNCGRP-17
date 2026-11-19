@@ -16,6 +16,7 @@ import { TextField, ToolButton } from "./ui/Controls";
 import { productName } from "../package.json";
 import { shortcuts } from "./platform";
 import { autosaveLabels, UserInputError } from "./core/feedback";
+import { useObjImport } from "./features/obj-import/useObjImport";
 
 import {
   projectFiles, useProjectFiles, analysis, playback, Playback, AnalysisPanel,
@@ -67,6 +68,7 @@ export function App() {
       if (!analysis) throw new UserInputError("请先加载多机路径分析模块。");
       analysis.acceptPlan(text, e, !!playback);
     });
+  const objImport = useObjImport(setFileError, () => setTab("layers"));
   useEffect(() => setFileError(""), [dialog]);
   useEffect(() =>
     window.p15Desktop?.onCommand((command) => {
@@ -287,6 +289,14 @@ export function App() {
           gridTemplateColumns: `${leftOpen ? "240px" : "0px"} minmax(0,1fr) ${rightOpen ? "272px" : "0px"}`,
         }}
       >
+        <input
+          ref={objImport.input}
+          type="file"
+          accept=".obj"
+          aria-label="选择 OBJ 文件"
+          hidden
+          onChange={event => void objImport.read(event.currentTarget.files?.[0])}
+        />
         <input
           ref={fileInput}
           type="file"
@@ -739,6 +749,10 @@ export function App() {
                     onSelect={() => e.addModel("building")}
                   >
                     内置教学楼
+                  </MenuItem>
+                  <MenuItem icon="open" disabled={locked || objImport.busy}
+                    onSelect={() => objImport.input.current?.click()}>
+                    {objImport.busy ? "正在导入 OBJ…" : "导入 OBJ…"}
                   </MenuItem>
                   <MenuItem icon="cube" onSelect={() => e.addModel("box")}>
                     长方体

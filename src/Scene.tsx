@@ -44,6 +44,8 @@ import { cameraUp } from "./scene/dragMath";
 import { DEFAULT_SCENE_BACKGROUND } from "./core/background";
 import { SceneBackground } from "./scene/SceneBackground";
 import { fitBackground } from "./scene/backgroundTexture";
+import { modelBounds } from "./core/model-bounds";
+import { ImportedMesh } from "./features/obj-import/ObjMesh";
 
 function Label({
   text,
@@ -175,6 +177,8 @@ function Transformable({
 function ModelObject({ model: m }: { model: Model }) {
   const e = useEditor(),
     selected = e.selection?.id === m.id;
+  const bounds = useMemo(() => modelBounds(m, e.project), [m, e.project]);
+  const resource = m.kind === "obj" ? e.project.objResources?.find(r => r.id === m.resourceId) : undefined;
   if (!m.visible) return null;
   return (
     <Transformable
@@ -184,7 +188,9 @@ function ModelObject({ model: m }: { model: Model }) {
       size={m.size}
       locked={m.locked}
     >
-      {m.kind === "building" ? (
+      {m.kind === "obj" ? (
+        resource?.meshes.map(mesh => <ImportedMesh key={mesh.id} resource={resource} mesh={mesh} color={m.color} />)
+      ) : m.kind === "building" ? (
         <group scale={[m.size[0] / 24, m.size[1] / 18, m.size[2] / 14]}>
           <Asset kind="building" />
         </group>
@@ -209,14 +215,14 @@ function ModelObject({ model: m }: { model: Model }) {
       )}
       {selected && (
         <>
-          <mesh position={[0, m.size[1] / 2, 0]} raycast={() => null}>
-            <boxGeometry args={m.size.map((n) => n + 0.15) as Vec3} />
+          <mesh position={bounds.center} raycast={() => null}>
+            <boxGeometry args={bounds.size.map((n) => n + 0.15) as Vec3} />
             <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             <Edges color="#4d9dff" depthTest={false} userData={{ editorOverlay: true }} />
           </mesh>
           <Label
-            text={`${m.name} · ${m.size[1].toFixed(1)} m`}
-            position={[0, m.size[1] + 1.5, 0]}
+            text={`${m.name} · ${bounds.size[1].toFixed(1)} m`}
+            position={[bounds.center[0], bounds.center[1] + bounds.size[1] / 2 + 1.5, bounds.center[2]]}
             selected
           />
         </>
@@ -413,6 +419,10 @@ function CameraRig() {
       : e.selection?.type === "drone" ? e.project.drones.find(x => x.id === e.selection?.id)
       : e.project.viewpoints.find(x => x.id === e.selection?.id);
     const center = new Vector3(...(selected?.position ?? [0, 6, 0] as Vec3));
+    if (selected && "kind" in selected && selected.kind === "obj") {
+      center.add(new Vector3(...modelBounds(selected, e.project).center)
+        .applyAxisAngle(new Vector3(0, 1, 0), selected.rotation * Math.PI / 180));
+    }
     camera.up.set(0, 1, 0);
     if (e.view === "top") {
       camera.position.copy(center).add(new Vector3(0, 100, 0));
@@ -435,8 +445,10 @@ function CameraRig() {
           : e.project.viewpoints.find((x) => x.id === e.selection?.id);
     const pos = item && "target" in item && e.transformTarget === "target" ? item.target : item?.position ?? [0, 6, 0];
     const center = new Vector3(...pos);
-    const radius = item && "size" in item ? Math.max(...item.size) : 12;
-    if (item && "size" in item) center.y += item.size[1] / 2;
+    const bounds = item && "kind" in item ? modelBounds(item, e.project) : undefined;
+    const radius = bounds ? Math.max(item && "kind" in item && item.kind === "obj" ? 1 : 0, ...bounds.size) : 12;
+    if (bounds && item && "rotation" in item) center.add(new Vector3(...bounds.center)
+      .applyAxisAngle(new Vector3(0, 1, 0), item.rotation * Math.PI / 180));
     const direction = camera.position.clone().sub(controls.current.target).normalize();
     controls.current.target.copy(center);
     camera.position.copy(center).addScaledVector(direction, Math.max(25, radius * 3));

@@ -30,6 +30,8 @@ export function beginTransformSession(
   if (!selection) return null;
   const item = selectedItem(project, selection);
   if (!item || ("locked" in item && item.locked)) return null;
+  // Imported models are selectable in Stage 2; transform editing arrives in Stage 3.
+  if ("kind" in item && item.kind === "obj") return null;
   if ("visible" in item && !item.visible) return null;
   if ("droneId" in item && !project.drones.some((d) => d.id === item.droneId && d.visible)) return null;
   if (options.target === "target" && selection.type !== "viewpoint") return null;

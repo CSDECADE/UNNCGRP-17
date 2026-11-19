@@ -1,0 +1,11 @@
+# Two simple walls, offset from the built-in example building. Units: metres; +Y up.
+v 40 0 20
+v 60 0 20
+v 60 18 20
+v 40 18 20
+v 40 0 8
+v 40 18 8
+o FrontWall
+f 1 2 3 4
+o SideWall
+f 1 4 6 5

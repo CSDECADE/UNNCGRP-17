@@ -1,8 +1,7 @@
 export type Vec3 = [number, number, number];
 export type ModelKind = "box" | "cylinder" | "building";
-export type Model = {
+type ModelProperties = {
   id: string;
-  kind: ModelKind;
   name: string;
   position: Vec3;
   rotation: number;
@@ -11,6 +10,10 @@ export type Model = {
   visible: boolean;
   locked: boolean;
 };
+export type Model = ModelProperties & (
+  | { kind: ModelKind }
+  | { kind: "obj"; resourceId: string }
+);
 export type Drone = {
   id: string;
   name: string;

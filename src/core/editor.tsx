@@ -32,6 +32,8 @@ import {
   type TransformSession,
   type TransformTarget,
 } from "./transform";
+import { prepareObjImport } from "../features/obj-import/obj";
+import { UserInputError } from "./errors";
 
 const STORAGE = "p15.project.v1";
 type History = {
@@ -262,6 +264,17 @@ function useEditorState() {
     select({ type: "model", id: m.id });
     setTool("translate");
   }
+  function importObj(text: string, name: string) {
+    if (candidateRef.current) throw new UserInputError("请先应用或取消候选方案，再导入 OBJ。");
+    const imported = prepareObjImport(historyRef.current.present, text, name);
+    // Parsing and the full-project capacity check must finish before changing editor state.
+    commit(imported.project);
+    setPreview(false);
+    if (viewRef.current === "drone") setView("perspective");
+    setTool("select");
+    select({ type: "model", id: imported.model.id });
+    focus();
+  }
   function addDrone() {
     if (candidateRef.current) return;
     setPreview(false);
@@ -355,7 +368,7 @@ function useEditorState() {
       const copy = {
         ...structuredClone(m),
         id: uid(),
-        name: m.name + " 副本",
+        name: (m.kind === "obj" ? m.name.slice(0, 157) : m.name) + " 副本",
         position: [m.position[0] + 5, m.position[1], m.position[2] + 5] as Vec3,
       };
       commit((p) => ({ ...p, models: [...p.models, copy] }));
@@ -434,6 +447,7 @@ function useEditorState() {
     commit,
     patch,
     addModel,
+    importObj,
     addDrone,
     addPoint,
     chosenDrone,

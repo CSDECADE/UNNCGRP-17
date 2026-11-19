@@ -135,12 +135,15 @@ export function validateProject(input: unknown): Project {
   projectJson(input);
   const models: Model[] = array(p.models, 500).map((x) => {
     const m = record(x);
-    if (!["box", "cylinder", "building"].includes(String(m.kind)))
+    if (!["box", "cylinder", "building", "obj"].includes(String(m.kind)))
       fail("未知内置模型");
-    return {
+    if (m.kind === "obj" && p.version !== 2) fail("OBJ 模型需要项目版本 2");
+    if (m.kind === "obj" && Object.keys(m).some(key =>
+      !["id", "name", "kind", "resourceId", "position", "rotation", "size", "color", "visible", "locked"].includes(key)))
+      fail("OBJ 模型包含不支持的字段");
+    const properties = {
       id: str(m.id),
       name: str(m.name),
-      kind: m.kind as ModelKind,
       position: vec(m.position),
       rotation: finite(m.rotation),
       size: vec(m.size, true),
@@ -148,6 +151,9 @@ export function validateProject(input: unknown): Project {
       visible: bool(m.visible),
       locked: bool(m.locked),
     };
+    return m.kind === "obj"
+      ? { ...properties, kind: "obj", resourceId: str(m.resourceId) }
+      : { ...properties, kind: m.kind as ModelKind };
   });
   const drones: Drone[] = array(p.drones, 50).map((x) => {
     const d = record(x);
@@ -194,6 +200,9 @@ export function validateProject(input: unknown): Project {
   const project: Project = p.version === 2
     ? { ...base, version: 2, objResources: validateObjResources(p.objResources) }
     : { ...base, version: 1 };
+  if (models.some(model => model.kind === "obj" &&
+    !project.objResources?.some(resource => resource.id === model.resourceId)))
+    fail("OBJ 模型引用了不存在的资源");
   if (p.background !== undefined) project.background = validateBackground(p.background);
   return project;
 }
@@ -259,8 +268,14 @@ export function poseAt(
   };
 }
 export function removeObject(p: Project, type: string, id: string): Project {
-  if (type === "model")
-    return { ...p, models: p.models.filter((m) => m.id !== id) };
+  if (type === "model") {
+    const removed = p.models.find(m => m.id === id);
+    const models = p.models.filter(m => m.id !== id);
+    if (p.version === 2 && removed?.kind === "obj" &&
+      !models.some(m => m.kind === "obj" && m.resourceId === removed.resourceId))
+      return { ...p, models, objResources: p.objResources.filter(r => r.id !== removed.resourceId) };
+    return { ...p, models };
+  }
   if (type === "drone")
     return {
       ...p,
