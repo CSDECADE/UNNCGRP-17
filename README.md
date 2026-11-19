@@ -1,7 +1,3 @@
-# UNNCGRP-17
-It's a school project
-
-
 # Aero P15 小组基础工程
 
 Aero 是无人机航拍场景的桌面模拟工具。基础工程包含 Electron 窗口、三维场景、内置模型、背景设置、对象列表和示例项目。

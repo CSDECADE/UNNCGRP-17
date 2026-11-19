@@ -9,6 +9,8 @@ import type {
 import { ProjectValidationError, UserInputError } from "./feedback.ts";
 import { validateBackground } from "./background.ts";
 export const uid = () => crypto.randomUUID();
+export const MAX_PROJECT_BYTES = 5_000_000;
+export const MAX_PROJECT_MODELS = 500;
 export const droneColors = ["#55c4c0", "#f2a35a", "#a78bfa", "#ec8aa6"];
 export function makeModel(kind: ModelKind, n: number): Model {
   return {
@@ -124,14 +126,11 @@ const array = (x: unknown, limit: number): unknown[] =>
 export function validateProject(input: unknown): Project {
   const p = record(input);
   if (p.version !== 1) fail("不支持此项目版本");
-  const models: Model[] = array(p.models, 500).map((x) => {
+  const models: Model[] = array(p.models, MAX_PROJECT_MODELS).map((x) => {
     const m = record(x);
-    if (!["box", "cylinder", "building"].includes(String(m.kind)))
-      fail("未知内置模型");
-    return {
+    const fields = {
       id: str(m.id),
       name: str(m.name),
-      kind: m.kind as ModelKind,
       position: vec(m.position),
       rotation: finite(m.rotation),
       size: vec(m.size, true),
@@ -139,6 +138,16 @@ export function validateProject(input: unknown): Project {
       visible: bool(m.visible),
       locked: bool(m.locked),
     };
+    if (m.kind === "obj") {
+      const obj = m.obj;
+      if (typeof obj !== "string" || obj.length < 24 || obj.length > MAX_PROJECT_BYTES
+        || obj.length % 4 !== 0 || !/^H4sI[A-Za-z0-9+/]*={0,2}$/.test(obj))
+        return fail("导入模型的数据无效");
+      return { ...fields, kind: "obj", obj };
+    }
+    if (m.kind === "box" || m.kind === "cylinder" || m.kind === "building")
+      return { ...fields, kind: m.kind };
+    return fail("未知模型类型");
   });
   const drones: Drone[] = array(p.drones, 50).map((x) => {
     const d = record(x);
@@ -189,7 +198,7 @@ export function parseProject(text: string): Project {
   return validateProject(parseFile(text));
 }
 function parseFile(text: string): unknown {
-  if (new TextEncoder().encode(text).byteLength > 5_000_000)
+  if (new TextEncoder().encode(text).byteLength > MAX_PROJECT_BYTES)
     throw new UserInputError("文件超过 5 MB，请选择较小的文件。");
   try { return JSON.parse(text); }
   catch { throw new UserInputError("文件内容无法识别，请选择完整的 JSON 文件。"); }

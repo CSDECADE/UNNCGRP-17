@@ -1,3 +1,9 @@
 node_modules/
 dist/
 .DS_Store
+.idea/
+__MACOSX/
+Aero-Windows-OBJ/
+*.lnk
+__pycache__/
+*.py[cod]

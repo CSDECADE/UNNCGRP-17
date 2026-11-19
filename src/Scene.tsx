@@ -3,6 +3,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
   Component,
   Fragment,
   type ComponentType,
@@ -26,6 +27,7 @@ import {
 } from "@react-three/drei";
 import {
   CanvasTexture,
+  DoubleSide,
   MOUSE,
   Group,
   SRGBColorSpace,
@@ -44,6 +46,7 @@ import { cameraUp } from "./scene/dragMath";
 import { DEFAULT_SCENE_BACKGROUND } from "./core/background";
 import { SceneBackground } from "./scene/SceneBackground";
 import { fitBackground } from "./scene/backgroundTexture";
+import { loadObjGeometry } from "./scene/importObj";
 
 function Label({
   text,
@@ -104,7 +107,8 @@ function Label({
 }
 
 function Asset({ kind }: { kind: "building" | "drone" }) {
-  const { scene } = useGLTF(`/models/${kind}.glb`);
+  // The bundled GLBs are uncompressed and need no runtime decoders.
+  const { scene } = useGLTF(`/models/${kind}.glb`, false, false);
   const instance = useMemo(() => {
     const g = scene.clone(true);
     g.traverse((o) => {
@@ -172,6 +176,37 @@ function Transformable({
     </>
   );
 }
+function ImportedObj({ model }: { model: Extract<Model, { kind: "obj" }> }) {
+  const { setMessage } = useEditor();
+  const [loaded, setLoaded] = useState<Awaited<ReturnType<typeof loadObjGeometry>> | null>(null);
+  useEffect(() => {
+    let active = true;
+    let geometry: NonNullable<typeof loaded>["geometry"] | undefined;
+    setLoaded(null);
+    void loadObjGeometry(model.obj).then((result) => {
+      geometry = result.geometry;
+      if (active) setLoaded(result);
+      else geometry.dispose();
+    }).catch(() => {
+      if (active) setMessage("无法显示导入的 OBJ 模型，请重新导入原文件。");
+    });
+    return () => {
+      active = false;
+      geometry?.dispose();
+    };
+  }, [model.obj, setMessage]);
+  if (!loaded) return null;
+  return (
+    <mesh
+      geometry={loaded.geometry}
+      scale={model.size.map((n, i) => n / loaded.size[i]) as Vec3}
+      castShadow
+      receiveShadow
+    >
+      <meshStandardMaterial color={model.color} roughness={0.8} side={DoubleSide} />
+    </mesh>
+  );
+}
 function ModelObject({ model: m }: { model: Model }) {
   const e = useEditor(),
     selected = e.selection?.id === m.id;
@@ -184,7 +219,9 @@ function ModelObject({ model: m }: { model: Model }) {
       size={m.size}
       locked={m.locked}
     >
-      {m.kind === "building" ? (
+      {m.kind === "obj" ? (
+        <ImportedObj model={m} />
+      ) : m.kind === "building" ? (
         <group scale={[m.size[0] / 24, m.size[1] / 18, m.size[2] / 14]}>
           <Asset kind="building" />
         </group>

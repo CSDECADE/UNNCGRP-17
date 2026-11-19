@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Dropdown from "@radix-ui/react-dropdown-menu";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { useEditor } from "./core/editor";
 import {
   clearTiming,
+  MAX_PROJECT_BYTES,
+  MAX_PROJECT_MODELS,
   reorderPoint,
   routeFor,
 } from "./core/project";
@@ -16,6 +18,7 @@ import { TextField, ToolButton } from "./ui/Controls";
 import { productName } from "../package.json";
 import { shortcuts } from "./platform";
 import { autosaveLabels, UserInputError } from "./core/feedback";
+import { prepareObj } from "./scene/importObj";
 
 import {
   projectFiles, useProjectFiles, analysis, playback, Playback, AnalysisPanel,
@@ -58,6 +61,8 @@ export function App() {
     [leftOpen, setLeftOpen] = useState(true),
     [rightOpen, setRightOpen] = useState(true),
     [search, setSearch] = useState("");
+  const modelInput = useRef<HTMLInputElement>(null);
+  const [importingModel, setImportingModel] = useState(false);
   const [dialog, setDialog] = useState<"project" | "algorithm" | "help" | null>(
       null,
     ),
@@ -152,6 +157,36 @@ export function App() {
     return () => window.removeEventListener("keydown", onKey);
   });
   const locked = !!e.candidate;
+  async function importModel(file?: File) {
+    if (!file || locked || importingModel) return;
+    const original = e.readProject();
+    setImportingModel(true);
+    try {
+      if (original.models.length >= MAX_PROJECT_MODELS)
+        throw new UserInputError("当前项目的模型数量已达到上限。");
+      const model = await prepareObj(file);
+      if (e.readProject() !== original)
+        throw new UserInputError("场景已更改，请重新选择模型文件。");
+      const next = { ...original, source: "用户手动编排", models: [...original.models, model] };
+      if (new TextEncoder().encode(JSON.stringify(next, null, 2)).byteLength > MAX_PROJECT_BYTES)
+        throw new UserInputError("导入后项目将超过 5 MB，请简化模型或移除部分资源。");
+      e.addModel(model);
+      e.focus();
+      setSearch("");
+      setCollapsed((current) => {
+        const next = new Set(current);
+        next.delete("models");
+        return next;
+      });
+      setTab("layers");
+      setRightOpen(true);
+      e.setMessage(`已导入模型：${model.name}`);
+    } catch (error) {
+      e.setMessage(error instanceof UserInputError ? error.message : "无法导入 OBJ 模型，请检查文件后重试。");
+    } finally {
+      setImportingModel(false);
+    }
+  }
   function chooseTool(tool: Tool) {
     if (!manualControls && ["translate", "rotate", "scale"].includes(tool)) {
       e.setMessage("请先加载手动调整模块。");
@@ -294,6 +329,17 @@ export function App() {
           hidden
           onChange={(ev) => void readFile(ev.target.files?.[0])}
         />
+        <input
+          ref={modelInput}
+          type="file"
+          accept=".obj"
+          hidden
+          onChange={(ev) => {
+            const file = ev.currentTarget.files?.[0];
+            ev.currentTarget.value = "";
+            void importModel(file);
+          }}
+        />
         {leftOpen && (
           <aside className="left-panel">
             <div className="project-header">
@@ -365,7 +411,7 @@ export function App() {
                         icon="flask"
                         onSelect={() => analysis ? setDialog("algorithm") : e.setMessage("请先加载多机路径分析模块。")}
                       >
-                        多机路径分析
+                        导入 / 导出方案
                       </MenuItem>
                       <MenuItem icon="help" onSelect={() => setDialog("help")}>
                         操作说明
@@ -586,6 +632,13 @@ export function App() {
                     </button>
                   ))}
                 </div>
+                <button
+                  className="secondary-button full"
+                  disabled={locked || importingModel}
+                  onClick={() => modelInput.current?.click()}
+                >
+                  {importingModel ? "正在导入…" : "导入模型 (.obj)"}
+                </button>
                 <div className="asset-footnote">
                   <Icon name="check" size={13} />
                   点击模型，添加到场景
@@ -772,7 +825,7 @@ export function App() {
             <div className="toolbar-divider" />
             <ToolButton
               icon="flask"
-              label="多机路径分析"
+              label="导入 / 导出方案"
               onClick={() => analysis ? setDialog("algorithm") : e.setMessage("请先加载多机路径分析模块。")}
               disabled={locked}
             />
@@ -877,7 +930,7 @@ export function App() {
                   {dialog === "project"
                     ? "项目"
                     : dialog === "algorithm"
-                      ? "多机路径分析"
+                      ? "导入 / 导出方案"
                       : "操作说明"}
                 </Dialog.Title>
                 <Dialog.Close asChild>
@@ -890,7 +943,7 @@ export function App() {
                 {dialog === "project"
                   ? "用模型搭建场景，为无人机安排拍摄任务。"
                   : dialog === "algorithm"
-                    ? "查看每架无人机的航线指标和最近间距，或导入候选航线进行比较。"
+                    ? "导出场景，或导入航拍方案并预览。"
                     : "搭建场景、安排拍摄点，再预演航线。"}
               </Dialog.Description>
               {fileError && (

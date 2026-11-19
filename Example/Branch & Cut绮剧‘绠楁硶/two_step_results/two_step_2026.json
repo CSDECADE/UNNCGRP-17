@@ -1,0 +1,521 @@
+{
+  "method": "two_step",
+  "selected_vps": [
+    3,
+    4,
+    6,
+    7,
+    13,
+    15,
+    16,
+    17,
+    19,
+    22,
+    25,
+    27,
+    33,
+    34,
+    39,
+    41,
+    42,
+    43,
+    46,
+    48,
+    50,
+    57,
+    59,
+    60,
+    61,
+    62,
+    64,
+    65
+  ],
+  "selected_vp_ids": [
+    "v4",
+    "v5",
+    "v7",
+    "v8",
+    "v14",
+    "v16",
+    "v17",
+    "v18",
+    "v20",
+    "v23",
+    "v26",
+    "v28",
+    "v34",
+    "v35",
+    "v40",
+    "v42",
+    "v43",
+    "v44",
+    "v47",
+    "v49",
+    "v51",
+    "v58",
+    "v60",
+    "v61",
+    "v62",
+    "v63",
+    "v65",
+    "v66"
+  ],
+  "selected_pairs": [
+    [
+      3,
+      "a7"
+    ],
+    [
+      4,
+      "a12"
+    ],
+    [
+      6,
+      "a14"
+    ],
+    [
+      6,
+      "a8"
+    ],
+    [
+      7,
+      "a6"
+    ],
+    [
+      13,
+      "a8"
+    ],
+    [
+      15,
+      "a6"
+    ],
+    [
+      16,
+      "a7"
+    ],
+    [
+      17,
+      "a9"
+    ],
+    [
+      19,
+      "a6"
+    ],
+    [
+      22,
+      "a11"
+    ],
+    [
+      25,
+      "a10"
+    ],
+    [
+      27,
+      "a12"
+    ],
+    [
+      33,
+      "a6"
+    ],
+    [
+      34,
+      "a10"
+    ],
+    [
+      39,
+      "a10"
+    ],
+    [
+      41,
+      "a10"
+    ],
+    [
+      42,
+      "a10"
+    ],
+    [
+      43,
+      "a12"
+    ],
+    [
+      43,
+      "a8"
+    ],
+    [
+      46,
+      "a5"
+    ],
+    [
+      48,
+      "a1"
+    ],
+    [
+      48,
+      "a11"
+    ],
+    [
+      50,
+      "a5"
+    ],
+    [
+      57,
+      "a6"
+    ],
+    [
+      59,
+      "a8"
+    ],
+    [
+      60,
+      "a8"
+    ],
+    [
+      61,
+      "a5"
+    ],
+    [
+      62,
+      "a5"
+    ],
+    [
+      64,
+      "a7"
+    ],
+    [
+      65,
+      "a7"
+    ]
+  ],
+  "selected_photos_readable": [
+    [
+      "v4",
+      "a7"
+    ],
+    [
+      "v5",
+      "a12"
+    ],
+    [
+      "v7",
+      "a14"
+    ],
+    [
+      "v7",
+      "a8"
+    ],
+    [
+      "v8",
+      "a6"
+    ],
+    [
+      "v14",
+      "a8"
+    ],
+    [
+      "v16",
+      "a6"
+    ],
+    [
+      "v17",
+      "a7"
+    ],
+    [
+      "v18",
+      "a9"
+    ],
+    [
+      "v20",
+      "a6"
+    ],
+    [
+      "v23",
+      "a11"
+    ],
+    [
+      "v26",
+      "a10"
+    ],
+    [
+      "v28",
+      "a12"
+    ],
+    [
+      "v34",
+      "a6"
+    ],
+    [
+      "v35",
+      "a10"
+    ],
+    [
+      "v40",
+      "a10"
+    ],
+    [
+      "v42",
+      "a10"
+    ],
+    [
+      "v43",
+      "a10"
+    ],
+    [
+      "v44",
+      "a12"
+    ],
+    [
+      "v44",
+      "a8"
+    ],
+    [
+      "v47",
+      "a5"
+    ],
+    [
+      "v49",
+      "a1"
+    ],
+    [
+      "v49",
+      "a11"
+    ],
+    [
+      "v51",
+      "a5"
+    ],
+    [
+      "v58",
+      "a6"
+    ],
+    [
+      "v60",
+      "a8"
+    ],
+    [
+      "v61",
+      "a8"
+    ],
+    [
+      "v62",
+      "a5"
+    ],
+    [
+      "v63",
+      "a5"
+    ],
+    [
+      "v65",
+      "a7"
+    ],
+    [
+      "v66",
+      "a7"
+    ]
+  ],
+  "photos_by_viewpoint": {
+    "v4": [
+      "a7"
+    ],
+    "v5": [
+      "a12"
+    ],
+    "v7": [
+      "a14",
+      "a8"
+    ],
+    "v8": [
+      "a6"
+    ],
+    "v14": [
+      "a8"
+    ],
+    "v16": [
+      "a6"
+    ],
+    "v17": [
+      "a7"
+    ],
+    "v18": [
+      "a9"
+    ],
+    "v20": [
+      "a6"
+    ],
+    "v23": [
+      "a11"
+    ],
+    "v26": [
+      "a10"
+    ],
+    "v28": [
+      "a12"
+    ],
+    "v34": [
+      "a6"
+    ],
+    "v35": [
+      "a10"
+    ],
+    "v40": [
+      "a10"
+    ],
+    "v42": [
+      "a10"
+    ],
+    "v43": [
+      "a10"
+    ],
+    "v44": [
+      "a12",
+      "a8"
+    ],
+    "v47": [
+      "a5"
+    ],
+    "v49": [
+      "a1",
+      "a11"
+    ],
+    "v51": [
+      "a5"
+    ],
+    "v58": [
+      "a6"
+    ],
+    "v60": [
+      "a8"
+    ],
+    "v61": [
+      "a8"
+    ],
+    "v62": [
+      "a5"
+    ],
+    "v63": [
+      "a5"
+    ],
+    "v65": [
+      "a7"
+    ],
+    "v66": [
+      "a7"
+    ]
+  },
+  "quality_norm": 0.9920654296875,
+  "photo_norm": 0.2540983606557377,
+  "photos": 31,
+  "weighted_quality": 380.953125,
+  "tour": [
+    43,
+    27,
+    13,
+    6,
+    16,
+    3,
+    19,
+    15,
+    7,
+    61,
+    62,
+    17,
+    50,
+    46,
+    48,
+    22,
+    33,
+    34,
+    57,
+    41,
+    39,
+    42,
+    25,
+    64,
+    65,
+    59,
+    4,
+    60,
+    43
+  ],
+  "tour_ids": [
+    "v44",
+    "v28",
+    "v14",
+    "v7",
+    "v17",
+    "v4",
+    "v20",
+    "v16",
+    "v8",
+    "v62",
+    "v63",
+    "v18",
+    "v51",
+    "v47",
+    "v49",
+    "v23",
+    "v34",
+    "v35",
+    "v58",
+    "v42",
+    "v40",
+    "v43",
+    "v26",
+    "v65",
+    "v66",
+    "v60",
+    "v5",
+    "v61",
+    "v44"
+  ],
+  "energy": 126.25204011530994,
+  "n_viewpoints": 28,
+  "energy_norm_denom": 225.9226809447128,
+  "energy_norm": 0.5588285319002833,
+  "obj": -0.17913853713147904,
+  "atsp_runtime": 0.0,
+  "runtime_step1": 0.10959386825561523,
+  "runtime_step2": 0.0416109561920166,
+  "runtime_step1_wall": 0.14316432201303542,
+  "runtime_step2_wall": 0.054265481885522604,
+  "status_step1": 1,
+  "status_step2": 1,
+  "mip_gap_step1": 4.51330311831586e-16,
+  "mip_gap_step2": 0.0,
+  "obj_bound_step1": 0.7379670690317626,
+  "obj_bound_step2": 126.25204011530994,
+  "status": 1,
+  "mip_gap": 0.0,
+  "obj_bound": null,
+  "status_scope": "step2_only",
+  "mip_gap_scope": "step2_route_energy_only",
+  "joint_global_optimality_proven": false,
+  "stage1_source": "original_coverage_solver",
+  "stage1_proven_optimal": true,
+  "step2_proven_optimal": true,
+  "threads": 8,
+  "memory_limit_mb": 40960.0,
+  "relative_gap_limit": 0.0,
+  "absolute_gap_limit": 0.0,
+  "time_limit_step1": 1e+20,
+  "time_limit_step2": 1e+20,
+  "input_sha256": "f3973bb68e8a7f9e216731d42f5dc95fe3d4f9731c606992efcd0fe69158949f",
+  "solver": "COPT",
+  "routing_formulation": "undirected_lazy_sec",
+  "route_variable_count": 326,
+  "directed_equivalent_edge_count": 652,
+  "lazy_callback_calls": 7,
+  "lazy_cut_submissions": 18,
+  "symmetric_energy": 126.25204011530994,
+  "energy_identity_error": 0.0,
+  "max_energy_potential_residual": 3.1086244689504383e-15,
+  "search_nodes": 1,
+  "constraint_check": {
+    "passed": true,
+    "minimum_distinct_coverage": 3,
+    "closed_depot_cycle": true,
+    "original_directed_energy": 126.25204011530995,
+    "recomputed_objective": -0.17913853713147904
+  },
+  "runtime": 0.1984219430014491,
+  "runtime_scope": "Current invocation: original coverage stage (or frozen-selection validation), checkpoint, route build/solve/cleanup and final validation; excludes data read/preprocessing and optional original-route comparison."
+}

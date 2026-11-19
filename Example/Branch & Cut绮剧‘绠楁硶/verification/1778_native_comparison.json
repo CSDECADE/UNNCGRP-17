@@ -1,0 +1,21 @@
+{
+  "data_file": "1778.json",
+  "data_sha256": "06e70a963c87bb3ebf2eda36a08a916e0047d525bab4377c76fc47582e914a6d",
+  "cold_obj": -0.1561673817835629,
+  "external_start_obj": -0.1561673817835629,
+  "cold_bound": -0.1561673817835629,
+  "external_start_bound": -0.1561673817835629,
+  "cold_gap": 0.0,
+  "external_start_gap": 0.0,
+  "both_copt_status_optimal": true,
+  "both_independent_constraint_checks_passed": true,
+  "rel_gap_limit": 0.0,
+  "abs_gap_limit": 0.0,
+  "seed_objective": 0.0182932981711747,
+  "seed_runtime": 0.11633095401339233,
+  "new_joint_solver_runtime": 0.5951459407806396,
+  "new_total_runtime": 0.711476894794032,
+  "timing_sum_exactly_correct": true,
+  "native_mip_start_submitted": true,
+  "threads": 1
+}

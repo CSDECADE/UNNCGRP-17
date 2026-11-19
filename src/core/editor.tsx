@@ -18,6 +18,7 @@ import {
 } from "./project";
 import type {
   CameraView,
+  Model,
   ModelKind,
   Project,
   Selection,
@@ -253,11 +254,13 @@ function useEditorState() {
       });
     });
   }
-  function addModel(kind: ModelKind) {
+  function addModel(model: ModelKind | Model) {
     if (candidateRef.current) return;
     setPreview(false);
-    if (view === "drone") setView("perspective");
-    const m = makeModel(kind, historyRef.current.present.models.length + 1);
+    if (viewRef.current === "drone") setView("perspective");
+    const m = typeof model === "string"
+      ? makeModel(model, historyRef.current.present.models.length + 1)
+      : model;
     commit((p) => ({ ...p, models: [...p.models, m] }));
     select({ type: "model", id: m.id });
     setTool("translate");

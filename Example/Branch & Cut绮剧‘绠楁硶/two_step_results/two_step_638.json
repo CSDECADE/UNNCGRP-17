@@ -1,0 +1,494 @@
+{
+  "method": "two_step",
+  "selected_vps": [
+    1,
+    2,
+    4,
+    9,
+    10,
+    13,
+    14,
+    15,
+    16,
+    19,
+    20,
+    22,
+    23,
+    24,
+    28,
+    32,
+    33,
+    34,
+    38,
+    41,
+    43,
+    44,
+    46,
+    47,
+    51
+  ],
+  "selected_vp_ids": [
+    "v2",
+    "v3",
+    "v5",
+    "v10",
+    "v11",
+    "v14",
+    "v15",
+    "v16",
+    "v17",
+    "v20",
+    "v21",
+    "v23",
+    "v24",
+    "v25",
+    "v29",
+    "v33",
+    "v34",
+    "v35",
+    "v39",
+    "v42",
+    "v44",
+    "v45",
+    "v47",
+    "v48",
+    "v52"
+  ],
+  "selected_pairs": [
+    [
+      1,
+      "a14"
+    ],
+    [
+      1,
+      "a5"
+    ],
+    [
+      2,
+      "a14"
+    ],
+    [
+      4,
+      "a5"
+    ],
+    [
+      4,
+      "a8"
+    ],
+    [
+      9,
+      "a5"
+    ],
+    [
+      10,
+      "a9"
+    ],
+    [
+      13,
+      "a9"
+    ],
+    [
+      14,
+      "a10"
+    ],
+    [
+      15,
+      "a7"
+    ],
+    [
+      16,
+      "a14"
+    ],
+    [
+      16,
+      "a7"
+    ],
+    [
+      19,
+      "a6"
+    ],
+    [
+      20,
+      "a10"
+    ],
+    [
+      20,
+      "a12"
+    ],
+    [
+      22,
+      "a10"
+    ],
+    [
+      22,
+      "a7"
+    ],
+    [
+      23,
+      "a7"
+    ],
+    [
+      24,
+      "a11"
+    ],
+    [
+      28,
+      "a11"
+    ],
+    [
+      32,
+      "a11"
+    ],
+    [
+      33,
+      "a11"
+    ],
+    [
+      34,
+      "a9"
+    ],
+    [
+      38,
+      "a11"
+    ],
+    [
+      41,
+      "a5"
+    ],
+    [
+      43,
+      "a8"
+    ],
+    [
+      44,
+      "a8"
+    ],
+    [
+      46,
+      "a8"
+    ],
+    [
+      47,
+      "a11"
+    ],
+    [
+      51,
+      "a8"
+    ]
+  ],
+  "selected_photos_readable": [
+    [
+      "v2",
+      "a14"
+    ],
+    [
+      "v2",
+      "a5"
+    ],
+    [
+      "v3",
+      "a14"
+    ],
+    [
+      "v5",
+      "a5"
+    ],
+    [
+      "v5",
+      "a8"
+    ],
+    [
+      "v10",
+      "a5"
+    ],
+    [
+      "v11",
+      "a9"
+    ],
+    [
+      "v14",
+      "a9"
+    ],
+    [
+      "v15",
+      "a10"
+    ],
+    [
+      "v16",
+      "a7"
+    ],
+    [
+      "v17",
+      "a14"
+    ],
+    [
+      "v17",
+      "a7"
+    ],
+    [
+      "v20",
+      "a6"
+    ],
+    [
+      "v21",
+      "a10"
+    ],
+    [
+      "v21",
+      "a12"
+    ],
+    [
+      "v23",
+      "a10"
+    ],
+    [
+      "v23",
+      "a7"
+    ],
+    [
+      "v24",
+      "a7"
+    ],
+    [
+      "v25",
+      "a11"
+    ],
+    [
+      "v29",
+      "a11"
+    ],
+    [
+      "v33",
+      "a11"
+    ],
+    [
+      "v34",
+      "a11"
+    ],
+    [
+      "v35",
+      "a9"
+    ],
+    [
+      "v39",
+      "a11"
+    ],
+    [
+      "v42",
+      "a5"
+    ],
+    [
+      "v44",
+      "a8"
+    ],
+    [
+      "v45",
+      "a8"
+    ],
+    [
+      "v47",
+      "a8"
+    ],
+    [
+      "v48",
+      "a11"
+    ],
+    [
+      "v52",
+      "a8"
+    ]
+  ],
+  "photos_by_viewpoint": {
+    "v2": [
+      "a14",
+      "a5"
+    ],
+    "v3": [
+      "a14"
+    ],
+    "v5": [
+      "a5",
+      "a8"
+    ],
+    "v10": [
+      "a5"
+    ],
+    "v11": [
+      "a9"
+    ],
+    "v14": [
+      "a9"
+    ],
+    "v15": [
+      "a10"
+    ],
+    "v16": [
+      "a7"
+    ],
+    "v17": [
+      "a14",
+      "a7"
+    ],
+    "v20": [
+      "a6"
+    ],
+    "v21": [
+      "a10",
+      "a12"
+    ],
+    "v23": [
+      "a10",
+      "a7"
+    ],
+    "v24": [
+      "a7"
+    ],
+    "v25": [
+      "a11"
+    ],
+    "v29": [
+      "a11"
+    ],
+    "v33": [
+      "a11"
+    ],
+    "v34": [
+      "a11"
+    ],
+    "v35": [
+      "a9"
+    ],
+    "v39": [
+      "a11"
+    ],
+    "v42": [
+      "a5"
+    ],
+    "v44": [
+      "a8"
+    ],
+    "v45": [
+      "a8"
+    ],
+    "v47": [
+      "a8"
+    ],
+    "v48": [
+      "a11"
+    ],
+    "v52": [
+      "a8"
+    ]
+  },
+  "quality_norm": 0.9835611979166666,
+  "photo_norm": 0.3488372093023256,
+  "photos": 30,
+  "weighted_quality": 283.265625,
+  "tour": [
+    51,
+    44,
+    43,
+    13,
+    34,
+    41,
+    10,
+    4,
+    1,
+    2,
+    9,
+    16,
+    23,
+    19,
+    28,
+    24,
+    38,
+    47,
+    33,
+    32,
+    14,
+    22,
+    15,
+    20,
+    46,
+    51
+  ],
+  "tour_ids": [
+    "v52",
+    "v45",
+    "v44",
+    "v14",
+    "v35",
+    "v42",
+    "v11",
+    "v5",
+    "v2",
+    "v3",
+    "v10",
+    "v17",
+    "v24",
+    "v20",
+    "v29",
+    "v25",
+    "v39",
+    "v48",
+    "v34",
+    "v33",
+    "v15",
+    "v23",
+    "v16",
+    "v21",
+    "v47",
+    "v52"
+  ],
+  "energy": 100.66068227410207,
+  "n_viewpoints": 25,
+  "energy_norm_denom": 166.99389199043299,
+  "energy_norm": 0.6027806231372156,
+  "obj": -0.03194336547712545,
+  "atsp_runtime": 0.0,
+  "runtime_step1": 0.06001710891723633,
+  "runtime_step2": 0.04129600524902344,
+  "runtime_step1_wall": 0.08346849284134805,
+  "runtime_step2_wall": 0.05334533005952835,
+  "status_step1": 1,
+  "status_step2": 1,
+  "mip_gap_step1": 0.0,
+  "mip_gap_step2": 0.0,
+  "obj_bound_step1": 0.6347239886143411,
+  "obj_bound_step2": 100.66068227410207,
+  "status": 1,
+  "mip_gap": 0.0,
+  "obj_bound": null,
+  "status_scope": "step2_only",
+  "mip_gap_scope": "step2_route_energy_only",
+  "joint_global_optimality_proven": false,
+  "stage1_source": "original_coverage_solver",
+  "stage1_proven_optimal": true,
+  "step2_proven_optimal": true,
+  "threads": 8,
+  "memory_limit_mb": 40960.0,
+  "relative_gap_limit": 0.0,
+  "absolute_gap_limit": 0.0,
+  "time_limit_step1": 1e+20,
+  "time_limit_step2": 1e+20,
+  "input_sha256": "1951d638381f35506020a45a274d824af699297feeb5cbac3729cf35fe6e6908",
+  "solver": "COPT",
+  "routing_formulation": "undirected_lazy_sec",
+  "route_variable_count": 260,
+  "directed_equivalent_edge_count": 520,
+  "lazy_callback_calls": 8,
+  "lazy_cut_submissions": 14,
+  "symmetric_energy": 100.66068227410207,
+  "energy_identity_error": 0.0,
+  "max_energy_potential_residual": 3.1086244689504383e-15,
+  "search_nodes": 1,
+  "constraint_check": {
+    "passed": true,
+    "minimum_distinct_coverage": 3,
+    "closed_depot_cycle": true,
+    "original_directed_energy": 100.66068227410206,
+    "recomputed_objective": -0.03194336547712556
+  },
+  "runtime": 0.13768391706980765,
+  "runtime_scope": "Current invocation: original coverage stage (or frozen-selection validation), checkpoint, route build/solve/cleanup and final validation; excludes data read/preprocessing and optional original-route comparison."
+}

@@ -1,65 +1,98 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useEditor } from "../../core/editor";
 import { timing } from "../../core/project";
+import { sourceLabels } from "../../core/feedback";
 import { Icon } from "../../ui/Icon";
+import { ToolButton } from "../../ui/Controls";
 
 export function Playback() {
   const e = useEditor();
-  const { preview, playing, speed, setProgress, setPlaying } = e;
-  const { duration, timed } = timing(e.project);
-  const hasPoints = e.project.viewpoints.length > 0;
-  const progress = useRef(e.progress);
-  progress.current = e.progress;
-
+  const time = timing(e.project);
   useEffect(() => {
-    if (!preview || !playing || !hasPoints) return;
-    if (progress.current >= 1) {
-      progress.current = 0;
-      setProgress(0);
-    }
-    let frame = 0;
-    let last = performance.now();
-    const tick = (now: number) => {
-      const next = Math.min(1, progress.current + Math.max(0, now - last) * speed / (duration * 1000));
-      last = now;
-      progress.current = next;
-      setProgress(next);
-      if (next < 1) frame = requestAnimationFrame(tick);
-      else setPlaying(false);
+    if (!e.playing) return;
+    let current = e.progress,
+      previous = performance.now(),
+      handle = 0;
+    const frame = (now: number) => {
+      current = Math.min(
+        1,
+        current + (((now - previous) / 1000) * e.speed) / time.duration,
+      );
+      previous = now;
+      e.setProgress(current);
+      if (current >= 1) {
+        e.setPlaying(false);
+        return;
+      }
+      handle = requestAnimationFrame(frame);
     };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [preview, playing, hasPoints, speed, duration, setProgress]);
-
-  if (!preview) return null;
-  const seek = (next: number) => {
-    setPlaying(false);
-    progress.current = next;
-    setProgress(next);
-  };
-  return (
-    <section className="playback-bar" aria-label="航线播放">
-      <button aria-label={playing ? "暂停航线" : "播放航线"} disabled={!hasPoints}
-        onClick={() => setPlaying(!playing)}>
-        <Icon name={playing ? "pause" : "play"} size={15} />
-      </button>
-      <button aria-label="回到起点" onClick={() => seek(0)}>↺</button>
-      <div className="playback-track">
-        <div>
-          <span>{hasPoints ? `${(e.progress * duration).toFixed(1)} / ${duration.toFixed(1)} 秒` : "请先添加拍摄点"}</span>
-          <small>{timed ? "方案时间" : "模拟时间"}</small>
-        </div>
-        <input type="range" aria-label="播放进度" min={0} max={1} step={0.001}
-          disabled={!hasPoints} value={e.progress} onChange={(event) => seek(Number(event.currentTarget.value))} />
-      </div>
-      <select aria-label="播放速度" value={speed} onChange={(event) => e.setSpeed(Number(event.currentTarget.value))}>
-        {[0.5, 1, 1.5, 2, 3].map((value) => <option key={value} value={value}>{value}×</option>)}
-      </select>
-      <button aria-label="退出预演" onClick={() => {
-        seek(0);
-        e.setPreview(false);
-        if (e.view === "drone") e.setView("perspective");
-      }}><Icon name="close" size={14} /></button>
-    </section>
-  );
+    handle = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(handle);
+  }, [e.playing, e.speed, time.duration]);
+  return (<>
+          {e.preview && (
+            <div className="playback-bar">
+              <button
+                aria-label={e.playing ? "暂停预演" : "播放预演"}
+                disabled={!e.project.viewpoints.length}
+                onClick={() => {
+                  if (e.progress >= 1) e.setProgress(0);
+                  e.setPlaying(!e.playing);
+                }}
+              >
+                <Icon name={e.playing ? "pause" : "play"} />
+              </button>
+              <button
+                aria-label="回到起点"
+                onClick={() => {
+                  e.setProgress(0);
+                  e.setPlaying(false);
+                }}
+              >
+                <Icon name="stop" size={13} />
+              </button>
+              <div className="playback-track">
+                <div>
+                  <span>
+                    {time.timed
+                      ? `方案时间 · ${(e.progress * time.duration).toFixed(1)} / ${time.duration.toFixed(1)} s`
+                      : `示意播放 · ${Math.round(e.progress * 100)}%`}
+                  </span>
+                  <small>{sourceLabels[e.project.source]}</small>
+                </div>
+                <input
+                  aria-label="预演进度"
+                  type="range"
+                  min="0"
+                  max="1000"
+                  value={Math.round(e.progress * 1000)}
+                  onChange={(ev) => {
+                    e.setPlaying(false);
+                    e.setProgress(Number(ev.target.value) / 1000);
+                  }}
+                />
+              </div>
+              <select
+                aria-label="播放速度"
+                value={e.speed}
+                onChange={(ev) => e.setSpeed(Number(ev.target.value))}
+              >
+                {[0.5, 1, 2].map((n) => (
+                  <option value={n} key={n}>
+                    {n}×
+                  </option>
+                ))}
+              </select>
+              <ToolButton
+                icon="close"
+                label="退出预演"
+                onClick={() => {
+                  e.setPreview(false);
+                  e.setPlaying(false);
+                  if (e.view === "drone") e.setView("perspective");
+                }}
+              />
+            </div>
+          )}
+  </>);
 }
