@@ -18,7 +18,11 @@ const {
   writeTextFile,
   validateText,
   assetPath,
+  readBinaryFile,
+  writeFileAtomic,
+  validatePackage,
 } = require("./files.cjs");
+const { createRecentStore } = require("./recent.cjs");
 const { fileError, publicErrorCode } = require("./errors.cjs");
 
 const { productName, version } = require("../package.json");
@@ -27,10 +31,12 @@ if (process.platform === "win32")
   app.setAppUserModelId("edu.unnc.p15.flightstudio");
 let initializationError;
 let renderer;
+let recent;
 try {
   const profile = path.join(app.getPath("appData"), "Aero P15 Team");
   mkdirSync(profile, { recursive: true });
   app.setPath("userData", profile);
+  recent = createRecentStore(profile);
   protocol.registerSchemesAsPrivileged([
     {
       scheme: "p15",
@@ -142,6 +148,88 @@ handle("p15:save", async (request) => {
   } finally {
     fileOperation = false;
   }
+});
+// ---- .aeproj documents ------------------------------------------------------
+const PACKAGE_EXTENSION = "aeproj";
+async function readDocument(filename) {
+  const legacy = path.extname(filename).toLowerCase() === ".json";
+  const token = randomUUID();
+  pendingOpen = { token, filename, legacy };
+  if (legacy) return { kind: "json", text: await readTextFile(filename), fileName: path.basename(filename), token };
+  return { kind: "package", bytes: validatePackage(await readBinaryFile(filename)), fileName: path.basename(filename), token };
+}
+handle("p15:open-project", async () => {
+  if (fileOperation) return null;
+  fileOperation = true;
+  try {
+    pendingOpen = null;
+    const result = await dialog.showOpenDialog(win, {
+      title: `打开 ${productName} 项目`,
+      properties: ["openFile"],
+      filters: [
+        { name: `${productName} 项目`, extensions: [PACKAGE_EXTENSION, "json"] },
+      ],
+    });
+    if (result.canceled || !result.filePaths[0]) return null;
+    return await readDocument(result.filePaths[0]);
+  } finally {
+    fileOperation = false;
+  }
+});
+handle("p15:open-recent", async (id) => {
+  if (typeof id !== "string") throw new Error("无效的最近项目");
+  const entry = await recent.find(id);
+  if (!entry) throw fileError("NOT_FOUND");
+  pendingOpen = null;
+  return readDocument(entry.path);
+});
+// Called after the renderer validated the content; only then does the file become the document.
+handle("p15:accept-project", async (token, name) => {
+  if (!pendingOpen || pendingOpen.token !== token) throw fileError("EXPIRED");
+  const { filename, legacy } = pendingOpen;
+  pendingOpen = null;
+  // Legacy JSON projects are upgraded on the next save, which asks for an .aeproj location.
+  documentPath = legacy ? null : filename;
+  if (process.platform === "darwin") win.setRepresentedFilename(documentPath ?? "");
+  if (!legacy) {
+    app.addRecentDocument(filename);
+    await recent.touch(filename, typeof name === "string" ? name : "");
+  }
+  return { fileName: legacy ? null : path.basename(filename) };
+});
+handle("p15:save-package", async (request) => {
+  if (!request || typeof request.name !== "string" || request.name.length > 200)
+    throw new Error("无效的保存请求");
+  validatePackage(request.bytes);
+  if (fileOperation) return null;
+  fileOperation = true;
+  try {
+    let filename = request.saveAs ? null : documentPath;
+    if (!filename) {
+      const base = request.name.replace(/[\\/:*?"<>|]/g, "-") || "未命名项目";
+      const result = await dialog.showSaveDialog(win, {
+        title: `保存 ${productName} 项目`,
+        defaultPath: documentPath ?? `${base}.${PACKAGE_EXTENSION}`,
+        filters: [{ name: `${productName} 项目`, extensions: [PACKAGE_EXTENSION] }],
+      });
+      if (result.canceled || !result.filePath) return null;
+      filename = result.filePath;
+      if (path.extname(filename).toLowerCase() !== `.${PACKAGE_EXTENSION}`) filename += `.${PACKAGE_EXTENSION}`;
+    }
+    await writeFileAtomic(filename, request.bytes);
+    documentPath = filename;
+    app.addRecentDocument(filename);
+    await recent.touch(filename, request.name);
+    if (process.platform === "darwin") win.setRepresentedFilename(filename);
+    return { fileName: path.basename(filename) };
+  } finally {
+    fileOperation = false;
+  }
+});
+handle("p15:recent-list", () => recent.list());
+handle("p15:recent-remove", async (id) => {
+  if (typeof id !== "string") throw new Error("无效的最近项目");
+  await recent.remove(id);
 });
 function command(name) {
   win?.webContents.send("p15:command", name);

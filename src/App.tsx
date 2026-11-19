@@ -11,6 +11,8 @@ import {
 import type { CameraView, ModelKind, Selection, Tool } from "./core/types";
 import { Scene } from "./Scene";
 import { Inspector as SceneInspector } from "./Inspector";
+import { HistoryPanel } from "./HistoryPanel";
+import { StartScreen } from "./StartScreen";
 import { Icon } from "./ui/Icon";
 import { TextField, ToolButton } from "./ui/Controls";
 import { productName } from "../package.json";
@@ -54,14 +56,15 @@ export function App() {
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
-  const [tab, setTab] = useState<"layers" | "assets">("layers"),
+  const [tab, setTab] = useState<"layers" | "assets" | "history">("layers"),
     [leftOpen, setLeftOpen] = useState(true),
     [rightOpen, setRightOpen] = useState(true),
     [search, setSearch] = useState("");
   const [dialog, setDialog] = useState<"project" | "algorithm" | "help" | null>(
       null,
     ),
-    [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+    [collapsed, setCollapsed] = useState<Set<string>>(new Set()),
+    [startOpen, setStartOpen] = useState(true);
   const { fileInput, fileError, setFileError, openFile, readFile, save, exportFile, startProject } =
     useProjectFiles(() => setDialog(null), text => {
       if (!analysis) throw new UserInputError("请先加载多机路径分析模块。");
@@ -70,6 +73,7 @@ export function App() {
   useEffect(() => setFileError(""), [dialog]);
   useEffect(() =>
     window.p15Desktop?.onCommand((command) => {
+      if (!e.active && command !== "open" && command !== "new" && command !== "help") return;
       if (command === "save" || command === "saveAs")
         void save(command === "saveAs");
       if (command === "open") void openFile("project");
@@ -96,6 +100,7 @@ export function App() {
   }
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
+      if (startOpen || !e.active) return;
       const target = ev.target as HTMLElement;
       if (
         target.closest(
@@ -290,7 +295,7 @@ export function App() {
         <input
           ref={fileInput}
           type="file"
-          accept=".json,.p15"
+          accept=".aeproj,.json"
           hidden
           onChange={(ev) => void readFile(ev.target.files?.[0])}
         />
@@ -320,9 +325,9 @@ export function App() {
                     >
                       <MenuItem
                         icon="home"
-                        onSelect={() => setDialog("project")}
+                        onSelect={() => setStartOpen(true)}
                       >
-                        新建与打开
+                        开始页与最近项目
                       </MenuItem>
                       <MenuItem
                         icon="plus"
@@ -339,9 +344,26 @@ export function App() {
                       <MenuItem
                         icon="save"
                         shortcut={shortcuts.save}
-                        onSelect={save}
+                        onSelect={() => void save()}
                       >
-                        保存项目文件
+                        保存项目 (.aeproj)
+                      </MenuItem>
+                      <MenuItem
+                        icon="copy"
+                        onSelect={() => void save(true)}
+                      >
+                        另存为…
+                      </MenuItem>
+                      <MenuItem
+                        icon="frame"
+                        disabled={locked}
+                        onSelect={() => {
+                          e.createCheckpoint();
+                          setLeftOpen(true);
+                          setTab("history");
+                        }}
+                      >
+                        创建检查点
                       </MenuItem>
                       <Dropdown.Separator className="menu-separator" />
                       <MenuItem
@@ -410,6 +432,12 @@ export function App() {
                 onClick={() => setTab("assets")}
               >
                 资源
+              </button>
+              <button
+                className={tab === "history" ? "tab-active" : ""}
+                onClick={() => setTab("history")}
+              >
+                历史
               </button>
               <ToolButton
                 icon="search"
@@ -553,6 +581,8 @@ export function App() {
                   </div>
                 )}
               </div>
+            ) : tab === "history" ? (
+              <HistoryPanel />
             ) : (
               <div className="assets-scroll">
                 <div className="section-heading">
@@ -916,7 +946,7 @@ export function App() {
                   <button onClick={() => openFile("project")}>
                     <Icon name="open" size={24} />
                     <strong>打开项目</strong>
-                    <span>继续编辑 .p15.json 项目文件</span>
+                    <span>继续编辑 .aeproj 项目包</span>
                   </button>
                 </div>
               )}
@@ -927,6 +957,7 @@ export function App() {
             </Dialog.Content>
           </Dialog.Portal>
         </Dialog.Root>
+        {(startOpen || !e.active) && <StartScreen onDone={() => setStartOpen(false)} />}
       </main>
     </Tooltip.Provider>
   );
