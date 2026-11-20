@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useEditor } from "../../core/editor";
-import { MAX_PROJECT_BYTES } from "../../core/project";
+import { MAX_OBJ_FILE_BYTES } from "../../core/obj-file";
 import { UserInputError } from "../../core/errors";
 
 export function useObjImport(setError: (message: string) => void, onImported: () => void) {
@@ -15,7 +15,7 @@ export function useObjImport(setError: (message: string) => void, onImported: ()
     setError("");
     try {
       if (!file.name.toLowerCase().endsWith(".obj")) throw new UserInputError("请选择 .obj 文件。");
-      if (file.size > MAX_PROJECT_BYTES) throw new UserInputError("OBJ 文件超过 5 MB，请选择较小的文件。");
+      if (file.size > MAX_OBJ_FILE_BYTES) throw new UserInputError("OBJ 文本超过 16 MB，请选择较小的文件。");
       const text = await file.text();
       editor.current.importObj(text, file.name);
       onImported();

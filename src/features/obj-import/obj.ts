@@ -1,17 +1,29 @@
 import { Vector3 } from "three";
 import type { Model, ObjMesh, ObjResource, Project, Vec3 } from "../../core/types.ts";
 import { UserInputError } from "../../core/errors.ts";
-import { MAX_PROJECT_BYTES, uid, validateProject } from "../../core/project.ts";
+import { uid, validateProject } from "../../core/project.ts";
 import { resourceBounds } from "../../core/model-bounds.ts";
+import { MAX_OBJ_FILE_BYTES } from "../../core/obj-file.ts";
 
 type Corner = { vertex: number; uv?: number; normal?: number };
+
+function* lines(text: string) {
+  // Scan without allocating an array for every line in a large text file.
+  let start = text.charCodeAt(0) === 0xfeff ? 1 : 0;
+  while (start <= text.length) {
+    const end = text.indexOf("\n", start);
+    yield text.slice(start, end < 0 ? text.length : end);
+    if (end < 0) break;
+    start = end + 1;
+  }
+}
 
 /** Deliberately restricted OBJ surface importer, preserving source v identities. */
 export function parseObj(text: string, name: string): ObjResource {
   if (!name.toLowerCase().endsWith(".obj") || name.length > 160 || !name.trim())
     throw new UserInputError("请选择名称不超过 160 个字符的 .obj 文件。");
-  if (new TextEncoder().encode(text).byteLength > MAX_PROJECT_BYTES)
-    throw new UserInputError("OBJ 文件超过 5 MB，请选择较小的文件。");
+  if (new TextEncoder().encode(text).byteLength > MAX_OBJ_FILE_BYTES)
+    throw new UserInputError("OBJ 文本超过 16 MB，请选择较小的文件。");
   const resource: ObjResource = { id: uid(), name, format: "obj", vertices: [], meshes: [] };
   const uvs: number[][] = [], normals: number[][] = [];
   let objectName = "Object", groupName = "", mesh: ObjMesh | undefined, line = 0;
@@ -57,10 +69,11 @@ export function parseObj(text: string, name: string): ObjResource {
       }
     }
   };
-  for (const source of text.replace(/^\uFEFF/, "").split(/\r?\n/)) {
+  for (const source of lines(text)) {
     line++;
     const content = source.split("#", 1)[0].trim();
     if (!content) continue;
+    if (content.length > 4096) fail("单行内容超过 4,096 个字符，请简化文件或拆分指令。");
     if (content.includes("\\")) fail("不支持续行语法。");
     const [command, ...values] = content.split(/\s+/);
     if (command === "v") {

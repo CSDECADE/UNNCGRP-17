@@ -82,11 +82,11 @@ app.whenReady().then(async () => {
   await wait("!!document.querySelector('canvas') && !!localStorage.getItem('p15.project.v1')");
   await setupRoot();
   const before=await snapshot();
-  if(process.argv[3]==='builtin'){
-   const checks=await require('./verify-builtin-transform-cases.cjs')({win,run,wait,click,key,snapshot,delay,input,
+  if(['builtin','export'].includes(process.argv[3])){
+   const checks=await require(process.argv[3]==='export'?'./verify-obj-export-cases.cjs':'./verify-builtin-transform-cases.cjs')({win,run,wait,click,key,snapshot,delay,input,
     dragStart,dragMove,release,setupRoot,control,before,testDir});
    assert.equal(errors.length,0,JSON.stringify(errors));
-   console.log(JSON.stringify({passed:true,checks,screenshot:path.join(testDir,'builtins.png')}));
+   console.log(JSON.stringify({passed:true,checks,screenshot:path.join(testDir,process.argv[3]==='export'?'export.png':'builtins.png')}));
    clearTimeout(timeout);app.exit(0);return;
   }
   const obj=fs.readFileSync(path.join(__dirname,'../tests/fixtures/obj-building.obj'),'utf8');

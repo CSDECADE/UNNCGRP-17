@@ -36,6 +36,9 @@ async function readTextFile(filename) {
 }
 async function writeTextFile(filename, text) {
   validateText(text);
+  await writeAtomicTextFile(filename, text);
+}
+async function writeAtomicTextFile(filename, text) {
   const temporary = path.join(
     path.dirname(filename),
     `.${path.basename(filename)}.${randomUUID()}.tmp`,
@@ -62,4 +65,4 @@ function assetPath(root, url) {
     throw new Error("Invalid asset path");
   return resolved;
 }
-module.exports = { readTextFile, writeTextFile, validateText, assetPath };
+module.exports = { readTextFile, writeTextFile, writeAtomicTextFile, validateText, assetPath };

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useEditor } from "../../core/editor";
+import { downloadText } from "../../core/download";
 import { fileErrorMessage, projectForSave, UserInputError } from "../../core/feedback";
 import { MAX_PROJECT_BYTES, parseProject, serializeProject } from "../../core/project";
 import type { FileMode, ProjectFileControls } from "../contracts";
@@ -60,13 +61,7 @@ export function useProjectSnapshot(close: () => void, acceptPlan: (text: string)
         if (!result) return;
         current.setMessage("项目文件已保存。");
       } else {
-        const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
-        const anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = name.replace(/[\\/:*?"<>|]/g, "-");
-        document.body.appendChild(anchor);
-        try { anchor.click(); }
-        finally { anchor.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+        downloadText(text, name, "application/json");
         current.setMessage("已请求下载项目文件，请确认浏览器已完成保存。");
       }
     } catch (error) { report(error, "save"); }

@@ -20,6 +20,7 @@ const {
   assetPath,
 } = require("./files.cjs");
 const { fileError, publicErrorCode } = require("./errors.cjs");
+const { saveObjExport } = require("./obj-files.cjs");
 
 const { productName, version } = require("../package.json");
 app.setName(productName);
@@ -139,6 +140,15 @@ handle("p15:save", async (request) => {
       if (process.platform === "darwin") win.setRepresentedFilename(filename);
     }
     return { name: path.basename(filename) };
+  } finally {
+    fileOperation = false;
+  }
+});
+handle("p15:save-obj", async (request) => {
+  if (fileOperation) throw fileError("BUSY");
+  fileOperation = true;
+  try {
+    return await saveObjExport(request, options => dialog.showSaveDialog(win, options));
   } finally {
     fileOperation = false;
   }

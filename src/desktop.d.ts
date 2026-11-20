@@ -3,6 +3,7 @@ declare global {
   interface Window {
     p15Desktop?: {
       platform: string;
+      saveObjFile?(request: { name: string; text: string }): Promise<{ name: string } | null>;
       openFile(
         kind: "project" | "plan",
       ): Promise<{ text: string; token: string } | null>;

@@ -17,6 +17,7 @@ import { productName } from "../package.json";
 import { shortcuts } from "./platform";
 import { autosaveLabels, UserInputError } from "./core/feedback";
 import { useObjImport } from "./features/obj-import/useObjImport";
+import { useObjExport } from "./features/obj-export/useObjExport";
 
 import {
   projectFiles, useProjectFiles, analysis, playback, Playback, AnalysisPanel,
@@ -70,6 +71,7 @@ export function App() {
       analysis.acceptPlan(text, e, !!playback);
     });
   const objImport = useObjImport(setFileError, () => setTab("layers"));
+  const objExport = useObjExport(setFileError);
   useEffect(() => setFileError(""), [dialog]);
   useEffect(() =>
     window.p15Desktop?.onCommand((command) => {
@@ -754,6 +756,9 @@ export function App() {
                   <MenuItem icon="open" disabled={locked || objImport.busy}
                     onSelect={() => objImport.input.current?.click()}>
                     {objImport.busy ? "正在导入 OBJ…" : "导入 OBJ…"}
+                  </MenuItem>
+                  <MenuItem icon="save" disabled={!objExport.available} onSelect={() => void objExport.exportFile()}>
+                    {objExport.busy ? "正在导出 OBJ…" : "导出所选 OBJ…"}
                   </MenuItem>
                   <MenuItem icon="cube" onSelect={() => e.addModel("box")}>
                     长方体

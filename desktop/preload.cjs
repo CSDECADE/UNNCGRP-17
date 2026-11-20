@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("p15Desktop", {
   openFile: (kind) => invoke("p15:open", kind),
   acceptOpen: (token) => invoke("p15:accept-open", token),
   saveFile: (request) => invoke("p15:save", request),
+  saveObjFile: (request) => invoke("p15:save-obj", request),
   resetDocument: () => invoke("p15:reset-document"),
   onCommand: (callback) => {
     const listener = (_event, command) => callback(command);

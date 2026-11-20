@@ -10,6 +10,10 @@ const actions: Record<FileOperation, string> = {
   export: "导出失败", new: "无法新建项目",
 };
 const reasons: Record<string, string> = {
+  OBJ_TOO_LARGE: "OBJ 文本超过 16 MB，请缩小模型后重试。",
+  OBJ_INVALID: "OBJ 保存请求无效，请重新导出。",
+  OBJ_EXTENSION: "请选择以 .obj 结尾的文件名。",
+  BUSY: "另一个文件操作正在进行，请完成后重试。",
   TOO_LARGE: "文件超过 5 MB，请选择较小的文件。",
   INVALID_JSON: "文件内容无法识别，请选择完整的 JSON 文件。",
   NOT_FILE: "请选择文件，而不是文件夹。",

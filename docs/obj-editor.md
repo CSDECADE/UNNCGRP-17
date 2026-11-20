@@ -1,8 +1,8 @@
-# OBJ Import and Static Object Mode — Stages 1–3A+
+# OBJ Import, Static Object Mode and Export — Stages 1–3B
 
 ## Scope
 
-Stage 1 introduced a serializable resource format and its persistence through the existing project pipeline. Stage 2 added local OBJ import, rendering, object management, and basic project JSON save/restore. Stage 3A added OBJ transformations. Stage 3A+ extends the same controls and inspector to the built-in building, cuboid and cylinder while retaining their existing yaw and dimension semantics. UAV editing, OBJ export and mesh editing remain outside the implemented scope.
+Stage 1 introduced a serializable resource format and its persistence through the existing project pipeline. Stage 2 added local OBJ import, rendering, object management, and basic project JSON save/restore. Stage 3A added OBJ transformations. Stage 3A+ extended the same controls and inspector to the built-in building, cuboid and cylinder while retaining their existing yaw and dimension semantics. Stage 3B adds selected-OBJ export with baked transforms and verified re-import compatibility. UAV editing and mesh editing remain outside the implemented scope.
 
 Resources are stored in the existing `Project` state. They are not a second scene or editor state. An imported file creates one `kind: "obj"` instance in the existing `models` list; its `resourceId` references the geometry, including multiple submeshes. Stage 1 version 2 projects containing unattached resources remain valid. Existing built-in models and UAV workflows remain unchanged.
 
@@ -211,7 +211,7 @@ Manual checks:
 5. Lock/hide the selected model, enter playback or candidate preview, and switch to the drone camera. Confirm the corresponding restrictions, then return to editing and choose a tool again.
 6. Save and reopen project JSON in browser and desktop modes. Check transformed appearance and unchanged paths/targets. Recheck a version 1 built-in scene and an older version 2 OBJ file.
 
-Stage 3B remains separate: no OBJ export, material/texture export, mesh selection, geometry manipulation, or topology operations are implemented here. An exporter will need to apply the complete object matrix and appropriate normal transform once, without baking transforms into the stored resource or applying them twice.
+Stage 3B export is documented below. Material/texture export, mesh selection, geometry manipulation and topology operations remain outside this implementation.
 
 ## Stage 3A+: Built-in Static Models
 
@@ -254,3 +254,54 @@ The current drone contract contains `position`, a scalar Y-axis `rotation`, and 
 A future UAV editing feature should therefore label these fields as a **scene/parked pose**, editable only outside playback, preview and candidate mode. Such an operation would update only `Drone.position` and `Drone.rotation`, use the existing transaction/history system, and explicitly leave route points, targets and timestamps unchanged. It should not be described as editing a takeoff keyframe unless a separate rule links it to a route point.
 
 Waypoint position and camera-target editing should remain explicit viewpoint operations. Translating a whole trajectory should be a separate, clearly named command with an explicit policy for whether camera targets move too. It must not be inferred from dragging the drone. No UAV gizmo, numerical pose editor, waypoint edit or trajectory transformation is added in Stage 3A+.
+
+## Stage 3B: Selected OBJ Export
+
+Select an imported OBJ instance and choose **Model → Export Selected OBJ** (`导出所选 OBJ…`) on the bottom toolbar. The action is unavailable for built-in models, UAVs, viewpoints, an empty selection, an active transformation, or a candidate plan. Complete or cancel a numerical edit or gizmo gesture before exporting. Hidden and locked imported models can be exported: this is a read-only operation. Playback does not change static model geometry, so exporting a committed static OBJ remains permitted during playback.
+
+Only the selected instance's referenced resource is serialized. Other instances, built-in geometry, UAVs, trajectories, viewpoints, grid helpers, selection outlines and gizmos never enter the output. Export does not update project data, source resources, selection, pivot, transformation fields, autosave contents or history. Undo after export still undoes the preceding edit. Importing the resulting file is a separate, ordinary undoable import.
+
+### Serialization and Transform Conventions
+
+`src/features/obj-export/obj.ts` implements a dedicated serializer over the existing project resource. The installed Three.js `OBJExporter` reads render buffers, which expand logical vertices into triangle corners in this application. It can also emit `usemtl`, which the restricted importer rejects. Exporting project data avoids topology expansion and helper filtering, requires no dependency, and keeps the serialized resource as the source of truth.
+
+- Emit every logical vertex once, in resource order, including unused vertices and independently indexed vertices at identical positions. Never weld or recenter vertices.
+- Bake the existing matrix `T(position) × R(Euler XYZ) × S(scale)` into vertex positions exactly once. Legacy OBJ instances use their scalar Y rotation and unit scale defaults. The existing centre-pivot compensation is already part of `position`; export adds no further pivot offset. `size` remains descriptive data and is not applied as another scale.
+- Transform supplied normals using the inverse transpose of the matrix's linear part, then normalize. Positive scale factors preserve winding. Export does not synthesize normals for meshes without supplied normals; re-import generates their usual flat render normals.
+- Retain each triangle's logical indices and winding, mesh order, mesh name, UV values and per-corner normal directions. Exact duplicate UV/normal values may share OBJ attribute indices; vertex identity is independent of those attribute indices. UV and normal seams therefore remain intact.
+- Start a new object/group boundary for each submesh, including repeated names. Names produced by the importer remain representable; long combined `object/group` names are split into compatible `o` and `g` directives. Project-authored names that cannot be represented faithfully fail explicitly.
+- Emit only comments, `v`, `vt`, `vn`, `o`, `g` and triangular `f` directives with positive references to existing declarations. No MTL files, materials, colors, smoothing groups, editor metadata or texture files are exported. Numerical output retains JavaScript double precision; rendering still uses Float32 buffers.
+
+Re-import creates a new resource and instance at identity transform. The baked geometry occupies the same world-space location. Resource/vertex IDs, instance metadata, original transform fields and the original editing pivot are not OBJ interchange metadata; use project JSON to preserve the complete editing session. Future rotations of the re-imported instance use the usual bounds-centre pivot of its baked geometry.
+
+### Limits and Preflight
+
+Standalone OBJ input and output have an independent **16,000,000 UTF-8 byte** limit. Project JSON retains the existing **5,000,000-byte** limit. The OBJ parser scans lines without allocating a full line array and rejects non-comment instruction lines longer than 4,096 characters. The serializer accounts for output bytes incrementally before joining its bounded chunks; it does not expand the source into runtime render geometry. Validation, attribute tables and the re-import check still consume additional memory and run synchronously, so exports near the limit can briefly pause the UI.
+
+Before opening a save dialog or requesting a browser download, export runs the exact `prepareObjImport()` pipeline against an empty project. This enforces valid triangles, the current ±10,000-metre coordinate and 10,000-metre dimension limits, finite supported attributes, and the restored project JSON budget. A valid edited project can have baked coordinates or expanded normalized corner attributes outside these limits; export reports that failure and writes nothing. It does not clamp, truncate, discard unused vertices or change topology to make the file fit. Re-import into an already populated project remains subject to that project's remaining capacity and model count.
+
+### Browser and Desktop Saving
+
+The browser requests a plain-text Blob download with a sanitized `.obj` basename of at most 160 characters. Blob URLs and temporary anchors are released through the same `downloadText()` helper used by project JSON saving. Browser feedback confirms that a download was requested; completion or cancellation must be checked in the browser's download UI.
+
+Electron uses the separate `p15:save-obj` preload/IPC channel. It shares the existing sender authorization, file-operation exclusion, safe error mapping and atomic temporary-file/rename writer. `desktop/obj-files.cjs` validates the text budget and filename independently, presents an OBJ-only save filter and writes plain text. Cancellation returns without writing. A destination without an `.obj` suffix is rejected instead of silently renaming it after overwrite confirmation. Write failures preserve the previous destination and remove temporary output. OBJ export never changes the project's document path or recent-project list. JSON open/save validation remains JSON-only and retains its original byte limit. An older desktop preload requires an application restart to enable the new channel.
+
+### Verification
+
+`tests/obj-export.test.ts` compares logical vertices, winding, connectivity, groups, UVs and normal directions after export/re-import. Cases cover identity, translation, XYZ rotation, uniform/non-uniform scaling, off-origin pivot compensation, seam attributes, coincident and unused vertices, all supported face forms, invalid data, safe filenames, text budgets and restored-project expansion. CPU comparisons use relative tolerance `1e-9`.
+
+`tests/obj-save.test.ts` exercises the real atomic OBJ writer, independent JSON validation, dialog cancellation, rejected destinations, UTF-8 limits, permission/disk/read-only errors, preservation of an existing file after a simulated rename failure, browser/native adapter outcomes and the dedicated preload channel. Native dialogs are injected in these tests; they do not claim to exercise the operating system's picker UI.
+
+With the Vite server running, execute:
+
+```sh
+env -u ELECTRON_RUN_AS_NODE node node_modules/electron/cli.js scripts/verify-obj-transform-ui.cjs http://127.0.0.1:5176/ export
+```
+
+The isolated-profile integration test applies numerical transforms, checks export restrictions during an actual gizmo gesture, simulates desktop cancellation/write errors, downloads the OBJ through the browser path, verifies unchanged project/history, re-imports the downloaded file and compares actual rendered mesh corners within `1e-4` metres. It also checks UV/connectivity preservation, project JSON saving, unsupported selections and unchanged UAV/path data. Development-only Fiber inspection remains confined to test code.
+
+Run `npm run check`, `npm test`, `npm run build` and the existing Stage 2, Stage 3A and Stage 3A+ Electron suites as regressions. On a packaged desktop build, manually verify the native OBJ picker, cancellation, writable/unwritable destinations, overwrite confirmation, incorrect suffix rejection and a subsequent project Save to confirm that its original document path is retained. In an external browser, confirm the downloaded filename and download cancellation behavior. Exercise a larger representative asset on the target machine to assess responsiveness.
+
+### Future Edit Mode
+
+The serializer reads the current resource, not the original source text or a cached GPU mesh. Future geometry edits can use the same export path if they maintain valid logical indices and complete per-corner attributes. Vertex/mesh IDs need not survive OBJ interchange, but independently indexed vertices must remain independent. Degenerate triangles or unsupported names introduced by future editing need an explicit validation policy; the current exporter rejects them before saving. No Edit Mode or topology editing is implemented in Stage 3B.
