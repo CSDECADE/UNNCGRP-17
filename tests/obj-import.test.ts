@@ -139,8 +139,8 @@ test("removal cleans only the last referenced resource, and paths and candidate 
   const candidate = importPlan(JSON.stringify({ version: 1, viewpoints: project.viewpoints }), project);
   assert.deepEqual(candidate.models, project.models);
   assert.deepEqual(candidate.objResources, project.objResources);
-  assert.equal(beginTransformSession(project, { type: "model", id: model.id },
-    { target: "position", snap: 0, lockHeight: false }), null);
+  assert.ok(beginTransformSession(project, { type: "model", id: model.id },
+    { target: "position", snap: 0, lockHeight: false }));
 });
 
 test("the serialized resulting project limit rejects imports even when raw OBJ is small enough", () => {

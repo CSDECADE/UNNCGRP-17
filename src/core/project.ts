@@ -111,7 +111,7 @@ const str = (s: unknown): string =>
     : fail("名称或标识无效");
 const vec = (v: unknown, positive = false): Vec3 =>
   Array.isArray(v) && v.length === 3
-    ? (v.map((n) => finite(n, positive ? 0.1 : -10000)) as Vec3)
+    ? (Array.from(v, n => finite(n, positive ? 0.1 : -10000)) as Vec3)
     : fail("三维坐标无效");
 const color = (c: unknown) =>
   typeof c === "string" && /^#[0-9a-f]{6}$/i.test(c) ? c : fail("颜色格式无效");
@@ -138,8 +138,10 @@ export function validateProject(input: unknown): Project {
     if (!["box", "cylinder", "building", "obj"].includes(String(m.kind)))
       fail("未知内置模型");
     if (m.kind === "obj" && p.version !== 2) fail("OBJ 模型需要项目版本 2");
+    if (m.kind !== "obj" && (m.rotationXYZ !== undefined || m.scale !== undefined))
+      fail("三轴旋转和缩放因子仅支持 OBJ 模型");
     if (m.kind === "obj" && Object.keys(m).some(key =>
-      !["id", "name", "kind", "resourceId", "position", "rotation", "size", "color", "visible", "locked"].includes(key)))
+      !["id", "name", "kind", "resourceId", "position", "rotation", "rotationXYZ", "scale", "size", "color", "visible", "locked"].includes(key)))
       fail("OBJ 模型包含不支持的字段");
     const properties = {
       id: str(m.id),
@@ -151,9 +153,18 @@ export function validateProject(input: unknown): Project {
       visible: bool(m.visible),
       locked: bool(m.locked),
     };
-    return m.kind === "obj"
-      ? { ...properties, kind: "obj", resourceId: str(m.resourceId) }
-      : { ...properties, kind: m.kind as ModelKind };
+    if (m.kind !== "obj") return { ...properties, kind: m.kind as ModelKind };
+    const model: Extract<Model, { kind: "obj" }> = { ...properties, kind: "obj", resourceId: str(m.resourceId) };
+    if (m.rotationXYZ !== undefined) {
+      model.rotationXYZ = vec(m.rotationXYZ);
+      if (model.rotationXYZ[1] !== model.rotation) fail("OBJ 三轴旋转与兼容旋转字段不一致");
+    }
+    if (m.scale !== undefined) {
+      const scale = array(m.scale, 3);
+      if (scale.length !== 3) fail("OBJ 缩放无效");
+      model.scale = Array.from(scale, n => finite(n, 0.01, 10000)) as Vec3;
+    }
+    return model;
   });
   const drones: Drone[] = array(p.drones, 50).map((x) => {
     const d = record(x);

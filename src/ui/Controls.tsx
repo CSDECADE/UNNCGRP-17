@@ -47,18 +47,21 @@ export function NumberField({
   max = 10000,
   disabled = false,
   unit,
+  precision = 2,
 }: {
   label: string;
   value: number;
-  onChange: (n: number) => void;
+  onChange: (n: number) => void | boolean;
   min?: number;
   max?: number;
   disabled?: boolean;
   unit?: string;
+  precision?: number;
 }) {
-  const [draft, setDraft] = useState(String(Math.round(value * 100) / 100));
+  const rounded = (n: number) => String(Math.round(n * 10 ** precision) / 10 ** precision);
+  const [draft, setDraft] = useState(rounded(value));
   const cancelBlur = useRef(false);
-  useEffect(() => setDraft(String(Math.round(value * 100) / 100)), [value]);
+  useEffect(() => setDraft(rounded(value)), [value, precision]);
   function commit() {
     if (cancelBlur.current) { cancelBlur.current = false; return; }
     const next = Number(draft);
@@ -68,7 +71,7 @@ export function NumberField({
     }
     const n = Math.min(max, Math.max(min, next));
     setDraft(String(n));
-    if (n !== value) onChange(n);
+    if (n !== value && onChange(n) === false) setDraft(rounded(value));
   }
   return (
     <label className="number-field">

@@ -15,6 +15,7 @@ import {
   parseProject,
   removeObject,
   uid,
+  serializeProject,
 } from "./project";
 import type {
   CameraView,
@@ -188,6 +189,7 @@ function useEditorState() {
   }
   function beginTransform(next: Selection): boolean {
     if (transformSessionRef.current || candidateRef.current || previewRef.current || playingRef.current) return false;
+    if (viewRef.current === "drone" && next?.type === "model") return false;
     const session = beginTransformSession(historyRef.current.present, next, {
       target: transformTargetRef.current, snap: snapRef.current, lockHeight: lockHeightRef.current,
     });
@@ -206,12 +208,20 @@ function useEditorState() {
   function finishTransform() {
     const session = transformSessionRef.current;
     cancelTransform();
-    if (candidateRef.current) return;
+    if (candidateRef.current) return false;
     const next = commitTransformHistory(historyRef.current, session);
-    if (next === historyRef.current) return;
+    if (next === historyRef.current) return false;
+    if (session?.selection.type === "model") {
+      try { serializeProject(next.present); }
+      catch (error) {
+        setMessage(error instanceof UserInputError ? `变换未应用：${error.message}` : "变换未应用，项目数据无效。");
+        return false;
+      }
+    }
     setPlaying(false);
     setProgress(0);
     writeHistory(() => next);
+    return true;
   }
   function commit(next: Project | ((p: Project) => Project), manual = true) {
     cancelTransform();

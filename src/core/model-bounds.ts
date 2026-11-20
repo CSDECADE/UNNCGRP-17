@@ -1,4 +1,6 @@
 import type { Model, ObjResource, Project, Vec3 } from "./types.ts";
+import { Box3, Vector3 } from "three";
+import { objMatrix } from "./obj-transform.ts";
 
 export function resourceBounds(resource: ObjResource): { center: Vec3; size: Vec3 } {
   const min: Vec3 = [Infinity, Infinity, Infinity], max: Vec3 = [-Infinity, -Infinity, -Infinity];
@@ -18,4 +20,10 @@ export function modelBounds(model: Model, project: Project): { center: Vec3; siz
   const resource = project.objResources?.find(r => r.id === model.resourceId);
   if (!resource) throw new Error("Missing OBJ resource");
   return resourceBounds(resource);
+}
+
+export function objWorldBounds(model: Extract<Model, { kind: "obj" }>, project: Project, local = modelBounds(model, project)) {
+  const box = new Box3().setFromCenterAndSize(new Vector3(...local.center), new Vector3(...local.size));
+  box.applyMatrix4(objMatrix(model));
+  return { center: box.getCenter(new Vector3()).toArray(), size: box.getSize(new Vector3()).toArray() };
 }

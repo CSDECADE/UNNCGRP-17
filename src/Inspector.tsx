@@ -2,10 +2,13 @@ import { useEditor } from "./core/editor";
 import { Icon } from "./ui/Icon";
 import { shortcuts } from "./platform";
 import { BackgroundSettings } from "./BackgroundSettings";
+import { TransformInspector } from "./features/obj-transform/TransformInspector";
 export function Inspector() {
   const e = useEditor();
+  const model = e.selection?.type === "model" ? e.project.models.find(m => m.id === e.selection?.id) : undefined;
     return (
       <div className="inspector-scroll">
+        {model && <TransformInspector model={model} />}
         <section className="property-section">
           <h3>场景</h3>
           <div className="property-line">
@@ -29,13 +32,13 @@ export function Inspector() {
             <span>{e.project.viewpoints.length}</span>
           </div>
         </section>
-        <section className="property-section inspector-intro">
+        {!model && <section className="property-section inspector-intro">
           <Icon name="cursor" size={24} />
           <p>选择一个对象</p>
           <small>
             在场景或左侧列表中选择模型、无人机或拍摄点，查看和编辑属性。
           </small>
-        </section>
+        </section>}
         <section className="property-section help-keys">
           <h3>操作提示</h3>
           <p>

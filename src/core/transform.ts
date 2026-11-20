@@ -1,5 +1,6 @@
 import { clearTiming } from "./project.ts";
 import type { Project, Selection, Vec3 } from "./types.ts";
+import { objRotation, objScale, objScaleFactors } from "./obj-transform.ts";
 
 export type TransformTarget = "position" | "target";
 export type TransformOptions = {
@@ -30,8 +31,6 @@ export function beginTransformSession(
   if (!selection) return null;
   const item = selectedItem(project, selection);
   if (!item || ("locked" in item && item.locked)) return null;
-  // Imported models are selectable in Stage 2; transform editing arrives in Stage 3.
-  if ("kind" in item && item.kind === "obj") return null;
   if ("visible" in item && !item.visible) return null;
   if ("droneId" in item && !project.drones.some((d) => d.id === item.droneId && d.visible)) return null;
   if (options.target === "target" && selection.type !== "viewpoint") return null;
@@ -41,16 +40,16 @@ export function beginTransformSession(
 const sameNumber = (a: number, b: number) => Math.abs(a - b) < 1e-6;
 const sameVector = (a: Vec3, b: Vec3) => a.every((value, i) => sameNumber(value, b[i]));
 function readVector(value: unknown): Vec3 | null {
-  return Array.isArray(value) && value.length === 3 && value.every((n) => typeof n === "number" && Number.isFinite(n))
+  return Array.isArray(value) && value.length === 3 && Array.from(value).every((n) => typeof n === "number" && Number.isFinite(n))
     ? [...value] as Vec3
     : null;
 }
-function constrainedPosition(value: Vec3, initial: Vec3, options: TransformOptions): Vec3 {
+function constrainedPosition(value: Vec3, initial: Vec3, options: TransformOptions, obj = false): Vec3 {
   return value.map((n, index) => {
     if (sameNumber(n, initial[index])) return initial[index];
     if (index === 1 && options.target === "position" && options.lockHeight) return initial[1];
     const snapped = options.snap > 0 ? Math.round(n / options.snap) * options.snap : n;
-    const min = index === 1 && options.target === "position" ? 0 : -10000;
+    const min = !obj && index === 1 && options.target === "position" ? 0 : -10000;
     return Math.max(min, Math.min(10000, snapped));
   }) as Vec3;
 }
@@ -65,17 +64,28 @@ export function updateTransformSession(session: TransformSession, values: Record
   if (options.target === "target" && "target" in next && "target" in initial) {
     if (vector) next.target = constrainedPosition(vector, initial.target, options);
   } else if (options.target === "position") {
-    if (vector) next.position = constrainedPosition(vector, initial.position, options);
-    if ("rotation" in next && typeof values.rotation === "number" && Number.isFinite(values.rotation))
+    const obj = "kind" in next && next.kind === "obj";
+    if (vector) next.position = constrainedPosition(vector, initial.position, options, obj);
+    if (obj) {
+      const rotationXYZ = readVector(values.rotationXYZ);
+      if (rotationXYZ) {
+        next.rotationXYZ = rotationXYZ.map(n => Math.max(-10000, Math.min(10000, n))) as Vec3;
+        next.rotation = next.rotationXYZ[1];
+      }
+      const scale = readVector(values.scale);
+      if (scale) next.scale = objScaleFactors(scale);
+    } else if ("rotation" in next && typeof values.rotation === "number" && Number.isFinite(values.rotation))
       next.rotation = Math.max(-10000, Math.min(10000, values.rotation));
     const size = readVector(values.size);
-    if ("size" in next && size)
+    if (!obj && "size" in next && size)
       next.size = size.map((n) => Math.max(0.1, Math.min(10000, Math.abs(n)))) as Vec3;
   }
   const unchanged = sameVector(next.position, initial.position)
     && (!("target" in next) || !("target" in initial) || sameVector(next.target, initial.target))
     && (!("rotation" in next) || !("rotation" in initial) || sameNumber(next.rotation, initial.rotation))
-    && (!("size" in next) || !("size" in initial) || sameVector(next.size, initial.size));
+    && (!("size" in next) || !("size" in initial) || sameVector(next.size, initial.size))
+    && (!("kind" in next) || next.kind !== "obj" || !("kind" in initial) || initial.kind !== "obj"
+      || (sameVector(objRotation(next), objRotation(initial)) && sameVector(objScale(next), objScale(initial))));
   if (unchanged) return { ...session, draft: base };
   const draft: Project = selection.type === "model"
     ? { ...base, models: base.models.map((m) => m.id === selection.id ? next as typeof m : m) }

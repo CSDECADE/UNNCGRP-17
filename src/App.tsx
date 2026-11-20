@@ -52,6 +52,7 @@ function MenuItem({
 }
 export function App() {
   const e = useEditor();
+  const selectedModel = e.selection?.type === "model" && e.project.models.some(m => m.id === e.selection?.id);
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
@@ -140,7 +141,7 @@ export function App() {
       if (keys[ev.key.toLowerCase()] && !e.candidate) {
         if ((keys[ev.key.toLowerCase()] === "rotate" && e.selection?.type === "viewpoint") ||
             (keys[ev.key.toLowerCase()] === "scale" && e.selection?.type !== "model")) return;
-        if (!manualControls && keys[ev.key.toLowerCase()] !== "select") return;
+        if (!manualControls && !selectedModel && keys[ev.key.toLowerCase()] !== "select") return;
         if (e.view === "drone") e.setView("perspective");
         e.setTool(keys[ev.key.toLowerCase()]);
         e.setPreview(false);
@@ -155,7 +156,7 @@ export function App() {
   });
   const locked = !!e.candidate;
   function chooseTool(tool: Tool) {
-    if (!manualControls && ["translate", "rotate", "scale"].includes(tool)) {
+    if (!manualControls && !selectedModel && ["translate", "rotate", "scale"].includes(tool)) {
       e.setMessage("请先加载手动调整模块。");
       return;
     }
@@ -874,7 +875,7 @@ export function App() {
                 onClick={() => setRightOpen(false)}
               />
             </div>
-            <Inspector />
+            {selectedModel ? <SceneInspector /> : <Inspector />}
           </aside>
         )}
         <Dialog.Root

@@ -12,8 +12,16 @@ type ModelProperties = {
 };
 export type Model = ModelProperties & (
   | { kind: ModelKind }
-  | { kind: "obj"; resourceId: string }
+  | {
+      kind: "obj";
+      resourceId: string;
+      // XYZ Euler angles in degrees. When present, rotation mirrors the Y component.
+      rotationXYZ?: Vec3;
+      // Positive local-axis factors; size remains the unscaled bounds descriptor.
+      scale?: Vec3;
+    }
 );
+export type ObjModel = Extract<Model, { kind: "obj" }>;
 export type Drone = {
   id: string;
   name: string;

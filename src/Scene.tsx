@@ -39,13 +39,15 @@ import type { OrbitControls as OrbitImpl } from "three-stdlib";
 import { useEditor } from "./core/editor";
 import { poseAt, routeFor } from "./core/project";
 import type { Drone, Model, Selection, Vec3, Viewpoint } from "./core/types";
-import { useSceneInput } from "./scene/sceneInput";
+import { ObjectInputBoundary, useSceneInput } from "./scene/sceneInput";
 import { cameraUp } from "./scene/dragMath";
 import { DEFAULT_SCENE_BACKGROUND } from "./core/background";
 import { SceneBackground } from "./scene/SceneBackground";
 import { fitBackground } from "./scene/backgroundTexture";
-import { modelBounds } from "./core/model-bounds";
+import { modelBounds, objWorldBounds } from "./core/model-bounds";
 import { ImportedMesh } from "./features/obj-import/ObjMesh";
+import { ObjectGizmo } from "./features/obj-transform/ObjectGizmo";
+import { objRotation, objScale, radians } from "./core/obj-transform";
 
 function Label({
   text,
@@ -125,6 +127,8 @@ function Transformable({
   rotation = 0,
   size,
   locked = false,
+  model,
+  center,
   children,
 }: {
   selection: NonNullable<Selection>;
@@ -132,9 +136,15 @@ function Transformable({
   rotation?: number;
   size?: Vec3;
   locked?: boolean;
+  model?: Model;
+  center?: Vec3;
   children: ReactNode;
 }) {
   const e = useEditor(), input = useSceneInput();
+  const object = useRef<Group>(null);
+  const gizmo = model && e.selection?.type === "model" && e.selection.id === model.id &&
+    model.visible && !model.locked && !e.preview && !e.playing && !e.candidate && e.view !== "drone" &&
+    (e.tool === "translate" || e.tool === "rotate" || e.tool === "scale");
   const click = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
     if (event.delta > 2 || input.suppressClick()) return;
@@ -158,10 +168,13 @@ function Transformable({
   return (
     <>
       <group
+        ref={object}
+        name={`${selection.type}-${selection.id}`}
         position={position}
-        rotation={[0, (rotation * Math.PI) / 180, 0]}
+        rotation={model?.kind === "obj" ? radians(objRotation(model)) : [0, (rotation * Math.PI) / 180, 0]}
+        scale={model?.kind === "obj" ? objScale(model) : [1, 1, 1]}
         userData={{ editorOverlay: selection.type !== "model", pickPriority: selection.type === "viewpoint" ? 2 : 0 }}
-        onPointerDown={(event) => { if (!locked) input.begin(event, selection); }}
+        onPointerDown={(event) => { if (!locked && !model) input.begin(event, selection); }}
         onClick={click}
         onDoubleClick={(ev) => {
           ev.stopPropagation();
@@ -171,22 +184,28 @@ function Transformable({
       >
         {children}
       </group>
+      {gizmo && <ObjectGizmo key={`${model.id}:${e.tool}`} model={model} object={object} center={center!}
+        mode={e.tool as "translate" | "rotate" | "scale"} />}
     </>
   );
 }
 function ModelObject({ model: m }: { model: Model }) {
   const e = useEditor(),
+    input = useSceneInput(),
     selected = e.selection?.id === m.id;
-  const bounds = useMemo(() => modelBounds(m, e.project), [m, e.project]);
   const resource = m.kind === "obj" ? e.project.objResources?.find(r => r.id === m.resourceId) : undefined;
+  const bounds = useMemo(() => modelBounds(m, e.project), [resource, m.size, m.kind]);
+  const world = m.kind === "obj" && selected ? objWorldBounds(m, e.project, bounds) : undefined;
   if (!m.visible) return null;
   return (
-    <Transformable
+    <><Transformable
       selection={{ type: "model", id: m.id }}
       position={m.position}
       rotation={m.rotation}
       size={m.size}
       locked={m.locked}
+      model={m}
+      center={bounds.center}
     >
       {m.kind === "obj" ? (
         resource?.meshes.map(mesh => <ImportedMesh key={mesh.id} resource={resource} mesh={mesh} color={m.color} />)
@@ -220,14 +239,21 @@ function ModelObject({ model: m }: { model: Model }) {
             <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             <Edges color="#4d9dff" depthTest={false} userData={{ editorOverlay: true }} />
           </mesh>
-          <Label
+          {m.kind !== "obj" && <Label
             text={`${m.name} · ${bounds.size[1].toFixed(1)} m`}
             position={[bounds.center[0], bounds.center[1] + bounds.size[1] / 2 + 1.5, bounds.center[2]]}
             selected
-          />
+          />}
         </>
       )}
     </Transformable>
+    {world && <group userData={{ editorOverlay: true, pickPriority: 1 }}
+      onClick={event => { event.stopPropagation(); if (!input.suppressClick()) e.select({ type: "model", id: m.id }); }}
+      onDoubleClick={event => { event.stopPropagation(); if (!input.suppressClick()) e.focus(); }}>
+      <Label text={`${m.name} · ${world.size[1].toFixed(1)} m`}
+        position={[world.center[0], world.center[1] + world.size[1] / 2 + 1.5, world.center[2]]} selected />
+    </group>}
+    </>
   );
 }
 function CameraFrustum({
@@ -420,8 +446,7 @@ function CameraRig() {
       : e.project.viewpoints.find(x => x.id === e.selection?.id);
     const center = new Vector3(...(selected?.position ?? [0, 6, 0] as Vec3));
     if (selected && "kind" in selected && selected.kind === "obj") {
-      center.add(new Vector3(...modelBounds(selected, e.project).center)
-        .applyAxisAngle(new Vector3(0, 1, 0), selected.rotation * Math.PI / 180));
+      center.set(...objWorldBounds(selected, e.project).center);
     }
     camera.up.set(0, 1, 0);
     if (e.view === "top") {
@@ -446,9 +471,10 @@ function CameraRig() {
     const pos = item && "target" in item && e.transformTarget === "target" ? item.target : item?.position ?? [0, 6, 0];
     const center = new Vector3(...pos);
     const bounds = item && "kind" in item ? modelBounds(item, e.project) : undefined;
-    const radius = bounds ? Math.max(item && "kind" in item && item.kind === "obj" ? 1 : 0, ...bounds.size) : 12;
-    if (bounds && item && "rotation" in item) center.add(new Vector3(...bounds.center)
-      .applyAxisAngle(new Vector3(0, 1, 0), item.rotation * Math.PI / 180));
+    const objBounds = item && "kind" in item && item.kind === "obj" ? objWorldBounds(item, e.project) : undefined;
+    const radius = objBounds ? Math.max(1, ...objBounds.size) : bounds ? Math.max(...bounds.size) : 12;
+    if (objBounds) center.set(...objBounds.center);
+    else if (bounds) center.y += bounds.center[1];
     const direction = camera.position.clone().sub(controls.current.target).normalize();
     controls.current.target.copy(center);
     camera.position.copy(center).addScaledVector(direction, Math.max(25, radius * 3));
@@ -672,7 +698,7 @@ export function Scene({ Controls = Fragment }: { Controls?: ComponentType<{ chil
           return hits.sort((a, b) => priority(b.object) - priority(a.object) || a.distance - b.distance);
         },
       })}>
-        <Controls><World /><CameraPreview /></Controls>
+        <Controls><ObjectInputBoundary><World /><CameraPreview /></ObjectInputBoundary></Controls>
       </Canvas>
       {e.selection?.type === "viewpoint" && !e.preview && e.view !== "drone" && (
         <><div className="camera-preview-label">拍摄点取景 · 16:9</div>
