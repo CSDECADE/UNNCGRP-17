@@ -1,0 +1,139 @@
+{
+  "snapshot": "/private/tmp/obj-5c-renderer-retainer.heapsnapshot",
+  "matchingResourceObjects": 42,
+  "strongPathFound": true,
+  "route": [
+    {
+      "node": "",
+      "nodeOffset": 0,
+      "edgeType": "element",
+      "edge": "1"
+    },
+    {
+      "node": "(GC roots)",
+      "nodeOffset": 6,
+      "edgeType": "element",
+      "edge": "29"
+    },
+    {
+      "node": "C++ Persistent roots",
+      "nodeOffset": 7614126,
+      "edgeType": "internal",
+      "edge": "blink::WebLocalFrameImpl::WebLocalFrameImpl(base::PassKey<WebLocalFrameImpl>, mojom::blink::TreeScopeType, WebLocalFrameClient *, blink::InterfaceRegistry *, const LocalFrameToken &)@../../third_party/blink/renderer/core/frame/web_local_frame_impl.cc:2385"
+    },
+    {
+      "node": "blink::WebLocalFrameImpl",
+      "nodeOffset": 7614372,
+      "edgeType": "element",
+      "edge": "7"
+    },
+    {
+      "node": "blink::HistoryItem",
+      "nodeOffset": 7690740,
+      "edgeType": "element",
+      "edge": "1"
+    },
+    {
+      "node": "blink::DocumentState",
+      "nodeOffset": 7675800,
+      "edgeType": "element",
+      "edge": "7"
+    },
+    {
+      "node": "<input type=\"checkbox\" checked=\"\">",
+      "nodeOffset": 5969922,
+      "edgeType": "property",
+      "edge": "__reactFiber$4idhnx34y2p"
+    },
+    {
+      "node": "FiberNode",
+      "nodeOffset": 5969946,
+      "edgeType": "property",
+      "edge": "_debugOwner"
+    },
+    {
+      "node": "FiberNode",
+      "nodeOffset": 4907130,
+      "edgeType": "property",
+      "edge": "updateQueue"
+    },
+    {
+      "node": "Object",
+      "nodeOffset": 5185212,
+      "edgeType": "property",
+      "edge": "lastEffect"
+    },
+    {
+      "node": "Object",
+      "nodeOffset": 5185218,
+      "edgeType": "property",
+      "edge": "inst"
+    },
+    {
+      "node": "Object",
+      "nodeOffset": 5185464,
+      "edgeType": "property",
+      "edge": "destroy"
+    },
+    {
+      "node": "",
+      "nodeOffset": 6789540,
+      "edgeType": "internal",
+      "edge": "context"
+    },
+    {
+      "node": "system / Context / scope @1727947",
+      "nodeOffset": 6789642,
+      "edgeType": "context",
+      "edge": "e"
+    },
+    {
+      "node": "Object",
+      "nodeOffset": 6179238,
+      "edgeType": "property",
+      "edge": "readProject"
+    },
+    {
+      "node": "readProject",
+      "nodeOffset": 4637094,
+      "edgeType": "internal",
+      "edge": "context"
+    },
+    {
+      "node": "system / Context / scope @1545707",
+      "nodeOffset": 4637112,
+      "edgeType": "context",
+      "edge": "history"
+    },
+    {
+      "node": "Object",
+      "nodeOffset": 6688656,
+      "edgeType": "property",
+      "edge": "past"
+    },
+    {
+      "node": "Array",
+      "nodeOffset": 4637136,
+      "edgeType": "element",
+      "edge": "0"
+    },
+    {
+      "node": "Object",
+      "nodeOffset": 4637142,
+      "edgeType": "property",
+      "edge": "objResources"
+    },
+    {
+      "node": "Array",
+      "nodeOffset": 5723490,
+      "edgeType": "element",
+      "edge": "0"
+    },
+    {
+      "node": "Object",
+      "nodeOffset": 2510022,
+      "resourceId": "1cade57a-4b16-433d-a21a-c1f2e1219f98"
+    }
+  ],
+  "limitation": "One shortest strong path, excluding weak/conditional WeakMap edges; not a dominator or complete retainer analysis."
+}

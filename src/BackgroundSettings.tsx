@@ -6,6 +6,12 @@ import { UserInputError } from "./core/feedback";
 import { prepareBackgroundImage } from "./backgroundImage";
 import { Icon } from "./ui/Icon";
 
+// Keep the long-lived cleanup outside the component's shared closure scope,
+// which also contains the editor context and its historical project snapshots.
+function invalidateRequestOnUnmount(request: { current: number }) {
+  return () => { request.current++; };
+}
+
 export function BackgroundSettings() {
   const e = useEditor(), background = e.project.background ?? DEFAULT_SCENE_BACKGROUND;
   const fileInput = useRef<HTMLInputElement>(null), request = useRef(0), skipBlur = useRef(false);
@@ -16,7 +22,7 @@ export function BackgroundSettings() {
   const disabled = !!e.candidate || busy;
   useEffect(() => setHex(background.color.slice(1).toUpperCase()), [background.color]);
   useEffect(() => { setColorDraft(null); colorOrigin.current = null; }, [e.project, disabled]);
-  useEffect(() => () => { request.current++; }, []);
+  useEffect(() => invalidateRequestOnUnmount(request), []);
   function update(values: Partial<SceneBackground>) {
     if (disabled) return;
     setError("");

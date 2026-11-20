@@ -1,0 +1,5623 @@
+{
+  "conditions": {
+    "node": "v25.9.0",
+    "revision": "c33a0ecf2bb18884db439b487ccfe78053cd1cea",
+    "note": "Fresh Node process per case; controlled GC between memory points, never inside CPU samples. heapUsed/external/arrayBuffers/rss are separate byte measurements. No GPU is created in this Node benchmark. History reference moves mirror editor.tsx. All geometry checks use production import/transform/removal code."
+  },
+  "cases": [
+    {
+      "config": {
+        "n": 25,
+        "kind": "edge",
+        "attributes": false,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90439680,
+          "heapTotal": 15171584,
+          "heapUsed": 10240680,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 99155968,
+          "heapTotal": 20414464,
+          "heapUsed": 10856024,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 99270656,
+          "heapTotal": 20676608,
+          "heapUsed": 10931088,
+          "external": 11832309,
+          "arrayBuffers": 132919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 99336192,
+          "heapTotal": 20676608,
+          "heapUsed": 10923104,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 99696640,
+          "heapTotal": 21200896,
+          "heapUsed": 11493968,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 109592576,
+          "heapTotal": 31162368,
+          "heapUsed": 13314984,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 109608960,
+          "heapTotal": 31162368,
+          "heapUsed": 13313768,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 109625344,
+          "heapTotal": 30375936,
+          "heapUsed": 12782992,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 8835,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 111083520,
+          "heapTotal": 31424512,
+          "heapUsed": 13326968,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 111083520,
+          "heapTotal": 31424512,
+          "heapUsed": 13310560,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 12417,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 111083520,
+          "heapTotal": 31424512,
+          "heapUsed": 13284632,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 12218,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 111083520,
+          "heapTotal": 29589504,
+          "heapUsed": 11363936,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": null,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 1925
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 0.567,
+          "p95": 1.435,
+          "max": 2.556
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.038
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.017
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 25,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 0
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90816512,
+          "heapTotal": 15433728,
+          "heapUsed": 10249560,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 100040704,
+          "heapTotal": 21610496,
+          "heapUsed": 11470248,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 11250
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 100155392,
+          "heapTotal": 21610496,
+          "heapUsed": 11572512,
+          "external": 11862309,
+          "arrayBuffers": 162919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 11250
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 100155392,
+          "heapTotal": 21610496,
+          "heapUsed": 11151824,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 11250
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 100466688,
+          "heapTotal": 21872640,
+          "heapUsed": 11722064,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 11250
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 133152768,
+          "heapTotal": 54378496,
+          "heapUsed": 18994624,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 686250
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 133152768,
+          "heapTotal": 54378496,
+          "heapUsed": 18977904,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 686250
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 133300224,
+          "heapTotal": 51494912,
+          "heapUsed": 16735256,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 8835,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 472500
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 172965888,
+          "heapTotal": 87261184,
+          "heapUsed": 18945616,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 686250
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 172982272,
+          "heapTotal": 87261184,
+          "heapUsed": 18839392,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 12417,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 675000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 172998656,
+          "heapTotal": 87261184,
+          "heapUsed": 18723328,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 12218,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 663750
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 172998656,
+          "heapTotal": 78872576,
+          "heapUsed": 11385680,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 0,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 1925
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 1.029,
+          "p95": 1.979,
+          "max": 4.73
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.001,
+          "max": 0.029
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.013
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 25,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 89636864,
+          "heapTotal": 13598720,
+          "heapUsed": 10241256,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 100433920,
+          "heapTotal": 21348352,
+          "heapUsed": 11460512,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 11250
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 100483072,
+          "heapTotal": 21610496,
+          "heapUsed": 11930440,
+          "external": 11862309,
+          "arrayBuffers": 162919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 11250
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 100532224,
+          "heapTotal": 21610496,
+          "heapUsed": 11142104,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 11250
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 100581376,
+          "heapTotal": 21610496,
+          "heapUsed": 11712392,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 676,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 11250
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 134103040,
+          "heapTotal": 54640640,
+          "heapUsed": 18968920,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 686250
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 134119424,
+          "heapTotal": 54640640,
+          "heapUsed": 18968056,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 686250
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 134184960,
+          "heapTotal": 52019200,
+          "heapUsed": 16724824,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 8835,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 472500
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 173031424,
+          "heapTotal": 88047616,
+          "heapUsed": 18938464,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 12616,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 686250
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 173031424,
+          "heapTotal": 88047616,
+          "heapUsed": 18832240,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 12417,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 675000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 173031424,
+          "heapTotal": 88047616,
+          "heapUsed": 18716176,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 12218,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 663750
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 173047808,
+          "heapTotal": 79396864,
+          "heapUsed": 11375648,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 3351,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 1925
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 0.968,
+          "p95": 1.984,
+          "max": 3.781
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.023
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 70,
+        "kind": "edge",
+        "attributes": false,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90619904,
+          "heapTotal": 15433728,
+          "heapUsed": 10240968,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 112672768,
+          "heapTotal": 29900800,
+          "heapUsed": 11807440,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 112836608,
+          "heapTotal": 29900800,
+          "heapUsed": 11884080,
+          "external": 12447909,
+          "arrayBuffers": 748519,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 112836608,
+          "heapTotal": 29900800,
+          "heapUsed": 11885240,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 116850688,
+          "heapTotal": 36569088,
+          "heapUsed": 16007656,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 135561216,
+          "heapTotal": 54394880,
+          "heapUsed": 19932240,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 135626752,
+          "heapTotal": 54394880,
+          "heapUsed": 19942200,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 135888896,
+          "heapTotal": 53084160,
+          "heapUsed": 18787408,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 13241,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 173047808,
+          "heapTotal": 87687168,
+          "heapUsed": 19925488,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 173047808,
+          "heapTotal": 87687168,
+          "heapUsed": 19874048,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 16841,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 173047808,
+          "heapTotal": 87687168,
+          "heapUsed": 19813088,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 16641,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 171835392,
+          "heapTotal": 82018304,
+          "heapUsed": 13750360,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": null,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 14840
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 1.216,
+          "p95": 2.883,
+          "max": 8.752
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.026
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 70,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 0
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90406912,
+          "heapTotal": 15433728,
+          "heapUsed": 10249872,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 131612672,
+          "heapTotal": 47874048,
+          "heapUsed": 13529928,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 88200
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 131645440,
+          "heapTotal": 47874048,
+          "heapUsed": 13589816,
+          "external": 12683109,
+          "arrayBuffers": 983719,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 88200
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 131645440,
+          "heapTotal": 47874048,
+          "heapUsed": 13587872,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 88200
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 132808704,
+          "heapTotal": 49561600,
+          "heapUsed": 17712520,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 88200
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 283148288,
+          "heapTotal": 199770112,
+          "heapUsed": 64005800,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 5380200
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 283164672,
+          "heapTotal": 199770112,
+          "heapUsed": 64015896,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 5380200
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 269500416,
+          "heapTotal": 184762368,
+          "heapUsed": 49412232,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 13241,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 3704400
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 286425088,
+          "heapTotal": 199458816,
+          "heapUsed": 63686496,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 5380200
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 285720576,
+          "heapTotal": 198737920,
+          "heapUsed": 62929640,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 16841,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 5292000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 284999680,
+          "heapTotal": 198017024,
+          "heapUsed": 62162944,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 16641,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 5203800
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 240582656,
+          "heapTotal": 148602880,
+          "heapUsed": 13771336,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 0,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 14840
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 1.888,
+          "p95": 4.704,
+          "max": 10.594
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.023
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 70,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 91799552,
+          "heapTotal": 15171584,
+          "heapUsed": 10249616,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 132186112,
+          "heapTotal": 48136192,
+          "heapUsed": 13528256,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 88200
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 132235264,
+          "heapTotal": 48136192,
+          "heapUsed": 13592560,
+          "external": 12683109,
+          "arrayBuffers": 983719,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 88200
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 132235264,
+          "heapTotal": 48136192,
+          "heapUsed": 13585984,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 88200
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 133578752,
+          "heapTotal": 49561600,
+          "heapUsed": 17710536,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 5041,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 88200
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 284164096,
+          "heapTotal": 199770112,
+          "heapUsed": 64003496,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 5380200
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 284196864,
+          "heapTotal": 199770112,
+          "heapUsed": 64013592,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 5380200
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 270581760,
+          "heapTotal": 184762368,
+          "heapUsed": 49452128,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 13241,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 3704400
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 287522816,
+          "heapTotal": 199458816,
+          "heapUsed": 63684088,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 17041,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 5380200
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 286818304,
+          "heapTotal": 198737920,
+          "heapUsed": 62927232,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 16841,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 5292000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 286097408,
+          "heapTotal": 198017024,
+          "heapUsed": 62160536,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 16641,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 5203800
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 241680384,
+          "heapTotal": 148340736,
+          "heapUsed": 13768928,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 6846,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 14840
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 2.016,
+          "p95": 4.669,
+          "max": 9.922
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.023
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.013
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "vertex",
+        "attributes": false,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 89456640,
+          "heapTotal": 14123008,
+          "heapUsed": 10241208,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 193003520,
+          "heapTotal": 82984960,
+          "heapUsed": 15737672,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 194281472,
+          "heapTotal": 82984960,
+          "heapUsed": 15817872,
+          "external": 14982309,
+          "arrayBuffers": 3282919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 194281472,
+          "heapTotal": 82984960,
+          "heapUsed": 15808048,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 202063872,
+          "heapTotal": 101613568,
+          "heapUsed": 35912608,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 281559040,
+          "heapTotal": 183926784,
+          "heapUsed": 47679448,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 281591808,
+          "heapTotal": 183926784,
+          "heapUsed": 47689480,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 277856256,
+          "heapTotal": 180191232,
+          "heapUsed": 44006712,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 26901,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 282378240,
+          "heapTotal": 184958976,
+          "heapUsed": 47674272,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 282525696,
+          "heapTotal": 184762368,
+          "heapUsed": 47491952,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 28701,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 282345472,
+          "heapTotal": 184565760,
+          "heapUsed": 47300112,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 28601,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 263716864,
+          "heapTotal": 160169984,
+          "heapUsed": 23491336,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": null,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 4.474,
+          "p95": 6.41,
+          "max": 12.404
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.025
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.019
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "vertex",
+        "attributes": true,
+        "axis": 0
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90341376,
+          "heapTotal": 15171584,
+          "heapUsed": 10249560,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 278790144,
+          "heapTotal": 156385280,
+          "heapUsed": 21511072,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 278822912,
+          "heapTotal": 156385280,
+          "heapUsed": 21935400,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 278822912,
+          "heapTotal": 156385280,
+          "heapUsed": 21561776,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 286097408,
+          "heapTotal": 166100992,
+          "heapUsed": 41666312,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 493764608,
+          "heapTotal": 384860160,
+          "heapUsed": 247904520,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 493912064,
+          "heapTotal": 384860160,
+          "heapUsed": 247874712,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 428572672,
+          "heapTotal": 319488000,
+          "heapUsed": 182676248,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 26901,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 481542144,
+          "heapTotal": 384630784,
+          "heapUsed": 247655688,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 478117888,
+          "heapTotal": 381190144,
+          "heapUsed": 244233552,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 28701,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 474677248,
+          "heapTotal": 377749504,
+          "heapUsed": 240801576,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 28601,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 262356992,
+          "heapTotal": 163577856,
+          "heapUsed": 23525792,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 0,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.038,
+          "p95": 7.242,
+          "max": 14.267
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.025
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "vertex",
+        "attributes": true,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90505216,
+          "heapTotal": 15433728,
+          "heapUsed": 10249776,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 278200320,
+          "heapTotal": 155074560,
+          "heapUsed": 21509592,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 278233088,
+          "heapTotal": 155074560,
+          "heapUsed": 21710632,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 278249472,
+          "heapTotal": 155074560,
+          "heapUsed": 21561064,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 286277632,
+          "heapTotal": 164003840,
+          "heapUsed": 41666680,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 493453312,
+          "heapTotal": 384073728,
+          "heapUsed": 247864320,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 493469696,
+          "heapTotal": 384073728,
+          "heapUsed": 247874416,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 428130304,
+          "heapTotal": 318439424,
+          "heapUsed": 182657120,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 26901,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 493895680,
+          "heapTotal": 383844352,
+          "heapUsed": 247653976,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 28801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 490471424,
+          "heapTotal": 380403712,
+          "heapUsed": 244231840,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 28701,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 487030784,
+          "heapTotal": 376963072,
+          "heapUsed": 240799864,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 28601,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 274694144,
+          "heapTotal": 162529280,
+          "heapUsed": 23524080,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 4128,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.09,
+          "p95": 8.973,
+          "max": 14.696
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.024
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.013
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": false,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90701824,
+          "heapTotal": 15433728,
+          "heapUsed": 10241040,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 190676992,
+          "heapTotal": 82198528,
+          "heapUsed": 15738232,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 191856640,
+          "heapTotal": 82198528,
+          "heapUsed": 15816232,
+          "external": 14982309,
+          "arrayBuffers": 3282919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 191856640,
+          "heapTotal": 82198528,
+          "heapUsed": 15808272,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 199606272,
+          "heapTotal": 101351424,
+          "heapUsed": 35912616,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 281526272,
+          "heapTotal": 184188928,
+          "heapUsed": 48351840,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 281559040,
+          "heapTotal": 184188928,
+          "heapUsed": 48361872,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 277839872,
+          "heapTotal": 180453376,
+          "heapUsed": 44466304,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 283099136,
+          "heapTotal": 184172544,
+          "heapUsed": 48345216,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 282918912,
+          "heapTotal": 183975936,
+          "heapUsed": 48151696,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 34601,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 282722304,
+          "heapTotal": 183779328,
+          "heapUsed": 47948656,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 264093696,
+          "heapTotal": 159121408,
+          "heapUsed": 23491064,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": null,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.121,
+          "p95": 7.087,
+          "max": 12.817
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.004,
+          "max": 0.077
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.02
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 0,
+        "snapshot": "/private/tmp/obj-5c-before.heapsnapshot"
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 88702976,
+          "heapTotal": 13598720,
+          "heapUsed": 10241496,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 278888448,
+          "heapTotal": 155336704,
+          "heapUsed": 21502024,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 278937600,
+          "heapTotal": 155336704,
+          "heapUsed": 21561120,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 278937600,
+          "heapTotal": 155336704,
+          "heapUsed": 21552760,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 286031872,
+          "heapTotal": 168984576,
+          "heapUsed": 41657176,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 493453312,
+          "heapTotal": 384860160,
+          "heapUsed": 248527784,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 747241472,
+          "heapTotal": 246513664,
+          "heapUsed": 244641848,
+          "external": 11733137,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 690028544,
+          "heapTotal": 189530112,
+          "heapUsed": 179225136,
+          "external": 11733137,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 733052928,
+          "heapTotal": 380764160,
+          "heapUsed": 244321328,
+          "external": 11733137,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 729628672,
+          "heapTotal": 377323520,
+          "heapUsed": 240887992,
+          "external": 11733137,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 34601,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 726188032,
+          "heapTotal": 373882880,
+          "heapUsed": 237444816,
+          "external": 11733137,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 513851392,
+          "heapTotal": 158400512,
+          "heapUsed": 19520232,
+          "external": 11733137,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 0,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.906,
+          "p95": 11.388,
+          "max": 24.376
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.003,
+          "max": 0.044
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.015
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 89391104,
+          "heapTotal": 13860864,
+          "heapUsed": 10241488,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 279330816,
+          "heapTotal": 155074560,
+          "heapUsed": 21502128,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 279363584,
+          "heapTotal": 155336704,
+          "heapUsed": 21699896,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 279363584,
+          "heapTotal": 155336704,
+          "heapUsed": 21552480,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 286949376,
+          "heapTotal": 165576704,
+          "heapUsed": 41656896,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 494125056,
+          "heapTotal": 384860160,
+          "heapUsed": 248527504,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 494206976,
+          "heapTotal": 385122304,
+          "heapUsed": 248537600,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 428867584,
+          "heapTotal": 319750144,
+          "heapUsed": 183120872,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 494649344,
+          "heapTotal": 384630784,
+          "heapUsed": 248317488,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 491208704,
+          "heapTotal": 381190144,
+          "heapUsed": 244884152,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 34601,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 487768064,
+          "heapTotal": 377749504,
+          "heapUsed": 241440976,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 275431424,
+          "heapTotal": 162267136,
+          "heapUsed": 23516392,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 7125,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.575,
+          "p95": 8.151,
+          "max": 15.996
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.024
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "face",
+        "attributes": false,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 88752128,
+          "heapTotal": 13598720,
+          "heapUsed": 10241416,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 194052096,
+          "heapTotal": 82722816,
+          "heapUsed": 15742360,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 195215360,
+          "heapTotal": 82984960,
+          "heapUsed": 15824944,
+          "external": 14982309,
+          "arrayBuffers": 3282919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 195215360,
+          "heapTotal": 82460672,
+          "heapUsed": 15812656,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 202309632,
+          "heapTotal": 97681408,
+          "heapUsed": 35917496,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 281624576,
+          "heapTotal": 184975360,
+          "heapUsed": 49033800,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 281853952,
+          "heapTotal": 184975360,
+          "heapUsed": 49043832,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 278134784,
+          "heapTotal": 180715520,
+          "heapUsed": 44935464,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 35101,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 283820032,
+          "heapTotal": 185221120,
+          "heapUsed": 49025792,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 283820032,
+          "heapTotal": 185024512,
+          "heapUsed": 48821072,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 40501,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 283623424,
+          "heapTotal": 184827904,
+          "heapUsed": 48606832,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 40201,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 264994816,
+          "heapTotal": 161218560,
+          "heapUsed": 23500440,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": null,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 3.382,
+          "p95": 4.673,
+          "max": 19.892
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.025
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "face",
+        "attributes": true,
+        "axis": 0
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 89571328,
+          "heapTotal": 14123008,
+          "heapUsed": 10242016,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 279232512,
+          "heapTotal": 156123136,
+          "heapUsed": 21503232,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 279265280,
+          "heapTotal": 156123136,
+          "heapUsed": 21697384,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 279265280,
+          "heapTotal": 156123136,
+          "heapUsed": 21553584,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 287408128,
+          "heapTotal": 165314560,
+          "heapUsed": 41658928,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 494731264,
+          "heapTotal": 385122304,
+          "heapUsed": 249198168,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 494747648,
+          "heapTotal": 385122304,
+          "heapUsed": 249208264,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 429424640,
+          "heapTotal": 319225856,
+          "heapUsed": 183580832,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 35101,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 495157248,
+          "heapTotal": 384892928,
+          "heapUsed": 248986272,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 491732992,
+          "heapTotal": 381452288,
+          "heapUsed": 245541736,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 40501,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 488292352,
+          "heapTotal": 378011648,
+          "heapUsed": 242087360,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 40201,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 275955712,
+          "heapTotal": 161218560,
+          "heapUsed": 23513976,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 0,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.725,
+          "p95": 8.5,
+          "max": 16.323
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.028
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "face",
+        "attributes": true,
+        "axis": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 88899584,
+          "heapTotal": 13598720,
+          "heapUsed": 10241256,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 278773760,
+          "heapTotal": 155860992,
+          "heapUsed": 21502488,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 278822912,
+          "heapTotal": 155860992,
+          "heapUsed": 21559144,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 278872064,
+          "heapTotal": 155860992,
+          "heapUsed": 21553008,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 286670848,
+          "heapTotal": 164528128,
+          "heapUsed": 41658184,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 493649920,
+          "heapTotal": 385908736,
+          "heapUsed": 249197536,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 493666304,
+          "heapTotal": 385908736,
+          "heapUsed": 249207632,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 428392448,
+          "heapTotal": 320012288,
+          "heapUsed": 183580096,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 35101,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 494403584,
+          "heapTotal": 386727936,
+          "heapUsed": 248985744,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 40801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 490979328,
+          "heapTotal": 383287296,
+          "heapUsed": 245541208,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 40501,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 487538688,
+          "heapTotal": 379846656,
+          "heapUsed": 242086832,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 40201,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 275218432,
+          "heapTotal": 163315712,
+          "heapUsed": 23513448,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 7329,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.507,
+          "p95": 9.593,
+          "max": 18.532
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.034
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.015
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 0,
+        "shared": true
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90685440,
+          "heapTotal": 15433728,
+          "heapUsed": 10241296,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 278773760,
+          "heapTotal": 155860992,
+          "heapUsed": 21503048,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 278888448,
+          "heapTotal": 156123136,
+          "heapUsed": 21819576,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 278921216,
+          "heapTotal": 156123136,
+          "heapUsed": 21553568,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 287113216,
+          "heapTotal": 166363136,
+          "heapUsed": 41657768,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 494125056,
+          "heapTotal": 384598016,
+          "heapUsed": 248530096,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 494141440,
+          "heapTotal": 384598016,
+          "heapUsed": 248540192,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 429031424,
+          "heapTotal": 319488000,
+          "heapUsed": 183123344,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 498253824,
+          "heapTotal": 389087232,
+          "heapUsed": 251992616,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 62,
+            "vertexArrays": 62,
+            "vertexObjects": 35001,
+            "meshes": 62,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 62,
+            "normalNumberSlots": 25110000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 494813184,
+          "heapTotal": 385646592,
+          "heapUsed": 248559856,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 487931904,
+          "heapTotal": 378765312,
+          "heapUsed": 241671560,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 275365888,
+          "heapTotal": 163053568,
+          "heapUsed": 23517632,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 0,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.606,
+          "p95": 9.028,
+          "max": 16.439
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.004,
+          "max": 0.026
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.015
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 2,
+        "shared": true
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 91340800,
+          "heapTotal": 15171584,
+          "heapUsed": 10249672,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 279330816,
+          "heapTotal": 155598848,
+          "heapUsed": 21511000,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 279478272,
+          "heapTotal": 155598848,
+          "heapUsed": 21571256,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 279478272,
+          "heapTotal": 155598848,
+          "heapUsed": 21561920,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 287162368,
+          "heapTotal": 165314560,
+          "heapUsed": 41666288,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 494501888,
+          "heapTotal": 385384448,
+          "heapUsed": 248540640,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 494518272,
+          "heapTotal": 385384448,
+          "heapUsed": 248550736,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 429178880,
+          "heapTotal": 319488000,
+          "heapUsed": 183132408,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 498581504,
+          "heapTotal": 389087232,
+          "heapUsed": 252000640,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 62,
+            "vertexArrays": 62,
+            "vertexObjects": 35001,
+            "meshes": 62,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 62,
+            "normalNumberSlots": 25110000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 495173632,
+          "heapTotal": 385646592,
+          "heapUsed": 248567880,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 488292352,
+          "heapTotal": 378765312,
+          "heapUsed": 241679584,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 275726336,
+          "heapTotal": 163053568,
+          "heapUsed": 23525656,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 7125,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 6.042,
+          "p95": 8.139,
+          "max": 14.342
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.003,
+          "max": 0.028
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 0,
+        "repeat": 1
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90996736,
+          "heapTotal": 15171584,
+          "heapUsed": 10240648,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 279298048,
+          "heapTotal": 155598848,
+          "heapUsed": 21501520,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 279347200,
+          "heapTotal": 155598848,
+          "heapUsed": 21554352,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 279347200,
+          "heapTotal": 155598848,
+          "heapUsed": 21552056,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 286867456,
+          "heapTotal": 165838848,
+          "heapUsed": 41656424,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 493797376,
+          "heapTotal": 385122304,
+          "heapUsed": 248527608,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 493813760,
+          "heapTotal": 385122304,
+          "heapUsed": 248537704,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 428474368,
+          "heapTotal": 319225856,
+          "heapUsed": 183121008,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 494223360,
+          "heapTotal": 384892928,
+          "heapUsed": 248317088,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 490782720,
+          "heapTotal": 381452288,
+          "heapUsed": 244883752,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 34601,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 487342080,
+          "heapTotal": 378011648,
+          "heapUsed": 241440576,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 275005440,
+          "heapTotal": 162267136,
+          "heapUsed": 23515992,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 0,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 6.049,
+          "p95": 11.161,
+          "max": 17.126
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.03
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.017
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 2,
+        "repeat": 1
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90341376,
+          "heapTotal": 15433728,
+          "heapUsed": 10240648,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 278577152,
+          "heapTotal": 154288128,
+          "heapUsed": 21500968,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 278609920,
+          "heapTotal": 154550272,
+          "heapUsed": 21561040,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 278609920,
+          "heapTotal": 154550272,
+          "heapUsed": 21551704,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 286277632,
+          "heapTotal": 165576704,
+          "heapUsed": 41656072,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 493600768,
+          "heapTotal": 385122304,
+          "heapUsed": 248528048,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 493617152,
+          "heapTotal": 385122304,
+          "heapUsed": 248538144,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 428359680,
+          "heapTotal": 318963712,
+          "heapUsed": 183121696,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 494157824,
+          "heapTotal": 384630784,
+          "heapUsed": 248316840,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 490733568,
+          "heapTotal": 381190144,
+          "heapUsed": 244883504,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 34601,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 487292928,
+          "heapTotal": 377749504,
+          "heapUsed": 241440328,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 274956288,
+          "heapTotal": 162267136,
+          "heapUsed": 23515744,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 7125,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.978,
+          "p95": 9.833,
+          "max": 14.604
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.026
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.015
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 0,
+        "repeat": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90554368,
+          "heapTotal": 15433728,
+          "heapUsed": 10249816,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 279019520,
+          "heapTotal": 156123136,
+          "heapUsed": 21510304,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 279134208,
+          "heapTotal": 156385280,
+          "heapUsed": 21812104,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 279150592,
+          "heapTotal": 156385280,
+          "heapUsed": 21560488,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 285999104,
+          "heapTotal": 165576704,
+          "heapUsed": 41664856,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 493240320,
+          "heapTotal": 385122304,
+          "heapUsed": 248535984,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 493273088,
+          "heapTotal": 385122304,
+          "heapUsed": 248546080,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 428130304,
+          "heapTotal": 319488000,
+          "heapUsed": 183129384,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 493830144,
+          "heapTotal": 386203648,
+          "heapUsed": 248325392,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 490422272,
+          "heapTotal": 382763008,
+          "heapUsed": 244892056,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 34601,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 486981632,
+          "heapTotal": 379322368,
+          "heapUsed": 241448880,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 274661376,
+          "heapTotal": 162791424,
+          "heapUsed": 23524296,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 0,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.592,
+          "p95": 7.909,
+          "max": 14.359
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.027
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    },
+    {
+      "config": {
+        "n": 150,
+        "kind": "edge",
+        "attributes": true,
+        "axis": 2,
+        "repeat": 2
+      },
+      "points": [
+        {
+          "name": "empty",
+          "rss": 90750976,
+          "heapTotal": 15433728,
+          "heapUsed": 10240648,
+          "external": 11601399,
+          "arrayBuffers": 36775,
+          "graph": {
+            "projects": 1,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        },
+        {
+          "name": "imported",
+          "rss": 279248896,
+          "heapTotal": 156385280,
+          "heapUsed": 21501904,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryAllocated",
+          "rss": 279330816,
+          "heapTotal": 156385280,
+          "heapUsed": 21560688,
+          "external": 16062309,
+          "arrayBuffers": 4362919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "CPUBufferGeometryReleased",
+          "rss": 279330816,
+          "heapTotal": 156385280,
+          "heapUsed": 21552424,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "topologyWarmed",
+          "rss": 286457856,
+          "heapTotal": 163217408,
+          "heapUsed": 41656624,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 1,
+            "resources": 1,
+            "vertexArrays": 1,
+            "vertexObjects": 22801,
+            "meshes": 1,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 1,
+            "normalNumberSlots": 405000
+          }
+        },
+        {
+          "name": "history60",
+          "rss": 493715456,
+          "heapTotal": 385122304,
+          "heapUsed": 248527808,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "undoRedo3Cycles",
+          "rss": 493731840,
+          "heapTotal": 385122304,
+          "heapUsed": 248537904,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "newBranchAfterUndo20",
+          "rss": 428457984,
+          "heapTotal": 319225856,
+          "heapUsed": 183121176,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 42,
+            "resources": 42,
+            "vertexArrays": 42,
+            "vertexObjects": 31001,
+            "meshes": 42,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 42,
+            "normalNumberSlots": 17010000
+          }
+        },
+        {
+          "name": "capacityEviction75",
+          "rss": 494190592,
+          "heapTotal": 385417216,
+          "heapUsed": 248317288,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 61,
+            "vertexArrays": 61,
+            "vertexObjects": 34801,
+            "meshes": 61,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 61,
+            "normalNumberSlots": 24705000
+          }
+        },
+        {
+          "name": "modelDeletedUndoable",
+          "rss": 490766336,
+          "heapTotal": 381976576,
+          "heapUsed": 244883952,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 60,
+            "vertexArrays": 60,
+            "vertexObjects": 34601,
+            "meshes": 60,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 60,
+            "normalNumberSlots": 24300000
+          }
+        },
+        {
+          "name": "projectReplacedUndoable",
+          "rss": 487325696,
+          "heapTotal": 378535936,
+          "heapUsed": 241440776,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 59,
+            "vertexArrays": 59,
+            "vertexObjects": 34401,
+            "meshes": 59,
+            "triangleArrays": 1,
+            "uvArrays": 1,
+            "normalArrays": 59,
+            "normalNumberSlots": 23895000
+          }
+        },
+        {
+          "name": "allGeometryHistoryEvicted",
+          "rss": 274989056,
+          "heapTotal": 161480704,
+          "heapUsed": 23516192,
+          "external": 11742309,
+          "arrayBuffers": 42919,
+          "graph": {
+            "projects": 61,
+            "resources": 0,
+            "vertexArrays": 0,
+            "vertexObjects": 0,
+            "meshes": 0,
+            "triangleArrays": 0,
+            "uvArrays": 0,
+            "normalArrays": 0,
+            "normalNumberSlots": 0
+          }
+        }
+      ],
+      "firstNormalDifference": 7125,
+      "discardedCollected": 20,
+      "discardedCount": 20,
+      "retirement": {
+        "originalResource": true,
+        "editedResource": true,
+        "normalArray": true,
+        "heldEdges": 67800
+      },
+      "cpu": {
+        "edit": {
+          "n": 136,
+          "p50": 5.567,
+          "p95": 8.005,
+          "max": 13.669
+        },
+        "undo": {
+          "n": 110,
+          "p50": 0.001,
+          "p95": 0.002,
+          "max": 0.025
+        },
+        "redo": {
+          "n": 90,
+          "p50": 0,
+          "p95": 0.001,
+          "max": 0.014
+        }
+      }
+    }
+  ]
+}

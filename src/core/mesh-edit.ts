@@ -288,10 +288,14 @@ export function translateMeshElement(base: Project, selected: MeshSelection, pos
       // Carry each authored corner normal with its face. Distinct hard-edge and
       // UV corner relationships survive; no cross-face averaging is introduced.
       const rotation = new Quaternion().setFromUnitVectors(faceNormal(resource, triangle), normal);
-      if (normals === mesh.normals) normals = [...normals];
       for (let corner = i; corner < i + 3; corner++) {
         const offset = corner * 3, original = cornerNormals[corner - i];
         const values = original.applyQuaternion(rotation).toArray();
+        // Preserve the exact authored array when transport changes no values.
+        // Object.is also preserves the existing signed-zero behavior; no epsilon
+        // or normal quantization may change shading or historical geometry.
+        if (values.every((value, axis) => Object.is(value, mesh.normals![offset + axis]))) continue;
+        if (normals === mesh.normals) normals = [...normals];
         normals.splice(offset, 3, ...values);
       }
     }

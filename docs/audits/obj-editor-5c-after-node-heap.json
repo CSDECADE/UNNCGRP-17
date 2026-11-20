@@ -1,0 +1,12 @@
+{
+  "snapshot": "/private/tmp/obj-5c-after.heapsnapshot",
+  "retainingPath": "global.__objHistorySnapshot -> past/present/future -> objResources -> meshes -> normals -> elements",
+  "projects": 61,
+  "normalArrays": 1,
+  "uniqueNormalBackingStores": 1,
+  "normalBackingStoreSelfBytes": 3447528,
+  "backingStoreNames": [
+    "(object elements)"
+  ],
+  "limitation": "Self-size of backing stores reachable along the named history path; not an exclusive retained-size calculation for every object in the process."
+}

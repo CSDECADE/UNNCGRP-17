@@ -556,3 +556,5 @@ Stage 4C validation on 20 November 2026: all 106 unit tests, the TypeScript chec
 For the subsequent architecture, correctness, memory and native-interaction measurements, see the [Stage 5A engineering audit](obj-editor-audit.md). It includes reproducible benchmarks and a proposed optimization scope; it does not implement Stage 5B.
 
 The [Stage 5B topology optimization report](obj-editor-topology-optimization.md) documents the implemented resource-owned cache, before/after benchmarks, cache lifetime and remaining costs. The Stage 4C/5A measurements above remain historical baselines.
+
+The [Stage 5C history-memory report](obj-editor-history-memory.md) separates necessary snapshot storage from redundant normal copies and a renderer-side closure retainer. It documents the targeted fixes, controlled-GC measurements, performance tradeoffs and remaining limitations while preserving the 60-entry history.
