@@ -1,4 +1,5 @@
-import { clearTiming } from "./project.ts";
+import { clearTiming, uid } from "./project.ts";
+import { resolveElement, translateMeshElement, type MeshSelection, type VertexSelection } from "./mesh-edit.ts";
 import type { Project, Selection, Vec3 } from "./types.ts";
 import { objRotation, objScale, objScaleFactors } from "./obj-transform.ts";
 
@@ -13,7 +14,17 @@ export type TransformSession = {
   draft: Project;
   selection: NonNullable<Selection>;
   options: TransformOptions;
+  mesh?: { selected: MeshSelection; copyId: string };
 };
+
+export function beginVertexTransformSession(project: Project, selected: VertexSelection): TransformSession | null {
+  return beginMeshTransformSession(project, selected);
+}
+export function beginMeshTransformSession(project: Project, selected: MeshSelection): TransformSession | null {
+  if (!resolveElement(project, selected)?.pivot) return null;
+  const session = beginTransformSession(project, { type: "model", id: selected.modelId }, { target: "position", snap: 0, lockHeight: false });
+  return session ? { ...session, mesh: { selected: structuredClone(selected), copyId: uid() } } : null;
+}
 
 function selectedItem(project: Project, selection: NonNullable<Selection>) {
   return selection.type === "model"
@@ -56,6 +67,10 @@ function constrainedPosition(value: Vec3, initial: Vec3, options: TransformOptio
 
 /** Update a transient copy only. Timing is invalidated when the edit is committed. */
 export function updateTransformSession(session: TransformSession, values: Record<string, unknown>): TransformSession {
+  if (session.mesh) {
+    const position = readVector(values.elementPosition ?? values.vertexPosition);
+    return position ? { ...session, draft: translateMeshElement(session.base, session.mesh.selected, position, session.mesh.copyId) } : session;
+  }
   const { selection, base, options } = session;
   const initial = selectedItem(base, selection)!;
   const current = selectedItem(session.draft, selection)!;

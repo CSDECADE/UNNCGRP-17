@@ -898,6 +898,14 @@ select {
   background: #4a4a4a;
   margin: 0 4px;
 }
+.mode-button { height: 34px; padding: 0 9px; border-radius: 5px; font-size: 11px; }
+.mode-button[aria-pressed="true"] { color: #ffd09a; background: #644627; }
+.vertex-inspector select { max-width: 100%; margin: 8px 0; }
+.vertex-inspector .vector-fields { grid-template-columns: minmax(0, 1fr); }
+.mesh-selection-modes { display: flex; gap: 5px; margin: 10px 0; }
+.mesh-selection-modes button { flex: 1; padding: 7px; border-radius: 4px; background: var(--field); }
+.mesh-selection-modes button[aria-pressed="true"] { color: #ffd09a; background: #644627; }
+.vertex-inspector > button { display: flex; padding: 7px 9px; margin-top: 10px; border-radius: 4px; background: var(--field); }
 .tooltip {
   padding: 7px 10px;
   border: 1px solid #555;

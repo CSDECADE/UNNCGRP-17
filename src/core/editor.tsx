@@ -28,6 +28,7 @@ import type {
 import { persistProject, type AutosaveStatus } from "./feedback";
 import {
   beginTransformSession,
+  beginMeshTransformSession,
   updateTransformSession,
   commitTransformHistory,
   type TransformSession,
@@ -35,6 +36,7 @@ import {
 } from "./transform";
 import { prepareObjImport } from "../features/obj-import/obj";
 import { UserInputError } from "./errors";
+import { clearElement, editableObj, resolveElement, type MeshSelection, type MeshSelectionMode } from "./mesh-edit";
 
 const STORAGE = "p15.project.v1";
 type History = {
@@ -72,6 +74,8 @@ function initial(): History {
   }
 }
 function useEditorState() {
+  const [vertexSelection, setVertexSelectionState] = useState<MeshSelection | null>(null);
+  const vertexSelectionRef = useRef(vertexSelection);
   const [history, setHistory] = useState(initial),
     [selection, setSelectionState] = useState<Selection>(null);
   const [tool, setToolState] = useState<Tool>("select"),
@@ -132,9 +136,48 @@ function useEditorState() {
     transformSessionRef.current = null;
     setTransientDraft(null);
   }
+  function exitEditMode() {
+    cancelTransform();
+    vertexSelectionRef.current = null;
+    setVertexSelectionState(null);
+  }
+  function enterEditMode() {
+    const target = editableObj(historyRef.current.present, selectionRef.current, {
+      preview: previewRef.current, playing: playingRef.current, candidate: !!candidateRef.current, droneView: viewRef.current === "drone",
+    });
+    if (!target) { setMessage("请选择可见、未锁定的 OBJ，并退出预演或候选方案。"); return false; }
+    cancelTransform();
+    const next = { modelId: target.model.id, meshId: target.resource.meshes[0].id, vertexId: null };
+    vertexSelectionRef.current = next; setVertexSelectionState(next);
+    toolRef.current = "select"; setToolState("select");
+    return true;
+  }
+  function selectVertex(meshId: string, vertexId: string | null) {
+    const selected = vertexSelectionRef.current;
+    if (!selected) return;
+    selectMeshElement({ modelId: selected.modelId, meshId, vertexId });
+  }
+  function selectMeshElement(next: MeshSelection) {
+    if (!vertexSelectionRef.current || next.modelId !== vertexSelectionRef.current.modelId) return;
+    const resolved = resolveElement(readProject(), next);
+    const empty = "vertexId" in next ? next.vertexId === null : "edgeIds" in next ? next.edgeIds === null : next.triangle === null;
+    if (!resolved || (!empty && !resolved.pivot)) return;
+    cancelTransform();
+    vertexSelectionRef.current = next; setVertexSelectionState(next);
+  }
+  function setMeshSelectionMode(mode: MeshSelectionMode) {
+    if (!vertexSelectionRef.current) return;
+    selectMeshElement(clearElement(vertexSelectionRef.current, mode));
+  }
+  useEffect(() => {
+    const selected = vertexSelectionRef.current;
+    if (selected && (selection?.type !== "model" || selected.modelId !== selection.id ||
+      !resolveElement(history.present, selected) || preview || playing || candidate || view === "drone")) exitEditMode();
+  }, [history.present, selection, preview, playing, candidate, view]);
   function select(next: Selection) {
     const previous = selectionRef.current;
     if (previous?.id !== next?.id || previous?.type !== next?.type) {
+      exitEditMode();
       cancelTransform();
       transformTargetRef.current = "position";
       setTransformTargetState("position");
@@ -147,26 +190,31 @@ function useEditorState() {
     }
   }
   function setTool(next: Tool) {
+    if (vertexSelectionRef.current && !["select", "translate"].includes(next)) return;
     if (next !== toolRef.current) cancelTransform();
     toolRef.current = next;
     setToolState(next);
   }
   function setView(next: CameraView) {
+    if (next === "drone") exitEditMode();
     if (next !== viewRef.current) cancelTransform();
     viewRef.current = next;
     setViewState(next);
   }
   function setPreview(next: boolean) {
+    if (next) exitEditMode();
     if (next !== previewRef.current) cancelTransform();
     previewRef.current = next;
     setPreviewState(next);
   }
   function setPlaying(next: boolean) {
+    if (next) exitEditMode();
     if (next) cancelTransform();
     playingRef.current = next;
     setPlayingState(next);
   }
   function setCandidate(next: Project | null) {
+    if (next) exitEditMode();
     cancelTransform();
     candidateRef.current = next;
     setCandidateState(next);
@@ -188,6 +236,7 @@ function useEditorState() {
     setLockHeightState(next);
   }
   function beginTransform(next: Selection): boolean {
+    if (vertexSelectionRef.current) return false;
     if (transformSessionRef.current || candidateRef.current || previewRef.current || playingRef.current) return false;
     if (viewRef.current === "drone" && next?.type === "model") return false;
     const session = beginTransformSession(historyRef.current.present, next, {
@@ -201,9 +250,24 @@ function useEditorState() {
   function updateTransform(values: Record<string, unknown>) {
     const session = transformSessionRef.current;
     if (!session) return;
-    const next = updateTransformSession(session, values);
-    transformSessionRef.current = next;
-    setTransientDraft(next.draft);
+    try {
+      const next = updateTransformSession(session, values);
+      transformSessionRef.current = next;
+      setTransientDraft(next.draft);
+      return true;
+    } catch (error) {
+      setMessage(error instanceof UserInputError ? error.message : "本次移动无效，已保留最近的有效位置。");
+      return false;
+    }
+  }
+  function beginMeshTransform(): boolean {
+    const selected = vertexSelectionRef.current;
+    if (!selected || transformSessionRef.current || candidateRef.current || previewRef.current || playingRef.current || viewRef.current === "drone") return false;
+    if (selectionRef.current?.type !== "model" || selectionRef.current.id !== selected.modelId) return false;
+    const session = beginMeshTransformSession(historyRef.current.present, selected);
+    if (!session) return false;
+    transformSessionRef.current = session; setTransientDraft(session.draft);
+    return true;
   }
   function finishTransform() {
     const session = transformSessionRef.current;
@@ -358,6 +422,7 @@ function useEditorState() {
     );
   }
   function remove() {
+    if (vertexSelectionRef.current) { setMessage("编辑模式暂不支持删除网格元素；请先返回对象模式。"); return; }
     const selected = selectionRef.current;
     if (!selected || candidateRef.current) return;
     const m = historyRef.current.present.models.find((m) => m.id === selected.id);
@@ -369,6 +434,7 @@ function useEditorState() {
     select(null);
   }
   function duplicate() {
+    if (vertexSelectionRef.current) return;
     const selected = selectionRef.current;
     if (!selected || candidateRef.current) return;
     const source = historyRef.current.present;
@@ -417,11 +483,21 @@ function useEditorState() {
     setFocusTick((n) => n + 1);
   }
   return {
+    editMode: vertexSelection ? "edit" as const : "object" as const,
+    vertexSelection,
+    meshSelection: vertexSelection,
+    selectMeshElement,
+    setMeshSelectionMode,
+    enterEditMode,
+    exitEditMode,
+    selectVertex,
     project,
     readProject,
     committedProject: history.present,
     isTransforming: transientDraft !== null,
     beginTransform,
+    beginMeshTransform,
+    beginVertexTransform: beginMeshTransform,
     updateTransform,
     finishTransform,
     cancelTransform,

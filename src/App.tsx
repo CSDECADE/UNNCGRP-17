@@ -18,6 +18,8 @@ import { shortcuts } from "./platform";
 import { autosaveLabels, UserInputError } from "./core/feedback";
 import { useObjImport } from "./features/obj-import/useObjImport";
 import { useObjExport } from "./features/obj-export/useObjExport";
+import { VertexInspector } from "./features/mesh-edit/VertexInspector";
+import { editableObj } from "./core/mesh-edit";
 
 import {
   projectFiles, useProjectFiles, analysis, playback, Playback, AnalysisPanel,
@@ -54,6 +56,8 @@ function MenuItem({
 export function App() {
   const e = useEditor();
   const selectedModel = e.selection?.type === "model" && e.project.models.some(m => m.id === e.selection?.id);
+  const canEditMesh = !!editableObj(e.project, e.selection, { preview: e.preview, playing: e.playing,
+    candidate: !!e.candidate, droneView: e.view === "drone" });
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
@@ -129,6 +133,11 @@ export function App() {
         e.setPlaying(false);
         return;
       }
+      if (ev.key === "Tab" && (target === document.body || target.tagName === "CANVAS") && (canEditMesh || e.editMode === "edit")) {
+        ev.preventDefault();
+        e.editMode === "edit" ? e.exitEditMode() : e.enterEditMode();
+        return;
+      }
       if (ev.key === "Delete" || ev.key === "Backspace") {
         ev.preventDefault();
         e.remove();
@@ -158,6 +167,7 @@ export function App() {
   });
   const locked = !!e.candidate;
   function chooseTool(tool: Tool) {
+    if (e.editMode === "edit" && !["select", "translate"].includes(tool)) return;
     if (!manualControls && !selectedModel && ["translate", "rotate", "scale"].includes(tool)) {
       e.setMessage("请先加载手动调整模块。");
       return;
@@ -719,16 +729,21 @@ export function App() {
               label="旋转 R"
               active={e.tool === "rotate" && !e.preview}
               onClick={() => chooseTool("rotate")}
-              disabled={locked || e.selection?.type === "viewpoint"}
+              disabled={locked || e.editMode === "edit" || e.selection?.type === "viewpoint"}
             />
             <ToolButton
               icon="scale"
               label="缩放 K"
               active={e.tool === "scale" && !e.preview}
               onClick={() => chooseTool("scale")}
-              disabled={locked || e.selection?.type !== "model"}
+              disabled={locked || e.editMode === "edit" || e.selection?.type !== "model"}
             />
             <div className="toolbar-divider" />
+            <button className="mode-button" aria-label="切换编辑模式" aria-pressed={e.editMode === "edit"}
+              disabled={!canEditMesh && e.editMode !== "edit"}
+              onClick={() => e.editMode === "edit" ? e.exitEditMode() : e.enterEditMode()}>
+              {e.editMode === "edit" ? "编辑模式" : "对象模式"}
+            </button>
             <Dropdown.Root>
               <Dropdown.Trigger asChild>
                 <button
@@ -785,7 +800,7 @@ export function App() {
               label="添加拍摄点"
               active={e.tool === "point"}
               onClick={() => chooseTool("point")}
-              disabled={locked || !e.project.drones.length}
+              disabled={locked || e.editMode === "edit" || !e.project.drones.length}
             >
               <span className="tool-label">拍摄点</span>
             </ToolButton>
@@ -880,7 +895,7 @@ export function App() {
                 onClick={() => setRightOpen(false)}
               />
             </div>
-            {selectedModel ? <SceneInspector /> : <Inspector />}
+            {e.editMode === "edit" ? <VertexInspector /> : selectedModel ? <SceneInspector /> : <Inspector />}
           </aside>
         )}
         <Dialog.Root

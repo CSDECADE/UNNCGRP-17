@@ -47,6 +47,7 @@ import { fitBackground } from "./scene/backgroundTexture";
 import { modelBounds, objWorldBounds } from "./core/model-bounds";
 import { ImportedMesh } from "./features/obj-import/ObjMesh";
 import { ObjectGizmo } from "./features/obj-transform/ObjectGizmo";
+import { VertexOverlay } from "./features/mesh-edit/VertexOverlay";
 import { objRotation, objScale, radians } from "./core/obj-transform";
 
 function Label({
@@ -142,11 +143,12 @@ function Transformable({
 }) {
   const e = useEditor(), input = useSceneInput();
   const object = useRef<Group>(null);
-  const gizmo = model && e.selection?.type === "model" && e.selection.id === model.id &&
+  const gizmo = e.editMode === "object" && model && e.selection?.type === "model" && e.selection.id === model.id &&
     model.visible && !model.locked && !e.preview && !e.playing && !e.candidate && e.view !== "drone" &&
     (e.tool === "translate" || e.tool === "rotate" || e.tool === "scale");
   const click = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
+    if (e.editMode === "edit") return;
     if (event.delta > 2 || input.suppressClick()) return;
     if (e.tool === "target") {
       if (e.selection?.type === "viewpoint") {
@@ -174,10 +176,11 @@ function Transformable({
         rotation={model?.kind === "obj" ? radians(objRotation(model)) : [0, (rotation * Math.PI) / 180, 0]}
         scale={model?.kind === "obj" ? objScale(model) : [1, 1, 1]}
         userData={{ editorOverlay: selection.type !== "model", pickPriority: selection.type === "viewpoint" ? 2 : 0 }}
-        onPointerDown={(event) => { if (!locked && !model) input.begin(event, selection); }}
+        onPointerDown={(event) => { if (e.editMode === "object" && !locked && !model) input.begin(event, selection); }}
         onClick={click}
         onDoubleClick={(ev) => {
           ev.stopPropagation();
+          if (e.editMode === "edit") return;
           e.select(selection);
           e.focus();
         }}
@@ -553,6 +556,7 @@ function World() {
         receiveShadow
         onClick={(ev) => {
           ev.stopPropagation();
+          if (e.editMode === "edit") return;
           if (ev.delta > 2 || input.suppressClick()) return;
           if (e.tool === "point") e.addPoint([ev.point.x, 15, ev.point.z]);
           else if (e.tool === "target" && e.selection?.type === "viewpoint") {
@@ -573,6 +577,7 @@ function World() {
         position={[0, 0.04, 0]}
         raycast={() => null}
       />
+      {e.editMode === "edit" && <VertexOverlay />}
       <Suspense fallback={null}>
         {e.project.models.map((m) => (
           <ModelObject key={m.id} model={m} />

@@ -5,14 +5,15 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { OrbitControls } from "three-stdlib";
 import { useEditor } from "../../core/editor";
 import type { Model, Vec3 } from "../../core/types";
-import { objQuaternion, objScale } from "../../core/obj-transform";
+import { objMatrix, objQuaternion, objScale } from "../../core/obj-transform";
 import { modelControlPose, modelControlValues } from "../../core/model-transform";
+import { elementKey, resolveElement, vertexLocalPosition, type MeshSelection } from "../../core/mesh-edit";
 import { useSceneInput } from "../../scene/sceneInput";
 
 type Mode = "translate" | "rotate" | "scale";
 
-export function ObjectGizmo({ model, object, center, mode }: {
-  model: Model; object: RefObject<Group | null>; center: Vec3; mode: Mode;
+export function ObjectGizmo({ model, object, center, mode, element }: {
+  model: Model; object: RefObject<Group | null>; center: Vec3; mode: Mode; element?: MeshSelection;
 }) {
   const e = useEditor(), editor = useRef(e), localCenter = useRef(center);
   editor.current = e;
@@ -30,6 +31,15 @@ export function ObjectGizmo({ model, object, center, mode }: {
   const pivot = useRef<Group>(null), active = useRef(false), stop = useRef<() => void>(() => {});
 
   function sync(current: Model) {
+    if (element) {
+      const target = resolveElement(editor.current.readProject(), element);
+      if (target?.pivot && pivot.current) {
+        pivot.current.position.set(...target.pivot).applyMatrix4(objMatrix(target.model));
+        pivot.current.quaternion.identity(); pivot.current.scale.set(1, 1, 1);
+        pivot.current.updateMatrixWorld(true);
+      }
+      return;
+    }
     const pose = modelControlPose(current, localCenter.current);
     if (object.current) {
       object.current.position.set(...current.position);
@@ -46,7 +56,8 @@ export function ObjectGizmo({ model, object, center, mode }: {
   }
 
   // React props and the controls' mutable runtime objects follow the same draft.
-  useLayoutEffect(() => { sync(model); }, [model, center]);
+  const selectionKey = element ? elementKey(element) : "";
+  useLayoutEffect(() => { sync(model); }, [model, center, e.project, selectionKey]);
   useLayoutEffect(() => {
     if (active.current && !e.isTransforming) stop.current();
   }, [e.isTransforming]);
@@ -70,7 +81,7 @@ export function ObjectGizmo({ model, object, center, mode }: {
     };
     stop.current = () => finish(false);
     const start = () => {
-      if (!editor.current.beginTransform({ type: "model", id: model.id })) {
+      if (!(element ? editor.current.beginMeshTransform() : editor.current.beginTransform({ type: "model", id: model.id }))) {
         control.dragging = false;
         control.axis = null;
         return;
@@ -83,6 +94,11 @@ export function ObjectGizmo({ model, object, center, mode }: {
       if (!active.current) return;
       const current = currentModel();
       if (!current) return;
+      if (element && current.kind === "obj") {
+        editor.current.updateTransform({ elementPosition: vertexLocalPosition(current, target.position) });
+        sync(current);
+        return;
+      }
       const values = modelControlValues(current, mode, localCenter.current,
         target.position.toArray(), target.quaternion, target.scale.toArray());
       editor.current.updateTransform(values);
@@ -103,7 +119,7 @@ export function ObjectGizmo({ model, object, center, mode }: {
       // A native pointerdown precedes focusout. Commit pending inspector text before
       // TransformControls caches its gesture start, rather than losing it to a drag.
       const focused = document.activeElement;
-      if (focused instanceof HTMLInputElement && focused.closest(".model-transform-inspector")) {
+      if (focused instanceof HTMLInputElement && focused.closest(".model-transform-inspector, .vertex-inspector")) {
         focused.blur();
         const current = currentModel();
         if (current) sync(current);
@@ -141,7 +157,7 @@ export function ObjectGizmo({ model, object, center, mode }: {
       control.detach();
       control.dispose();
     };
-  }, [control, helper, gl.domElement, mode, model.id, model.kind, orbit, input.blockClicks]);
+  }, [control, helper, gl.domElement, mode, model.id, model.kind, orbit, input.blockClicks, selectionKey]);
 
   return <>
     <group ref={pivot} name="object-transform-pivot" />

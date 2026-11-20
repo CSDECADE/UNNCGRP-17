@@ -82,11 +82,13 @@ app.whenReady().then(async () => {
   await wait("!!document.querySelector('canvas') && !!localStorage.getItem('p15.project.v1')");
   await setupRoot();
   const before=await snapshot();
-  if(['builtin','export'].includes(process.argv[3])){
-   const checks=await require(process.argv[3]==='export'?'./verify-obj-export-cases.cjs':'./verify-builtin-transform-cases.cjs')({win,run,wait,click,key,snapshot,delay,input,
-    dragStart,dragMove,release,setupRoot,control,before,testDir});
+  if(['builtin','export','edit-selection','edit','elements'].includes(process.argv[3])){
+   const cases=process.argv[3]==='elements'?'./verify-mesh-elements-cases.cjs':process.argv[3].startsWith('edit')?'./verify-mesh-edit-cases.cjs':process.argv[3]==='export'?'./verify-obj-export-cases.cjs':'./verify-builtin-transform-cases.cjs';
+   const checks=await require(cases)({win,run,wait,click,key,snapshot,delay,input,
+    dragStart,dragMove,release,setupRoot,control,before,testDir,selectionOnly:process.argv[3]==='edit-selection'});
    assert.equal(errors.length,0,JSON.stringify(errors));
-   console.log(JSON.stringify({passed:true,checks,screenshot:path.join(testDir,process.argv[3]==='export'?'export.png':'builtins.png')}));
+   const screenshot=process.argv[3]==='elements'?'elements.png':process.argv[3]==='edit-selection'?'edit-selection.png':process.argv[3]==='export'?'export.png':process.argv[3]==='edit'?'edit.png':'builtins.png';
+   console.log(JSON.stringify({passed:true,checks,screenshot:path.join(testDir,screenshot)}));
    clearTimeout(timeout);app.exit(0);return;
   }
   const obj=fs.readFileSync(path.join(__dirname,'../tests/fixtures/obj-building.obj'),'utf8');

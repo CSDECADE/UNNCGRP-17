@@ -61,9 +61,13 @@ export function NumberField({
   const rounded = (n: number) => String(Math.round(n * 10 ** precision) / 10 ** precision);
   const [draft, setDraft] = useState(rounded(value));
   const cancelBlur = useRef(false);
-  useEffect(() => setDraft(rounded(value)), [value, precision]);
+  const edited = useRef(false);
+  useEffect(() => { setDraft(rounded(value)); edited.current = false; }, [value, precision]);
   function commit() {
     if (cancelBlur.current) { cancelBlur.current = false; return; }
+    // Focusing a rounded readout is not an edit of its full-precision value.
+    if (!edited.current) return;
+    edited.current = false;
     const next = Number(draft);
     if (draft.trim() === "" || !Number.isFinite(next)) {
       setDraft(String(value));
@@ -84,11 +88,12 @@ export function NumberField({
         min={min}
         max={max}
         disabled={disabled}
-        onChange={(ev) => setDraft(ev.target.value)}
+        onChange={(ev) => { edited.current = true; setDraft(ev.target.value); }}
         onBlur={commit}
         onKeyDown={(ev) => {
           if (ev.key === "Enter") ev.currentTarget.blur();
           if (ev.key === "Escape") {
+            edited.current = false;
             cancelBlur.current = true;
             setDraft(String(value));
             ev.currentTarget.blur();
