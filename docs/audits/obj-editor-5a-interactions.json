@@ -1,0 +1,55 @@
+{
+  "initialAttempt": {
+    "suite": "multi",
+    "status": 1,
+    "failure": "Immediate gizmo pivot assertion at verify-mesh-multiselect-cases.cjs:64",
+    "actual": [
+      41.24264968425855,
+      16.075614879335028,
+      20.227887358007152
+    ],
+    "expected": [
+      42.000000000000014,
+      17.000000000000007,
+      19.999999999999996
+    ],
+    "disposition": "Unresolved timing/test-readiness versus transient UI synchronization; original suite unchanged on retry."
+  },
+  "completedSequentialRun": [
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "multi",
+      "status": 0
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "elements",
+      "status": 0
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "edit",
+      "status": 0
+    },
+    {
+      "file": "verify-obj-ui.cjs",
+      "mode": "",
+      "status": 0
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "",
+      "status": 0
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "builtin",
+      "status": 0
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "export",
+      "status": 0
+    }
+  ]
+}

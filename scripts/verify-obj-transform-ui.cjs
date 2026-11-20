@@ -6,7 +6,7 @@ const { tmpdir } = require('node:os');
 const testDir = fs.mkdtempSync(path.join(tmpdir(), 'aero-transform-ui-'));
 app.setPath('userData', path.join(testDir, 'profile'));
 app.commandLine.appendSwitch('enable-unsafe-swiftshader');
-const timeout = setTimeout(() => { console.error('Transform UI test timed out'); app.exit(1); }, 90000);
+const timeout = setTimeout(() => { console.error('Transform UI test timed out'); app.exit(1); }, process.argv[3]==='audit'?300000:90000);
 app.whenReady().then(async () => {
  const win = new BrowserWindow({ show: false, width: 1440, height: 1000,
   webPreferences: { contextIsolation: true, nodeIntegration: false, backgroundThrottling: false } });
@@ -82,12 +82,12 @@ app.whenReady().then(async () => {
   await wait("!!document.querySelector('canvas') && !!localStorage.getItem('p15.project.v1')");
   await setupRoot();
   const before=await snapshot();
-  if(['builtin','export','edit-selection','edit','elements','multi-selection','multi'].includes(process.argv[3])){
-   const cases=process.argv[3].startsWith('multi')?'./verify-mesh-multiselect-cases.cjs':process.argv[3]==='elements'?'./verify-mesh-elements-cases.cjs':process.argv[3].startsWith('edit')?'./verify-mesh-edit-cases.cjs':process.argv[3]==='export'?'./verify-obj-export-cases.cjs':'./verify-builtin-transform-cases.cjs';
+  if(['builtin','export','edit-selection','edit','elements','multi-selection','multi','audit'].includes(process.argv[3])){
+   const cases=process.argv[3]==='audit'?'./benchmark-obj-editor-ui-cases.cjs':process.argv[3].startsWith('multi')?'./verify-mesh-multiselect-cases.cjs':process.argv[3]==='elements'?'./verify-mesh-elements-cases.cjs':process.argv[3].startsWith('edit')?'./verify-mesh-edit-cases.cjs':process.argv[3]==='export'?'./verify-obj-export-cases.cjs':'./verify-builtin-transform-cases.cjs';
    const checks=await require(cases)({win,run,wait,click,key,snapshot,delay,input,
     dragStart,dragMove,release,setupRoot,control,before,testDir,selectionOnly:['edit-selection','multi-selection'].includes(process.argv[3])});
    assert.equal(errors.length,0,JSON.stringify(errors));
-   const screenshot=process.argv[3].startsWith('multi')?'multi.png':process.argv[3]==='elements'?'elements.png':process.argv[3]==='edit-selection'?'edit-selection.png':process.argv[3]==='export'?'export.png':process.argv[3]==='edit'?'edit.png':'builtins.png';
+   const screenshot=process.argv[3]==='audit'?'audit.png':process.argv[3].startsWith('multi')?'multi.png':process.argv[3]==='elements'?'elements.png':process.argv[3]==='edit-selection'?'edit-selection.png':process.argv[3]==='export'?'export.png':process.argv[3]==='edit'?'edit.png':'builtins.png';
    console.log(JSON.stringify({passed:true,checks,screenshot:path.join(testDir,screenshot)}));
    clearTimeout(timeout);app.exit(0);return;
   }

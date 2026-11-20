@@ -552,3 +552,5 @@ Manual acceptance:
 Stage 4C remains same-type selection within one submesh and translation only. Box/lasso selection, cross-submesh groups, topology changes, proportional editing, element rotation/scaling and built-in/UAV mesh editing remain excluded. No subsequent stage is automatically implemented.
 
 Stage 4C validation on 20 November 2026: all 106 unit tests, the TypeScript check and production build passed. The independent multi-selection Step A suite passed, followed by seven full Electron suites: group editing, single edge/face editing, vertex editing, OBJ import, Object Mode, built-in transforms and OBJ export. Native picker behavior, dense-asset responsiveness and the overlapping/clipped-surface cases above remain manual acceptance checks.
+
+For the subsequent architecture, correctness, memory and native-interaction measurements, see the [Stage 5A engineering audit](obj-editor-audit.md). It includes reproducible benchmarks and a proposed optimization scope; it does not implement Stage 5B.
