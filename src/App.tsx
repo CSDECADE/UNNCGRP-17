@@ -117,7 +117,7 @@ export function App() {
           ev.preventDefault();
           save();
         }
-        if (ev.key === "z" && !window.p15Desktop) {
+        if (ev.key.toLowerCase() === "z" && !window.p15Desktop) {
           ev.preventDefault();
           ev.shiftKey ? e.redo() : e.undo();
         }

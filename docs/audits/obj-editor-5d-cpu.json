@@ -1,0 +1,2462 @@
+{
+  "conditions": {
+    "timestamp": "2026-11-20T17:28:53.679Z",
+    "revision": "61b5961dae89a349511b98d57e73c523c03f25c8",
+    "node": "v25.9.0",
+    "cpu": "Apple M3 Pro",
+    "platform": "darwin",
+    "arch": "arm64",
+    "ramGiB": 18,
+    "warmup": 3,
+    "runs": 15,
+    "note": "CPU only; synchronous production functions. p95 is a sample percentile, not a frame-time estimate. No logging or forced GC in timed operations."
+  },
+  "cases": [
+    {
+      "grid": 25,
+      "triangles": 1250,
+      "attributes": false,
+      "submeshes": 1,
+      "projectBytes": 37933,
+      "operations": {
+        "edgeDerivation": {
+          "firstMs": 0.012,
+          "n": 15,
+          "p50": 0,
+          "p95": 0.004,
+          "max": 0.004
+        },
+        "boundsScan": {
+          "firstMs": 1.435,
+          "n": 15,
+          "p50": 0.177,
+          "p95": 2.7,
+          "max": 2.7
+        },
+        "pickVertexProjectionOnly": {
+          "firstMs": 0.156,
+          "n": 15,
+          "p50": 0.089,
+          "p95": 0.199,
+          "max": 0.199
+        },
+        "pickVertexOcclusion": {
+          "firstMs": 0.729,
+          "n": 15,
+          "p50": 0.123,
+          "p95": 0.764,
+          "max": 0.764
+        },
+        "pickEdgeProjectionOnly": {
+          "firstMs": 1.426,
+          "n": 15,
+          "p50": 0.478,
+          "p95": 0.987,
+          "max": 0.987
+        },
+        "pickEdgeOcclusion": {
+          "firstMs": 1.2,
+          "n": 15,
+          "p50": 0.593,
+          "p95": 0.898,
+          "max": 0.898
+        },
+        "pickFaceRaycast": {
+          "firstMs": 0.154,
+          "n": 15,
+          "p50": 0.043,
+          "p95": 0.135,
+          "max": 0.135
+        },
+        "assembleCornerPositions": {
+          "firstMs": 0.199,
+          "n": 15,
+          "p50": 0.088,
+          "p95": 0.303,
+          "max": 0.303
+        },
+        "copyPositionAttribute": {
+          "firstMs": 0.063,
+          "n": 15,
+          "p50": 0.002,
+          "p95": 0.022,
+          "max": 0.022
+        },
+        "recomputeBoundsExistingBuffer": {
+          "firstMs": 0.478,
+          "n": 15,
+          "p50": 0.065,
+          "p95": 0.415,
+          "max": 0.415
+        },
+        "recomputeFlatNormalsExistingBuffer": {
+          "firstMs": 0.35,
+          "n": 15,
+          "p50": 0.106,
+          "p95": 0.678,
+          "max": 0.678
+        },
+        "buildRenderGeometry": {
+          "firstMs": 0.576,
+          "n": 15,
+          "p50": 0.25,
+          "p95": 0.322,
+          "max": 0.322
+        },
+        "serializeProject": {
+          "firstMs": 0.666,
+          "n": 15,
+          "p50": 0.463,
+          "p95": 1.136,
+          "max": 1.136
+        },
+        "stringifyOnePass": {
+          "firstMs": 0.115,
+          "n": 15,
+          "p50": 0.052,
+          "p95": 0.138,
+          "max": 0.138
+        },
+        "utf8BudgetOnePass": {
+          "firstMs": 0.03,
+          "n": 15,
+          "p50": 0.012,
+          "p95": 0.109,
+          "max": 0.109
+        },
+        "validateProjectIncludingBudget": {
+          "firstMs": 0.309,
+          "n": 15,
+          "p50": 0.309,
+          "p95": 0.623,
+          "max": 0.623
+        },
+        "restoreProject": {
+          "firstMs": 0.572,
+          "n": 15,
+          "p50": 0.509,
+          "p95": 0.891,
+          "max": 0.891
+        },
+        "exportWithRoundtripPreflight": {
+          "firstMs": 7.61,
+          "n": 15,
+          "p50": 4.74,
+          "p95": 6.829,
+          "max": 6.829
+        },
+        "importPreparedProject": {
+          "firstMs": 2.394,
+          "n": 15,
+          "p50": 2.391,
+          "p95": 3.701,
+          "max": 3.701
+        }
+      },
+      "workloads": [
+        {
+          "mode": "vertex",
+          "count": 1,
+          "vertices": 1,
+          "affectedTriangles": 2,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.074,
+              "n": 15,
+              "p50": 0.002,
+              "p95": 0.008,
+              "max": 0.008
+            },
+            "resolveVertices": {
+              "firstMs": 0.016,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.015,
+              "max": 0.015
+            },
+            "startTransaction": {
+              "firstMs": 0.027,
+              "n": 15,
+              "p50": 0.004,
+              "p95": 0.012,
+              "max": 0.012
+            },
+            "previewAbsolute": {
+              "firstMs": 0.389,
+              "n": 15,
+              "p50": 0.277,
+              "p95": 0.508,
+              "max": 0.508
+            },
+            "previewDelta": {
+              "firstMs": 0.34,
+              "n": 15,
+              "p50": 0.282,
+              "p95": 0.438,
+              "max": 0.438
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.08,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.007,
+              "max": 0.007
+            },
+            "commitWithSerialization": {
+              "firstMs": 0.616,
+              "n": 15,
+              "p50": 0.365,
+              "p95": 0.514,
+              "max": 0.514
+            }
+          }
+        },
+        {
+          "mode": "vertex",
+          "count": 100,
+          "vertices": 100,
+          "affectedTriangles": 409,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.07,
+              "n": 15,
+              "p50": 0.057,
+              "p95": 0.071,
+              "max": 0.071
+            },
+            "resolveVertices": {
+              "firstMs": 0.057,
+              "n": 15,
+              "p50": 0.034,
+              "p95": 0.047,
+              "max": 0.047
+            },
+            "startTransaction": {
+              "firstMs": 0.12,
+              "n": 15,
+              "p50": 0.077,
+              "p95": 0.081,
+              "max": 0.081
+            },
+            "previewAbsolute": {
+              "firstMs": 0.398,
+              "n": 15,
+              "p50": 0.237,
+              "p95": 0.373,
+              "max": 0.373
+            },
+            "previewDelta": {
+              "firstMs": 0.279,
+              "n": 15,
+              "p50": 0.248,
+              "p95": 0.412,
+              "max": 0.412
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 0.391,
+              "n": 15,
+              "p50": 0.356,
+              "p95": 0.57,
+              "max": 0.57
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 1,
+          "vertices": 2,
+          "affectedTriangles": 4,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.008,
+              "n": 15,
+              "p50": 0.002,
+              "p95": 0.002,
+              "max": 0.002
+            },
+            "resolveVertices": {
+              "firstMs": 0.003,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.006,
+              "max": 0.006
+            },
+            "startTransaction": {
+              "firstMs": 0.008,
+              "n": 15,
+              "p50": 0.004,
+              "p95": 0.028,
+              "max": 0.028
+            },
+            "previewAbsolute": {
+              "firstMs": 0.088,
+              "n": 15,
+              "p50": 0.096,
+              "p95": 0.136,
+              "max": 0.136
+            },
+            "previewDelta": {
+              "firstMs": 0.14,
+              "n": 15,
+              "p50": 0.096,
+              "p95": 0.116,
+              "max": 0.116
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "commitWithSerialization": {
+              "firstMs": 0.524,
+              "n": 15,
+              "p50": 0.387,
+              "p95": 0.472,
+              "max": 0.472
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 100,
+          "vertices": 199,
+          "affectedTriangles": 608,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.114,
+              "n": 15,
+              "p50": 0.09,
+              "p95": 0.134,
+              "max": 0.134
+            },
+            "resolveVertices": {
+              "firstMs": 0.113,
+              "n": 15,
+              "p50": 0.074,
+              "p95": 0.096,
+              "max": 0.096
+            },
+            "startTransaction": {
+              "firstMs": 0.172,
+              "n": 15,
+              "p50": 0.158,
+              "p95": 0.304,
+              "max": 0.304
+            },
+            "previewAbsolute": {
+              "firstMs": 0.355,
+              "n": 15,
+              "p50": 0.336,
+              "p95": 0.966,
+              "max": 0.966
+            },
+            "previewDelta": {
+              "firstMs": 0.541,
+              "n": 15,
+              "p50": 0.53,
+              "p95": 0.642,
+              "max": 0.642
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.011,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 0.612,
+              "n": 15,
+              "p50": 0.432,
+              "p95": 0.608,
+              "max": 0.608
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 1,
+          "vertices": 3,
+          "affectedTriangles": 7,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.007,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.002,
+              "max": 0.002
+            },
+            "resolveVertices": {
+              "firstMs": 0.003,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.007,
+              "n": 15,
+              "p50": 0.004,
+              "p95": 0.008,
+              "max": 0.008
+            },
+            "previewAbsolute": {
+              "firstMs": 0.098,
+              "n": 15,
+              "p50": 0.096,
+              "p95": 0.125,
+              "max": 0.125
+            },
+            "previewDelta": {
+              "firstMs": 0.085,
+              "n": 15,
+              "p50": 0.076,
+              "p95": 0.275,
+              "max": 0.275
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "commitWithSerialization": {
+              "firstMs": 0.472,
+              "n": 15,
+              "p50": 0.434,
+              "p95": 0.592,
+              "max": 0.592
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 100,
+          "vertices": 204,
+          "affectedTriangles": 547,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.085,
+              "n": 15,
+              "p50": 0.069,
+              "p95": 0.087,
+              "max": 0.087
+            },
+            "resolveVertices": {
+              "firstMs": 0.071,
+              "n": 15,
+              "p50": 0.052,
+              "p95": 0.091,
+              "max": 0.091
+            },
+            "startTransaction": {
+              "firstMs": 0.135,
+              "n": 15,
+              "p50": 0.11,
+              "p95": 0.142,
+              "max": 0.142
+            },
+            "previewAbsolute": {
+              "firstMs": 0.226,
+              "n": 15,
+              "p50": 0.205,
+              "p95": 0.292,
+              "max": 0.292
+            },
+            "previewDelta": {
+              "firstMs": 0.233,
+              "n": 15,
+              "p50": 0.248,
+              "p95": 0.316,
+              "max": 0.316
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.003,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 0.707,
+              "n": 15,
+              "p50": 0.434,
+              "p95": 0.572,
+              "max": 0.572
+            }
+          }
+        }
+      ]
+    },
+    {
+      "grid": 70,
+      "triangles": 9800,
+      "attributes": false,
+      "submeshes": 1,
+      "projectBytes": 320269,
+      "operations": {
+        "edgeDerivation": {
+          "firstMs": 0.004,
+          "n": 15,
+          "p50": 0,
+          "p95": 0,
+          "max": 0
+        },
+        "boundsScan": {
+          "firstMs": 0.316,
+          "n": 15,
+          "p50": 0.125,
+          "p95": 0.256,
+          "max": 0.256
+        },
+        "pickVertexProjectionOnly": {
+          "firstMs": 0.737,
+          "n": 15,
+          "p50": 0.442,
+          "p95": 0.637,
+          "max": 0.637
+        },
+        "pickVertexOcclusion": {
+          "firstMs": 1.309,
+          "n": 15,
+          "p50": 1,
+          "p95": 1.171,
+          "max": 1.171
+        },
+        "pickEdgeProjectionOnly": {
+          "firstMs": 4.892,
+          "n": 15,
+          "p50": 4.263,
+          "p95": 5.019,
+          "max": 5.019
+        },
+        "pickEdgeOcclusion": {
+          "firstMs": 5.873,
+          "n": 15,
+          "p50": 3.857,
+          "p95": 5.285,
+          "max": 5.285
+        },
+        "pickFaceRaycast": {
+          "firstMs": 0.273,
+          "n": 15,
+          "p50": 0.285,
+          "p95": 0.748,
+          "max": 0.748
+        },
+        "assembleCornerPositions": {
+          "firstMs": 1.062,
+          "n": 15,
+          "p50": 0.793,
+          "p95": 1.074,
+          "max": 1.074
+        },
+        "copyPositionAttribute": {
+          "firstMs": 0.065,
+          "n": 15,
+          "p50": 0.024,
+          "p95": 0.047,
+          "max": 0.047
+        },
+        "recomputeBoundsExistingBuffer": {
+          "firstMs": 0.304,
+          "n": 15,
+          "p50": 0.304,
+          "p95": 0.432,
+          "max": 0.432
+        },
+        "recomputeFlatNormalsExistingBuffer": {
+          "firstMs": 0.72,
+          "n": 15,
+          "p50": 0.36,
+          "p95": 1.109,
+          "max": 1.109
+        },
+        "buildRenderGeometry": {
+          "firstMs": 1.786,
+          "n": 15,
+          "p50": 1.441,
+          "p95": 2.446,
+          "max": 2.446
+        },
+        "serializeProject": {
+          "firstMs": 3.678,
+          "n": 15,
+          "p50": 3.453,
+          "p95": 4.506,
+          "max": 4.506
+        },
+        "stringifyOnePass": {
+          "firstMs": 0.5,
+          "n": 15,
+          "p50": 0.493,
+          "p95": 0.531,
+          "max": 0.531
+        },
+        "utf8BudgetOnePass": {
+          "firstMs": 0.115,
+          "n": 15,
+          "p50": 0.085,
+          "p95": 0.098,
+          "max": 0.098
+        },
+        "validateProjectIncludingBudget": {
+          "firstMs": 2.506,
+          "n": 15,
+          "p50": 2.62,
+          "p95": 3.53,
+          "max": 3.53
+        },
+        "restoreProject": {
+          "firstMs": 3.573,
+          "n": 15,
+          "p50": 3.173,
+          "p95": 3.866,
+          "max": 3.866
+        },
+        "exportWithRoundtripPreflight": {
+          "firstMs": 19.923,
+          "n": 15,
+          "p50": 19.902,
+          "p95": 23.465,
+          "max": 23.465
+        },
+        "importPreparedProject": {
+          "firstMs": 11.939,
+          "n": 15,
+          "p50": 11.891,
+          "p95": 12.572,
+          "max": 12.572
+        }
+      },
+      "workloads": [
+        {
+          "mode": "vertex",
+          "count": 1,
+          "vertices": 1,
+          "affectedTriangles": 2,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.005,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.004,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.005,
+              "max": 0.005
+            },
+            "startTransaction": {
+              "firstMs": 0.011,
+              "n": 15,
+              "p50": 0.003,
+              "p95": 0.003,
+              "max": 0.003
+            },
+            "previewAbsolute": {
+              "firstMs": 0.82,
+              "n": 15,
+              "p50": 0.443,
+              "p95": 0.624,
+              "max": 0.624
+            },
+            "previewDelta": {
+              "firstMs": 0.472,
+              "n": 15,
+              "p50": 0.442,
+              "p95": 0.508,
+              "max": 0.508
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 3.128,
+              "n": 15,
+              "p50": 2.927,
+              "p95": 5.866,
+              "max": 5.866
+            }
+          }
+        },
+        {
+          "mode": "vertex",
+          "count": 100,
+          "vertices": 100,
+          "affectedTriangles": 581,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.108,
+              "n": 15,
+              "p50": 0.057,
+              "p95": 0.073,
+              "max": 0.073
+            },
+            "resolveVertices": {
+              "firstMs": 0.086,
+              "n": 15,
+              "p50": 0.041,
+              "p95": 0.049,
+              "max": 0.049
+            },
+            "startTransaction": {
+              "firstMs": 0.095,
+              "n": 15,
+              "p50": 0.081,
+              "p95": 0.097,
+              "max": 0.097
+            },
+            "previewAbsolute": {
+              "firstMs": 0.884,
+              "n": 15,
+              "p50": 0.784,
+              "p95": 1.43,
+              "max": 1.43
+            },
+            "previewDelta": {
+              "firstMs": 0.77,
+              "n": 15,
+              "p50": 0.79,
+              "p95": 0.854,
+              "max": 0.854
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 3.31,
+              "n": 15,
+              "p50": 2.977,
+              "p95": 3.942,
+              "max": 3.942
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 1,
+          "vertices": 2,
+          "affectedTriangles": 4,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.006,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.004,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.015,
+              "n": 15,
+              "p50": 0.003,
+              "p95": 0.004,
+              "max": 0.004
+            },
+            "previewAbsolute": {
+              "firstMs": 0.542,
+              "n": 15,
+              "p50": 0.497,
+              "p95": 0.52,
+              "max": 0.52
+            },
+            "previewDelta": {
+              "firstMs": 0.502,
+              "n": 15,
+              "p50": 0.495,
+              "p95": 0.798,
+              "max": 0.798
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 2.962,
+              "n": 15,
+              "p50": 2.967,
+              "p95": 3.838,
+              "max": 3.838
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 100,
+          "vertices": 200,
+          "affectedTriangles": 980,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.094,
+              "n": 15,
+              "p50": 0.079,
+              "p95": 0.088,
+              "max": 0.088
+            },
+            "resolveVertices": {
+              "firstMs": 0.075,
+              "n": 15,
+              "p50": 0.065,
+              "p95": 0.077,
+              "max": 0.077
+            },
+            "startTransaction": {
+              "firstMs": 0.149,
+              "n": 15,
+              "p50": 0.137,
+              "p95": 0.162,
+              "max": 0.162
+            },
+            "previewAbsolute": {
+              "firstMs": 0.839,
+              "n": 15,
+              "p50": 0.783,
+              "p95": 0.848,
+              "max": 0.848
+            },
+            "previewDelta": {
+              "firstMs": 0.874,
+              "n": 15,
+              "p50": 0.839,
+              "p95": 1.149,
+              "max": 1.149
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 3.066,
+              "n": 15,
+              "p50": 3.05,
+              "p95": 3.599,
+              "max": 3.599
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 1,
+          "vertices": 3,
+          "affectedTriangles": 7,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.004,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.008,
+              "n": 15,
+              "p50": 0.003,
+              "p95": 0.003,
+              "max": 0.003
+            },
+            "previewAbsolute": {
+              "firstMs": 0.447,
+              "n": 15,
+              "p50": 0.441,
+              "p95": 0.466,
+              "max": 0.466
+            },
+            "previewDelta": {
+              "firstMs": 0.444,
+              "n": 15,
+              "p50": 0.452,
+              "p95": 0.498,
+              "max": 0.498
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "commitWithSerialization": {
+              "firstMs": 3.3,
+              "n": 15,
+              "p50": 2.922,
+              "p95": 4.317,
+              "max": 4.317
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 100,
+          "vertices": 300,
+          "affectedTriangles": 1259,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.067,
+              "n": 15,
+              "p50": 0.055,
+              "p95": 0.062,
+              "max": 0.062
+            },
+            "resolveVertices": {
+              "firstMs": 0.062,
+              "n": 15,
+              "p50": 0.05,
+              "p95": 0.069,
+              "max": 0.069
+            },
+            "startTransaction": {
+              "firstMs": 0.111,
+              "n": 15,
+              "p50": 0.094,
+              "p95": 0.119,
+              "max": 0.119
+            },
+            "previewAbsolute": {
+              "firstMs": 0.898,
+              "n": 15,
+              "p50": 0.777,
+              "p95": 1.343,
+              "max": 1.343
+            },
+            "previewDelta": {
+              "firstMs": 0.824,
+              "n": 15,
+              "p50": 0.826,
+              "p95": 1.054,
+              "max": 1.054
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 3.229,
+              "n": 15,
+              "p50": 2.974,
+              "p95": 3.726,
+              "max": 3.726
+            }
+          }
+        }
+      ]
+    },
+    {
+      "grid": 150,
+      "triangles": 45000,
+      "attributes": false,
+      "submeshes": 1,
+      "projectBytes": 1590357,
+      "operations": {
+        "edgeDerivation": {
+          "firstMs": 0.003,
+          "n": 15,
+          "p50": 0,
+          "p95": 0,
+          "max": 0
+        },
+        "boundsScan": {
+          "firstMs": 1.225,
+          "n": 15,
+          "p50": 0.523,
+          "p95": 0.554,
+          "max": 0.554
+        },
+        "pickVertexProjectionOnly": {
+          "firstMs": 1.51,
+          "n": 15,
+          "p50": 1.443,
+          "p95": 1.804,
+          "max": 1.804
+        },
+        "pickVertexOcclusion": {
+          "firstMs": 6.994,
+          "n": 15,
+          "p50": 7.047,
+          "p95": 7.312,
+          "max": 7.312
+        },
+        "pickEdgeProjectionOnly": {
+          "firstMs": 10.657,
+          "n": 15,
+          "p50": 10.621,
+          "p95": 11.181,
+          "max": 11.181
+        },
+        "pickEdgeOcclusion": {
+          "firstMs": 17.438,
+          "n": 15,
+          "p50": 17.333,
+          "p95": 17.638,
+          "max": 17.638
+        },
+        "pickFaceRaycast": {
+          "firstMs": 1.137,
+          "n": 15,
+          "p50": 1.105,
+          "p95": 1.184,
+          "max": 1.184
+        },
+        "assembleCornerPositions": {
+          "firstMs": 5.535,
+          "n": 15,
+          "p50": 5.785,
+          "p95": 6.837,
+          "max": 6.837
+        },
+        "copyPositionAttribute": {
+          "firstMs": 0.174,
+          "n": 15,
+          "p50": 0.115,
+          "p95": 0.148,
+          "max": 0.148
+        },
+        "recomputeBoundsExistingBuffer": {
+          "firstMs": 1.527,
+          "n": 15,
+          "p50": 1.549,
+          "p95": 1.616,
+          "max": 1.616
+        },
+        "recomputeFlatNormalsExistingBuffer": {
+          "firstMs": 1.607,
+          "n": 15,
+          "p50": 1.549,
+          "p95": 1.742,
+          "max": 1.742
+        },
+        "buildRenderGeometry": {
+          "firstMs": 7.065,
+          "n": 15,
+          "p50": 6.402,
+          "p95": 15.768,
+          "max": 15.768
+        },
+        "serializeProject": {
+          "firstMs": 16.702,
+          "n": 15,
+          "p50": 15.037,
+          "p95": 17.393,
+          "max": 17.393
+        },
+        "stringifyOnePass": {
+          "firstMs": 2.503,
+          "n": 15,
+          "p50": 2.91,
+          "p95": 9.307,
+          "max": 9.307
+        },
+        "utf8BudgetOnePass": {
+          "firstMs": 0.769,
+          "n": 15,
+          "p50": 0.417,
+          "p95": 0.492,
+          "max": 0.492
+        },
+        "validateProjectIncludingBudget": {
+          "firstMs": 12.913,
+          "n": 15,
+          "p50": 12.799,
+          "p95": 15.089,
+          "max": 15.089
+        },
+        "restoreProject": {
+          "firstMs": 15.436,
+          "n": 15,
+          "p50": 15.638,
+          "p95": 17.476,
+          "max": 17.476
+        },
+        "exportWithRoundtripPreflight": {
+          "firstMs": 109.029,
+          "n": 15,
+          "p50": 108.428,
+          "p95": 131.039,
+          "max": 131.039
+        },
+        "importPreparedProject": {
+          "firstMs": 59.244,
+          "n": 15,
+          "p50": 62.662,
+          "p95": 159.748,
+          "max": 159.748
+        }
+      },
+      "workloads": [
+        {
+          "mode": "vertex",
+          "count": 1,
+          "vertices": 1,
+          "affectedTriangles": 2,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.014,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.013,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.026,
+              "n": 15,
+              "p50": 0.002,
+              "p95": 0.008,
+              "max": 0.008
+            },
+            "previewAbsolute": {
+              "firstMs": 2.47,
+              "n": 15,
+              "p50": 2.231,
+              "p95": 6.891,
+              "max": 6.891
+            },
+            "previewDelta": {
+              "firstMs": 2.11,
+              "n": 15,
+              "p50": 2.117,
+              "p95": 4.871,
+              "max": 4.871
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.004,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 23.443,
+              "n": 15,
+              "p50": 16.33,
+              "p95": 24.639,
+              "max": 24.639
+            }
+          }
+        },
+        {
+          "mode": "vertex",
+          "count": 100,
+          "vertices": 100,
+          "affectedTriangles": 590,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.076,
+              "n": 15,
+              "p50": 0.046,
+              "p95": 0.052,
+              "max": 0.052
+            },
+            "resolveVertices": {
+              "firstMs": 0.11,
+              "n": 15,
+              "p50": 0.039,
+              "p95": 0.048,
+              "max": 0.048
+            },
+            "startTransaction": {
+              "firstMs": 0.098,
+              "n": 15,
+              "p50": 0.084,
+              "p95": 0.119,
+              "max": 0.119
+            },
+            "previewAbsolute": {
+              "firstMs": 4.434,
+              "n": 15,
+              "p50": 3.123,
+              "p95": 8.474,
+              "max": 8.474
+            },
+            "previewDelta": {
+              "firstMs": 3.17,
+              "n": 15,
+              "p50": 3.153,
+              "p95": 6.119,
+              "max": 6.119
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0.016,
+              "max": 0.016
+            },
+            "commitWithSerialization": {
+              "firstMs": 24.527,
+              "n": 15,
+              "p50": 18.269,
+              "p95": 25.253,
+              "max": 25.253
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 1,
+          "vertices": 2,
+          "affectedTriangles": 4,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.016,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.011,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.03,
+              "n": 15,
+              "p50": 0.003,
+              "p95": 0.019,
+              "max": 0.019
+            },
+            "previewAbsolute": {
+              "firstMs": 2.576,
+              "n": 15,
+              "p50": 2.537,
+              "p95": 7.276,
+              "max": 7.276
+            },
+            "previewDelta": {
+              "firstMs": 2.329,
+              "n": 15,
+              "p50": 2.524,
+              "p95": 6.377,
+              "max": 6.377
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 17.378,
+              "n": 15,
+              "p50": 16.848,
+              "p95": 27.771,
+              "max": 27.771
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 100,
+          "vertices": 200,
+          "affectedTriangles": 989,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.15,
+              "n": 15,
+              "p50": 0.077,
+              "p95": 0.084,
+              "max": 0.084
+            },
+            "resolveVertices": {
+              "firstMs": 0.219,
+              "n": 15,
+              "p50": 0.072,
+              "p95": 0.075,
+              "max": 0.075
+            },
+            "startTransaction": {
+              "firstMs": 0.188,
+              "n": 15,
+              "p50": 0.151,
+              "p95": 0.226,
+              "max": 0.226
+            },
+            "previewAbsolute": {
+              "firstMs": 5.264,
+              "n": 15,
+              "p50": 3.59,
+              "p95": 6.034,
+              "max": 6.034
+            },
+            "previewDelta": {
+              "firstMs": 3.79,
+              "n": 15,
+              "p50": 3.697,
+              "p95": 4.263,
+              "max": 4.263
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 22.46,
+              "n": 15,
+              "p50": 16.303,
+              "p95": 20.612,
+              "max": 20.612
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 1,
+          "vertices": 3,
+          "affectedTriangles": 7,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.015,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.008,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.026,
+              "n": 15,
+              "p50": 0.002,
+              "p95": 0.002,
+              "max": 0.002
+            },
+            "previewAbsolute": {
+              "firstMs": 3.859,
+              "n": 15,
+              "p50": 2.171,
+              "p95": 2.84,
+              "max": 2.84
+            },
+            "previewDelta": {
+              "firstMs": 2.207,
+              "n": 15,
+              "p50": 2.154,
+              "p95": 3.829,
+              "max": 3.829
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 16.394,
+              "n": 15,
+              "p50": 18.497,
+              "p95": 24.961,
+              "max": 24.961
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 100,
+          "vertices": 300,
+          "affectedTriangles": 1147,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.073,
+              "n": 15,
+              "p50": 0.051,
+              "p95": 0.075,
+              "max": 0.075
+            },
+            "resolveVertices": {
+              "firstMs": 0.157,
+              "n": 15,
+              "p50": 0.055,
+              "p95": 0.069,
+              "max": 0.069
+            },
+            "startTransaction": {
+              "firstMs": 0.126,
+              "n": 15,
+              "p50": 0.106,
+              "p95": 0.147,
+              "max": 0.147
+            },
+            "previewAbsolute": {
+              "firstMs": 3.833,
+              "n": 15,
+              "p50": 3.578,
+              "p95": 5.335,
+              "max": 5.335
+            },
+            "previewDelta": {
+              "firstMs": 3.161,
+              "n": 15,
+              "p50": 3.315,
+              "p95": 3.727,
+              "max": 3.727
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 16.901,
+              "n": 15,
+              "p50": 17.673,
+              "p95": 24.581,
+              "max": 24.581
+            }
+          }
+        }
+      ]
+    },
+    {
+      "grid": 150,
+      "triangles": 45000,
+      "attributes": true,
+      "submeshes": 1,
+      "projectBytes": 2940377,
+      "operations": {
+        "edgeDerivation": {
+          "firstMs": 0.004,
+          "n": 15,
+          "p50": 0,
+          "p95": 0,
+          "max": 0
+        },
+        "boundsScan": {
+          "firstMs": 6.627,
+          "n": 15,
+          "p50": 1.388,
+          "p95": 3.43,
+          "max": 3.43
+        },
+        "pickVertexProjectionOnly": {
+          "firstMs": 1.801,
+          "n": 15,
+          "p50": 1.752,
+          "p95": 2.146,
+          "max": 2.146
+        },
+        "pickVertexOcclusion": {
+          "firstMs": 10.3,
+          "n": 15,
+          "p50": 8.676,
+          "p95": 9.018,
+          "max": 9.018
+        },
+        "pickEdgeProjectionOnly": {
+          "firstMs": 12.362,
+          "n": 15,
+          "p50": 12.24,
+          "p95": 12.644,
+          "max": 12.644
+        },
+        "pickEdgeOcclusion": {
+          "firstMs": 20.608,
+          "n": 15,
+          "p50": 20.137,
+          "p95": 20.912,
+          "max": 20.912
+        },
+        "pickFaceRaycast": {
+          "firstMs": 1.383,
+          "n": 15,
+          "p50": 1.378,
+          "p95": 1.428,
+          "max": 1.428
+        },
+        "assembleCornerPositions": {
+          "firstMs": 5.79,
+          "n": 15,
+          "p50": 5.873,
+          "p95": 6.646,
+          "max": 6.646
+        },
+        "copyPositionAttribute": {
+          "firstMs": 1.751,
+          "n": 15,
+          "p50": 0.28,
+          "p95": 4.327,
+          "max": 4.327
+        },
+        "recomputeBoundsExistingBuffer": {
+          "firstMs": 2.085,
+          "n": 15,
+          "p50": 1.5,
+          "p95": 1.582,
+          "max": 1.582
+        },
+        "copyCornerNormals": {
+          "firstMs": 0.296,
+          "n": 15,
+          "p50": 0.361,
+          "p95": 2.147,
+          "max": 2.147
+        },
+        "buildRenderGeometry": {
+          "firstMs": 22.427,
+          "n": 15,
+          "p50": 6.288,
+          "p95": 20.47,
+          "max": 20.47
+        },
+        "serializeProject": {
+          "firstMs": 54.267,
+          "n": 15,
+          "p50": 42.552,
+          "p95": 77.723,
+          "max": 77.723
+        },
+        "stringifyOnePass": {
+          "firstMs": 4.669,
+          "n": 15,
+          "p50": 4.647,
+          "p95": 6.612,
+          "max": 6.612
+        },
+        "utf8BudgetOnePass": {
+          "firstMs": 6.358,
+          "n": 15,
+          "p50": 1.046,
+          "p95": 2.231,
+          "max": 2.231
+        },
+        "validateProjectIncludingBudget": {
+          "firstMs": 44.935,
+          "n": 15,
+          "p50": 31.301,
+          "p95": 51.678,
+          "max": 51.678
+        },
+        "restoreProject": {
+          "firstMs": 40.753,
+          "n": 15,
+          "p50": 38.172,
+          "p95": 44.034,
+          "max": 44.034
+        },
+        "exportWithRoundtripPreflight": {
+          "firstMs": 208.362,
+          "n": 15,
+          "p50": 212.958,
+          "p95": 276.805,
+          "max": 276.805
+        },
+        "importPreparedProject": {
+          "firstMs": 108.482,
+          "n": 15,
+          "p50": 91.626,
+          "p95": 102.708,
+          "max": 102.708
+        }
+      },
+      "workloads": [
+        {
+          "mode": "vertex",
+          "count": 1,
+          "vertices": 1,
+          "affectedTriangles": 2,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.017,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.013,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.023,
+              "n": 15,
+              "p50": 0.002,
+              "p95": 0.011,
+              "max": 0.011
+            },
+            "previewAbsolute": {
+              "firstMs": 5.633,
+              "n": 15,
+              "p50": 3.508,
+              "p95": 5.058,
+              "max": 5.058
+            },
+            "previewDelta": {
+              "firstMs": 3.472,
+              "n": 15,
+              "p50": 3.636,
+              "p95": 23.484,
+              "max": 23.484
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 35.385,
+              "n": 15,
+              "p50": 34.759,
+              "p95": 35.095,
+              "max": 35.095
+            }
+          }
+        },
+        {
+          "mode": "vertex",
+          "count": 100,
+          "vertices": 100,
+          "affectedTriangles": 590,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.087,
+              "n": 15,
+              "p50": 0.048,
+              "p95": 0.048,
+              "max": 0.048
+            },
+            "resolveVertices": {
+              "firstMs": 0.134,
+              "n": 15,
+              "p50": 0.041,
+              "p95": 0.042,
+              "max": 0.042
+            },
+            "startTransaction": {
+              "firstMs": 0.109,
+              "n": 15,
+              "p50": 0.083,
+              "p95": 0.086,
+              "max": 0.086
+            },
+            "previewAbsolute": {
+              "firstMs": 5.13,
+              "n": 15,
+              "p50": 4.912,
+              "p95": 5.818,
+              "max": 5.818
+            },
+            "previewDelta": {
+              "firstMs": 5.151,
+              "n": 15,
+              "p50": 4.998,
+              "p95": 5.71,
+              "max": 5.71
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 33.262,
+              "n": 15,
+              "p50": 34.986,
+              "p95": 35.645,
+              "max": 35.645
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 1,
+          "vertices": 2,
+          "affectedTriangles": 4,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.019,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.016,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.032,
+              "n": 15,
+              "p50": 0.003,
+              "p95": 0.004,
+              "max": 0.004
+            },
+            "previewAbsolute": {
+              "firstMs": 3.77,
+              "n": 15,
+              "p50": 3.654,
+              "p95": 4.561,
+              "max": 4.561
+            },
+            "previewDelta": {
+              "firstMs": 3.796,
+              "n": 15,
+              "p50": 3.63,
+              "p95": 4.539,
+              "max": 4.539
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 42.933,
+              "n": 15,
+              "p50": 34.579,
+              "p95": 37.101,
+              "max": 37.101
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 100,
+          "vertices": 200,
+          "affectedTriangles": 989,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.153,
+              "n": 15,
+              "p50": 0.077,
+              "p95": 0.103,
+              "max": 0.103
+            },
+            "resolveVertices": {
+              "firstMs": 0.2,
+              "n": 15,
+              "p50": 0.073,
+              "p95": 0.083,
+              "max": 0.083
+            },
+            "startTransaction": {
+              "firstMs": 0.18,
+              "n": 15,
+              "p50": 0.149,
+              "p95": 0.168,
+              "max": 0.168
+            },
+            "previewAbsolute": {
+              "firstMs": 6.641,
+              "n": 15,
+              "p50": 5.432,
+              "p95": 6.215,
+              "max": 6.215
+            },
+            "previewDelta": {
+              "firstMs": 6.157,
+              "n": 15,
+              "p50": 5.535,
+              "p95": 6.205,
+              "max": 6.205
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0.016,
+              "max": 0.016
+            },
+            "commitWithSerialization": {
+              "firstMs": 34.78,
+              "n": 15,
+              "p50": 35.669,
+              "p95": 40.115,
+              "max": 40.115
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 1,
+          "vertices": 3,
+          "affectedTriangles": 7,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.016,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.011,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.002,
+              "max": 0.002
+            },
+            "startTransaction": {
+              "firstMs": 0.028,
+              "n": 15,
+              "p50": 0.002,
+              "p95": 0.03,
+              "max": 0.03
+            },
+            "previewAbsolute": {
+              "firstMs": 5.132,
+              "n": 15,
+              "p50": 3.87,
+              "p95": 4.844,
+              "max": 4.844
+            },
+            "previewDelta": {
+              "firstMs": 4.69,
+              "n": 15,
+              "p50": 4.051,
+              "p95": 5.047,
+              "max": 5.047
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 37.224,
+              "n": 15,
+              "p50": 34.746,
+              "p95": 35.605,
+              "max": 35.605
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 100,
+          "vertices": 300,
+          "affectedTriangles": 1147,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.093,
+              "n": 15,
+              "p50": 0.051,
+              "p95": 0.068,
+              "max": 0.068
+            },
+            "resolveVertices": {
+              "firstMs": 0.142,
+              "n": 15,
+              "p50": 0.057,
+              "p95": 0.079,
+              "max": 0.079
+            },
+            "startTransaction": {
+              "firstMs": 0.128,
+              "n": 15,
+              "p50": 0.1,
+              "p95": 0.123,
+              "max": 0.123
+            },
+            "previewAbsolute": {
+              "firstMs": 5.371,
+              "n": 15,
+              "p50": 5.015,
+              "p95": 5.857,
+              "max": 5.857
+            },
+            "previewDelta": {
+              "firstMs": 5.293,
+              "n": 15,
+              "p50": 5.1,
+              "p95": 5.617,
+              "max": 5.617
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 34.416,
+              "n": 15,
+              "p50": 38.004,
+              "p95": 39.536,
+              "max": 39.536
+            }
+          }
+        }
+      ]
+    },
+    {
+      "grid": 150,
+      "triangles": 45000,
+      "attributes": true,
+      "submeshes": 4,
+      "projectBytes": 2940569,
+      "operations": {
+        "edgeDerivation": {
+          "firstMs": 0.004,
+          "n": 15,
+          "p50": 0,
+          "p95": 0,
+          "max": 0
+        },
+        "boundsScan": {
+          "firstMs": 6.121,
+          "n": 15,
+          "p50": 0.918,
+          "p95": 3.596,
+          "max": 3.596
+        },
+        "pickVertexProjectionOnly": {
+          "firstMs": 0.892,
+          "n": 15,
+          "p50": 0.489,
+          "p95": 0.531,
+          "max": 0.531
+        },
+        "pickVertexOcclusion": {
+          "firstMs": 3.569,
+          "n": 15,
+          "p50": 2.188,
+          "p95": 3.387,
+          "max": 3.387
+        },
+        "pickEdgeProjectionOnly": {
+          "firstMs": 3.311,
+          "n": 15,
+          "p50": 3.222,
+          "p95": 3.568,
+          "max": 3.568
+        },
+        "pickEdgeOcclusion": {
+          "firstMs": 5.118,
+          "n": 15,
+          "p50": 5.248,
+          "p95": 30.287,
+          "max": 30.287
+        },
+        "pickFaceRaycast": {
+          "firstMs": 0.3,
+          "n": 15,
+          "p50": 0.298,
+          "p95": 0.364,
+          "max": 0.364
+        },
+        "assembleCornerPositions": {
+          "firstMs": 1.439,
+          "n": 15,
+          "p50": 1.478,
+          "p95": 1.558,
+          "max": 1.558
+        },
+        "copyPositionAttribute": {
+          "firstMs": 0.08,
+          "n": 15,
+          "p50": 0.057,
+          "p95": 2.1,
+          "max": 2.1
+        },
+        "recomputeBoundsExistingBuffer": {
+          "firstMs": 0.362,
+          "n": 15,
+          "p50": 0.335,
+          "p95": 0.355,
+          "max": 0.355
+        },
+        "copyCornerNormals": {
+          "firstMs": 0.15,
+          "n": 15,
+          "p50": 0.061,
+          "p95": 0.091,
+          "max": 0.091
+        },
+        "buildRenderGeometry": {
+          "firstMs": 1.611,
+          "n": 15,
+          "p50": 1.531,
+          "p95": 2.755,
+          "max": 2.755
+        },
+        "serializeProject": {
+          "firstMs": 37.485,
+          "n": 15,
+          "p50": 33.11,
+          "p95": 34.292,
+          "max": 34.292
+        },
+        "stringifyOnePass": {
+          "firstMs": 4.195,
+          "n": 15,
+          "p50": 3.987,
+          "p95": 5.018,
+          "max": 5.018
+        },
+        "utf8BudgetOnePass": {
+          "firstMs": 1.147,
+          "n": 15,
+          "p50": 1.111,
+          "p95": 1.226,
+          "max": 1.226
+        },
+        "validateProjectIncludingBudget": {
+          "firstMs": 27.521,
+          "n": 15,
+          "p50": 28.426,
+          "p95": 29.626,
+          "max": 29.626
+        },
+        "restoreProject": {
+          "firstMs": 37.672,
+          "n": 15,
+          "p50": 35.825,
+          "p95": 50.818,
+          "max": 50.818
+        },
+        "exportWithRoundtripPreflight": {
+          "firstMs": 188.425,
+          "n": 15,
+          "p50": 209.936,
+          "p95": 237.102,
+          "max": 237.102
+        },
+        "importPreparedProject": {
+          "firstMs": 92.135,
+          "n": 15,
+          "p50": 92.57,
+          "p95": 109.219,
+          "max": 109.219
+        }
+      },
+      "workloads": [
+        {
+          "mode": "vertex",
+          "count": 1,
+          "vertices": 1,
+          "affectedTriangles": 2,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.017,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.002,
+              "max": 0.002
+            },
+            "resolveVertices": {
+              "firstMs": 0.01,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.026,
+              "n": 15,
+              "p50": 0.002,
+              "p95": 0.016,
+              "max": 0.016
+            },
+            "previewAbsolute": {
+              "firstMs": 3.357,
+              "n": 15,
+              "p50": 2.108,
+              "p95": 3.816,
+              "max": 3.816
+            },
+            "previewDelta": {
+              "firstMs": 2.105,
+              "n": 15,
+              "p50": 2.078,
+              "p95": 3.457,
+              "max": 3.457
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 36.583,
+              "n": 15,
+              "p50": 35.96,
+              "p95": 38.791,
+              "max": 38.791
+            }
+          }
+        },
+        {
+          "mode": "vertex",
+          "count": 100,
+          "vertices": 100,
+          "affectedTriangles": 584,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.086,
+              "n": 15,
+              "p50": 0.047,
+              "p95": 0.057,
+              "max": 0.057
+            },
+            "resolveVertices": {
+              "firstMs": 0.128,
+              "n": 15,
+              "p50": 0.041,
+              "p95": 0.042,
+              "max": 0.042
+            },
+            "startTransaction": {
+              "firstMs": 0.109,
+              "n": 15,
+              "p50": 0.082,
+              "p95": 0.193,
+              "max": 0.193
+            },
+            "previewAbsolute": {
+              "firstMs": 4.261,
+              "n": 15,
+              "p50": 3.803,
+              "p95": 4.694,
+              "max": 4.694
+            },
+            "previewDelta": {
+              "firstMs": 4.064,
+              "n": 15,
+              "p50": 3.946,
+              "p95": 4.64,
+              "max": 4.64
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 31.947,
+              "n": 15,
+              "p50": 38.645,
+              "p95": 41.398,
+              "max": 41.398
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 1,
+          "vertices": 2,
+          "affectedTriangles": 4,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.018,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.002,
+              "max": 0.002
+            },
+            "resolveVertices": {
+              "firstMs": 0.011,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "startTransaction": {
+              "firstMs": 0.029,
+              "n": 15,
+              "p50": 0.003,
+              "p95": 0.005,
+              "max": 0.005
+            },
+            "previewAbsolute": {
+              "firstMs": 2.689,
+              "n": 15,
+              "p50": 2.537,
+              "p95": 4.12,
+              "max": 4.12
+            },
+            "previewDelta": {
+              "firstMs": 2.406,
+              "n": 15,
+              "p50": 2.558,
+              "p95": 3.784,
+              "max": 3.784
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 38.8,
+              "n": 15,
+              "p50": 38.394,
+              "p95": 40.649,
+              "max": 40.649
+            }
+          }
+        },
+        {
+          "mode": "edge",
+          "count": 100,
+          "vertices": 200,
+          "affectedTriangles": 983,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.156,
+              "n": 15,
+              "p50": 0.093,
+              "p95": 0.104,
+              "max": 0.104
+            },
+            "resolveVertices": {
+              "firstMs": 0.187,
+              "n": 15,
+              "p50": 0.085,
+              "p95": 1.852,
+              "max": 1.852
+            },
+            "startTransaction": {
+              "firstMs": 0.194,
+              "n": 15,
+              "p50": 0.164,
+              "p95": 0.171,
+              "max": 0.171
+            },
+            "previewAbsolute": {
+              "firstMs": 4.947,
+              "n": 15,
+              "p50": 4.673,
+              "p95": 5.884,
+              "max": 5.884
+            },
+            "previewDelta": {
+              "firstMs": 4.649,
+              "n": 15,
+              "p50": 4.685,
+              "p95": 5.619,
+              "max": 5.619
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.002,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 39.38,
+              "n": 15,
+              "p50": 38.768,
+              "p95": 39.87,
+              "max": 39.87
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 1,
+          "vertices": 3,
+          "affectedTriangles": 7,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.018,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.001,
+              "max": 0.001
+            },
+            "resolveVertices": {
+              "firstMs": 0.011,
+              "n": 15,
+              "p50": 0.001,
+              "p95": 0.012,
+              "max": 0.012
+            },
+            "startTransaction": {
+              "firstMs": 0.026,
+              "n": 15,
+              "p50": 0.002,
+              "p95": 0.003,
+              "max": 0.003
+            },
+            "previewAbsolute": {
+              "firstMs": 3.52,
+              "n": 15,
+              "p50": 2.255,
+              "p95": 3.241,
+              "max": 3.241
+            },
+            "previewDelta": {
+              "firstMs": 2.193,
+              "n": 15,
+              "p50": 2.205,
+              "p95": 3.441,
+              "max": 3.441
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 33.585,
+              "n": 15,
+              "p50": 35.712,
+              "p95": 36.985,
+              "max": 36.985
+            }
+          }
+        },
+        {
+          "mode": "face",
+          "count": 100,
+          "vertices": 300,
+          "affectedTriangles": 1281,
+          "operations": {
+            "shiftToggle": {
+              "firstMs": 0.094,
+              "n": 15,
+              "p50": 0.053,
+              "p95": 0.064,
+              "max": 0.064
+            },
+            "resolveVertices": {
+              "firstMs": 0.135,
+              "n": 15,
+              "p50": 0.058,
+              "p95": 0.062,
+              "max": 0.062
+            },
+            "startTransaction": {
+              "firstMs": 0.136,
+              "n": 15,
+              "p50": 0.105,
+              "p95": 0.107,
+              "max": 0.107
+            },
+            "previewAbsolute": {
+              "firstMs": 4.446,
+              "n": 15,
+              "p50": 4.159,
+              "p95": 5.067,
+              "max": 5.067
+            },
+            "previewDelta": {
+              "firstMs": 4.091,
+              "n": 15,
+              "p50": 4.253,
+              "p95": 4.952,
+              "max": 4.952
+            },
+            "commitHistoryOnly": {
+              "firstMs": 0.001,
+              "n": 15,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "commitWithSerialization": {
+              "firstMs": 35.247,
+              "n": 15,
+              "p50": 35.563,
+              "p95": 54.485,
+              "max": 54.485
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "memory": [
+    {
+      "triangles": 45000,
+      "attributes": false,
+      "historyEntries": 60,
+      "retainedHeapMiB": 11.7,
+      "sourceProjectBytes": 1590357
+    },
+    {
+      "triangles": 45000,
+      "attributes": true,
+      "historyEntries": 60,
+      "retainedHeapMiB": 197,
+      "sourceProjectBytes": 2940377
+    }
+  ]
+}

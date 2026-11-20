@@ -1,0 +1,64 @@
+{
+  "branch": "feature/obj-editor",
+  "baseline": "61b5961dae89a349511b98d57e73c523c03f25c8",
+  "mainUnchanged": "1320078a65c021b589fc27a3f5bd096d62eab334",
+  "productionChange": "App history shortcut comparison normalizes key case",
+  "check": "passed",
+  "tests": {
+    "passed": 123,
+    "failed": 0
+  },
+  "build": "passed",
+  "originalElectronSuites": [
+    {
+      "mode": "multi",
+      "exitCode": 0
+    },
+    {
+      "mode": "elements",
+      "exitCode": 0
+    },
+    {
+      "mode": "edit",
+      "exitCode": 0
+    },
+    {
+      "mode": "import",
+      "exitCode": 0
+    },
+    {
+      "mode": "default",
+      "exitCode": 0
+    },
+    {
+      "mode": "builtin",
+      "exitCode": 0
+    },
+    {
+      "mode": "export",
+      "exitCode": 0
+    }
+  ],
+  "additional": {
+    "authored": "passed",
+    "capacity": "passed",
+    "nativeBatchedStress": "passed",
+    "nativeContinuousDevelopmentStress": "FAILED: update-depth warning and geometry mismatch; retained as open finding",
+    "productionContinuousStress": "passed",
+    "productionImportApplication": "passed",
+    "nativePointerAudit": "passed",
+    "rendererMemoryLifecycle": "passed",
+    "serialCorpus": "completed; expected compatibility/capacity rejections recorded",
+    "fiveCaseCPU": "passed",
+    "nodeMemoryPlane": "passed",
+    "nodeMemoryNormalChanging": "passed"
+  },
+  "manualUnverified": [
+    "Physical OS dialogs/cancellation/overwrite/permissions",
+    "Physical app switching and modal focus",
+    "Business architectural/BIM acceptance sample",
+    "Displayed FPS / high-DPI / multi-monitor"
+  ],
+  "committed": false,
+  "pushed": false
+}

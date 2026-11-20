@@ -1,0 +1,20 @@
+{
+  "scenario": "authored",
+  "conditions": {
+    "build": "Vite development",
+    "hiddenWindow": true
+  },
+  "checks": [
+    "raw-authored-OBJ-rejected-without-mutation",
+    "authored-derivative-native-object-TRS",
+    "authored-derivative-vertex-edge-face-native-groups",
+    "undo-redo-cancel",
+    "actual-JSON-OBJ-download-restore-reimport",
+    "baked-once-world-equivalence",
+    "UAV-data-unchanged"
+  ],
+  "importToRenderGeometryMs": 95.2999997138977,
+  "autosaveStatus": "saving",
+  "projectBytes": 260125,
+  "firstTopologyMs": 2.700000286102295
+}

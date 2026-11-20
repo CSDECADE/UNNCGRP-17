@@ -1,0 +1,30 @@
+{
+  "scenario": "stress",
+  "conditions": {
+    "build": "Vite development",
+    "hiddenWindow": true,
+    "nativeRendererKeyEvents": true,
+    "intervalMs": 50,
+    "batch": 20,
+    "triangles": 45000,
+    "historyEntries": 60
+  },
+  "checks": [
+    "native-undo60-redo60-exact-geometry"
+  ],
+  "importToRenderGeometryMs": 178.90000009536743,
+  "autosaveStatus": "saving",
+  "projectBytes": 2942564,
+  "stress": {
+    "warnings": [],
+    "keys": 120,
+    "RAFIntervalSummaryMs": {
+      "n": 418,
+      "p50": 6.900000000001455,
+      "p95": 138.29999999999927,
+      "max": 1048.800000000003,
+      "note": "Hidden-window requestAnimationFrame callback intervals; not displayed FPS or GPU timings."
+    }
+  },
+  "firstTopologyMs": 39.69999980926514
+}

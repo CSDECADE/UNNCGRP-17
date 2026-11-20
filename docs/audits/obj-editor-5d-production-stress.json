@@ -1,0 +1,24 @@
+{
+  "build": "production",
+  "hiddenWindow": true,
+  "intervalMs": 50,
+  "batch": 0,
+  "errors": [],
+  "setupErrors": [],
+  "phases": [
+    {
+      "phase": "undo",
+      "actual": "90a30ae38d18a0e61e45096bb4f178c2e8a44a16b7d50f99f3c9168c0431b3e6",
+      "expected": "90a30ae38d18a0e61e45096bb4f178c2e8a44a16b7d50f99f3c9168c0431b3e6",
+      "exact": true
+    },
+    {
+      "phase": "redo",
+      "actual": "4ade31258b8d9f08c0aaabe2716a2b49f0a9815ddb5f1977debcfb5780b03fbe",
+      "expected": "4ade31258b8d9f08c0aaabe2716a2b49f0a9815ddb5f1977debcfb5780b03fbe",
+      "exact": true
+    }
+  ],
+  "keys": 120,
+  "passed": true
+}

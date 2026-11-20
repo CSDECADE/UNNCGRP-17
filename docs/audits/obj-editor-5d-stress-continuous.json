@@ -1,0 +1,32 @@
+{
+  "scenario": "stress",
+  "conditions": {
+    "build": "Vite development",
+    "hiddenWindow": true,
+    "nativeRendererKeyEvents": true,
+    "intervalMs": 50,
+    "batch": 0,
+    "triangles": 45000,
+    "historyEntries": 60
+  },
+  "checks": [],
+  "importToRenderGeometryMs": 183.5,
+  "autosaveStatus": "saving",
+  "projectBytes": 2942564,
+  "stress": {
+    "warnings": [
+      {
+        "phase": "undo",
+        "stack": "Error\n    at console.error (<anonymous>:1:226)\n    at getRootForUpdatedFiber (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:3476:143)\n    at enqueueConcurrentHookUpdate (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:3457:16)\n    at dispatchSetStateInternal (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:6839:20)\n    at dispatchSetState (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:6810:9)\n    at cancelTransform (http://127.0.0.1:5180/src/core/editor.tsx:101:5)\n    at Object.undo (http://127.0.0.1:5180/src/core/editor.tsx:368:5)\n    at onKey (http://127.0.0.1:5180/src/App.tsx?t=1795195306937:142:38)"
+      }
+    ],
+    "keys": 60,
+    "RAFIntervalSummaryMs": {
+      "n": 6,
+      "p50": 160.20000000000073,
+      "p95": 791.7999999999993,
+      "max": 1699.9000000000015,
+      "note": "Hidden-window requestAnimationFrame callback intervals; not displayed FPS or GPU timings."
+    }
+  }
+}

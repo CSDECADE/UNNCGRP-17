@@ -1,0 +1,369 @@
+{
+  "conditions": {
+    "timestamp": "2026-11-20T17:28:47.676Z",
+    "node": "v25.9.0",
+    "cpu": "Apple M3 Pro",
+    "platform": "darwin",
+    "arch": "arm64",
+    "runs": 15,
+    "warmup": 3,
+    "note": "CPU milliseconds, independent operations. Synthetic architectural fixtures are not real-world scans. Diagnostic authored derivatives are explicitly separated from raw files."
+  },
+  "cases": [
+    {
+      "name": "building_A.obj",
+      "origin": "Creator-authored KayKit CC0 OBJ, unmodified",
+      "OBJBytes": 65003,
+      "sha256": "2e06356de1b4e5ceeb53d51cb9af90090e1379bbbb794ca10e65d3a8d5af2f70",
+      "accepted": false,
+      "error": "OBJ 第 3 行：不支持 mtllib 指令（包括材质、线、点及自由曲面）。"
+    },
+    {
+      "name": "conditioned-building_A.obj",
+      "origin": "Explicit diagnostic derivative of creator-authored OBJ",
+      "OBJBytes": 73684,
+      "sha256": "f0975f0112cb7241b9ceb20c93d98271260ebec53d3edf27469f3c292f6ffc48",
+      "diagnosis": {
+        "changes": {
+          "materialStatementsRemoved": 2,
+          "smoothingStatementsDisabled": 1,
+          "quadsTriangulated": 388
+        },
+        "notice": "Diagnostic derivative: drops material references, disables smoothing metadata while retaining explicit corner normals, and splits quads on the 1-3 diagonal. No vertices/UVs/normals or faces are discarded. Raw OBJ compatibility is assessed separately."
+      },
+      "importFirstMs": 8.41233299999999,
+      "accepted": true,
+      "vertices": 635,
+      "submeshes": 1,
+      "triangles": 828,
+      "projectBytes": 116309,
+      "firstEdgeTopologyMs": 1.4037090000000205,
+      "resolve100Edges": {
+        "n": 15,
+        "p50": 0.091,
+        "p95": 0.463,
+        "max": 0.463
+      },
+      "preview100Edges": {
+        "n": 15,
+        "p50": 1.144,
+        "p95": 2.81,
+        "max": 2.81
+      },
+      "activeSubmesh": {
+        "name": "building_A_Cube.938",
+        "triangles": 828
+      },
+      "renderGeometry": {
+        "n": 15,
+        "p50": 0.138,
+        "p95": 0.784,
+        "max": 0.784
+      },
+      "serialize": {
+        "n": 15,
+        "p50": 1.283,
+        "p95": 1.784,
+        "max": 1.784
+      },
+      "serializedRoundtrip": true,
+      "editedProjectBytes": 150230,
+      "groupCommitWithinBudget": true,
+      "identityExportBytes": 63330,
+      "identityRoundtrip": true,
+      "transformedExportBytes": 86397,
+      "transformedExportAccepted": true
+    },
+    {
+      "name": "building_H.obj",
+      "origin": "Creator-authored KayKit CC0 OBJ, unmodified",
+      "OBJBytes": 152172,
+      "sha256": "4f4bc51e84e0c7292306fcc1e60415e7af6990fa5a8fd965e2b373d0287c2ba8",
+      "accepted": false,
+      "error": "OBJ 第 3 行：不支持 mtllib 指令（包括材质、线、点及自由曲面）。"
+    },
+    {
+      "name": "conditioned-building_H.obj",
+      "origin": "Explicit diagnostic derivative of creator-authored OBJ",
+      "OBJBytes": 173717,
+      "sha256": "36ffc947f270effa354b541aef8ad0ec6013897ca9693058fb639ee8e8345a51",
+      "diagnosis": {
+        "changes": {
+          "materialStatementsRemoved": 2,
+          "smoothingStatementsDisabled": 1,
+          "quadsTriangulated": 890
+        },
+        "notice": "Diagnostic derivative: drops material references, disables smoothing metadata while retaining explicit corner normals, and splits quads on the 1-3 diagonal. No vertices/UVs/normals or faces are discarded. Raw OBJ compatibility is assessed separately."
+      },
+      "importFirstMs": 9.109000000000037,
+      "accepted": true,
+      "vertices": 1558,
+      "submeshes": 1,
+      "triangles": 1885,
+      "projectBytes": 260137,
+      "firstEdgeTopologyMs": 2.3423329999999964,
+      "resolve100Edges": {
+        "n": 15,
+        "p50": 0.079,
+        "p95": 1.483,
+        "max": 1.483
+      },
+      "preview100Edges": {
+        "n": 15,
+        "p50": 1.159,
+        "p95": 2.001,
+        "max": 2.001
+      },
+      "activeSubmesh": {
+        "name": "building_H_Cube.931",
+        "triangles": 1885
+      },
+      "renderGeometry": {
+        "n": 15,
+        "p50": 0.309,
+        "p95": 0.373,
+        "max": 0.373
+      },
+      "serialize": {
+        "n": 15,
+        "p50": 2.951,
+        "p95": 3.587,
+        "max": 3.587
+      },
+      "serializedRoundtrip": true,
+      "editedProjectBytes": 300346,
+      "groupCommitWithinBudget": true,
+      "identityExportBytes": 127013,
+      "identityRoundtrip": true,
+      "transformedExportBytes": 179799,
+      "transformedExportAccepted": true
+    },
+    {
+      "name": "synthetic-small.obj",
+      "origin": "Generated controlled box-frame building",
+      "OBJBytes": 16010,
+      "sha256": "57aa80a9ab94a682569f0c838d5c3891a4818756524b349f6ea6f6b1b375aabc",
+      "importFirstMs": 2.322125000000028,
+      "accepted": true,
+      "vertices": 408,
+      "submeshes": 5,
+      "triangles": 612,
+      "projectBytes": 44821,
+      "firstEdgeTopologyMs": 0.15575000000001182,
+      "resolve100Edges": {
+        "n": 15,
+        "p50": 0.063,
+        "p95": 0.17,
+        "max": 0.17
+      },
+      "preview100Edges": {
+        "n": 15,
+        "p50": 0.334,
+        "p95": 0.535,
+        "max": 0.535
+      },
+      "activeSubmesh": {
+        "name": "Facade0",
+        "triangles": 144
+      },
+      "renderGeometry": {
+        "n": 15,
+        "p50": 0.036,
+        "p95": 0.117,
+        "max": 0.117
+      },
+      "serialize": {
+        "n": 15,
+        "p50": 0.575,
+        "p95": 0.822,
+        "max": 0.822
+      },
+      "serializedRoundtrip": true,
+      "editedProjectBytes": 45829,
+      "groupCommitWithinBudget": true,
+      "identityExportBytes": 21337,
+      "identityRoundtrip": true,
+      "transformedExportBytes": 39768,
+      "transformedExportAccepted": true
+    },
+    {
+      "name": "synthetic-medium.obj",
+      "origin": "Generated controlled box-frame building",
+      "OBJBytes": 173453,
+      "sha256": "ea0324c1fda5da9fb54c26038dc8cfdda774d4e946eb1f954a610b570ce4e9bb",
+      "importFirstMs": 17.137541999999996,
+      "accepted": true,
+      "vertices": 3928,
+      "submeshes": 5,
+      "triangles": 5892,
+      "projectBytes": 437504,
+      "firstEdgeTopologyMs": 1.757708999999977,
+      "resolve100Edges": {
+        "n": 15,
+        "p50": 0.067,
+        "p95": 1.117,
+        "max": 1.117
+      },
+      "preview100Edges": {
+        "n": 15,
+        "p50": 0.997,
+        "p95": 2.002,
+        "max": 2.002
+      },
+      "activeSubmesh": {
+        "name": "Facade0",
+        "triangles": 1440
+      },
+      "renderGeometry": {
+        "n": 15,
+        "p50": 0.223,
+        "p95": 0.255,
+        "max": 0.255
+      },
+      "serialize": {
+        "n": 15,
+        "p50": 6.221,
+        "p95": 6.996,
+        "max": 6.996
+      },
+      "serializedRoundtrip": true,
+      "editedProjectBytes": 472090,
+      "groupCommitWithinBudget": true,
+      "identityExportBytes": 230693,
+      "identityRoundtrip": true,
+      "transformedExportBytes": 394377,
+      "transformedExportAccepted": true
+    },
+    {
+      "name": "synthetic-large.obj",
+      "origin": "Generated controlled box-frame building",
+      "OBJBytes": 1494184,
+      "sha256": "9480cc1b733584e6bfa7671b7b3ce9139fc1f9f49bc991db21a374034591e600",
+      "importFirstMs": 175.09412500000008,
+      "accepted": true,
+      "vertices": 32088,
+      "submeshes": 5,
+      "triangles": 48132,
+      "projectBytes": 3707211,
+      "firstEdgeTopologyMs": 12.388834000000088,
+      "resolve100Edges": {
+        "n": 15,
+        "p50": 0.075,
+        "p95": 0.113,
+        "max": 0.113
+      },
+      "preview100Edges": {
+        "n": 15,
+        "p50": 4.043,
+        "p95": 8.812,
+        "max": 8.812
+      },
+      "activeSubmesh": {
+        "name": "Facade0",
+        "triangles": 12000
+      },
+      "renderGeometry": {
+        "n": 15,
+        "p50": 2.062,
+        "p95": 2.447,
+        "max": 2.447
+      },
+      "serialize": {
+        "n": 15,
+        "p50": 51.627,
+        "p95": 56.784,
+        "max": 56.784
+      },
+      "serializedRoundtrip": true,
+      "editedProjectBytes": 3730475,
+      "groupCommitWithinBudget": true,
+      "identityExportBytes": 2006957,
+      "identityRoundtrip": true,
+      "transformedExportAccepted": false,
+      "transformedExportError": "导出结果无法按当前规则回导，本次未写入文件。导入后的完整项目超过 5 MB（包括场景、背景和模型），本次导入未应用。"
+    },
+    {
+      "name": "synthetic-near.obj",
+      "origin": "Generated controlled box-frame building",
+      "OBJBytes": 2069000,
+      "sha256": "082d5a4c58a728eae54f782ae548cced62db62cac797ef62593d612663e6233e",
+      "importFirstMs": 132.58929199999966,
+      "accepted": true,
+      "vertices": 42328,
+      "submeshes": 5,
+      "triangles": 63492,
+      "projectBytes": 4996265,
+      "firstEdgeTopologyMs": 12.923333000000184,
+      "resolve100Edges": {
+        "n": 15,
+        "p50": 0.072,
+        "p95": 0.082,
+        "max": 0.082
+      },
+      "preview100Edges": {
+        "n": 15,
+        "p50": 4.808,
+        "p95": 8.208,
+        "max": 8.208
+      },
+      "activeSubmesh": {
+        "name": "Facade0",
+        "triangles": 15840
+      },
+      "renderGeometry": {
+        "n": 15,
+        "p50": 2.267,
+        "p95": 4.418,
+        "max": 4.418
+      },
+      "serialize": {
+        "n": 15,
+        "p50": 68.046,
+        "p95": 76.027,
+        "max": 76.027
+      },
+      "serializedRoundtrip": true,
+      "groupCommitWithinBudget": false,
+      "groupCommitError": "文件超过 5 MB，请选择较小的文件。",
+      "identityExportBytes": 2750733,
+      "identityRoundtrip": true,
+      "transformedExportAccepted": false,
+      "transformedExportError": "导出结果无法按当前规则回导，本次未写入文件。导入后的完整项目超过 5 MB（包括场景、背景和模型），本次导入未应用。"
+    },
+    {
+      "name": "synthetic-over.obj",
+      "origin": "Generated controlled box-frame building",
+      "OBJBytes": 2118392,
+      "sha256": "78c4c18ebfd01e1a80a1a33979c5f9e82214d32525e853923a5ac08da25cc8cf",
+      "accepted": false,
+      "error": "导入后的完整项目超过 5 MB（包括场景、背景和模型），本次导入未应用。"
+    },
+    {
+      "name": "sibenik.obj",
+      "origin": "External Sibenik Cathedral, CC BY-NC, local evaluation only",
+      "OBJBytes": 5202682,
+      "sha256": "786134de73f1b40b0975af2e7bd969bc9a07d7411e6ad4ba1e30f3a5bde63bf8",
+      "accepted": false,
+      "error": "OBJ 第 1 行：不支持 mtllib 指令（包括材质、线、点及自由曲面）。"
+    },
+    {
+      "name": "diagnostic-sibenik.obj",
+      "origin": "Explicit metadata/quad diagnostic derivative; no repair",
+      "OBJBytes": 5186975,
+      "sha256": "387bb4ff81485e9a3d37b1e694fda3ffe082e8ca2349166ee0f4e5959e50fa26",
+      "accepted": false,
+      "error": "OBJ 第 40989 行：需要 2 个数值；不支持额外的坐标、权重或颜色。"
+    },
+    {
+      "name": "zero-w-sibenik.obj",
+      "origin": "Further explicit diagnostic: zero third UV component projected to 2D, no geometry repair",
+      "OBJBytes": 4838846,
+      "sha256": "f911a1a1f0dcd5f73475a60a76786df02e136b122a4287ccd35c5fdc31fc50d2",
+      "diagnosis": {
+        "projectedUVs": 38681
+      },
+      "accepted": false,
+      "error": "OBJ 第 82573 行：退化三角形或四边形不受支持。"
+    }
+  ]
+}
