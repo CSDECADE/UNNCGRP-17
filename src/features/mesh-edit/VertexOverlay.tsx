@@ -26,17 +26,23 @@ export function VertexOverlay() {
   const highlight = useMemo(() => {
     const geometry = new BufferGeometry();
     if (target?.pivot) geometry.setAttribute("position", new Float32BufferAttribute(
-      target.indices.flatMap(i => target.resource.vertices[i].position), 3));
+      (kind === "vertex" ? target.indices : target.elementIndices.flat()).flatMap(i => target.resource.vertices[i].position), 3));
     return geometry;
   }, [target?.resource, selected && elementKey(selected)]);
   useEffect(() => () => highlight.dispose(), [highlight]);
   useEffect(() => {
     const canvas = gl.domElement;
-    let down: { x: number; y: number } | null = null;
+    let down: { x: number; y: number; toggle: boolean } | null = null;
     const previousTabIndex = canvas.tabIndex; canvas.tabIndex = 0;
     const start = (event: PointerEvent) => {
       canvas.focus({ preventScroll: true });
-      down = event.button === 0 ? { x: event.clientX, y: event.clientY } : null;
+      down = event.button === 0 ? { x: event.clientX, y: event.clientY, toggle: event.shiftKey } : null;
+    };
+    const shiftStart = (event: PointerEvent) => {
+      if (event.button !== 0 || !event.shiftKey) return;
+      // Shift+left is reserved for selection in Edit Mode; prevent OrbitControls'
+      // modifier-pan and the gizmo from starting on this same pointer gesture.
+      start(event); event.stopImmediatePropagation();
     };
     const end = (event: PointerEvent) => {
       const origin = down; down = null;
@@ -62,15 +68,17 @@ export function VertexOverlay() {
         matrix: objMatrix(resolved.model), camera, pointer: { x: event.clientX - rect.x, y: event.clientY - rect.y },
         width: rect.width, height: rect.height, visible: (point: import("three").Vector3) => vertexVisible(point, camera, occluders) };
       const base = { modelId: selection.modelId, meshId: selection.meshId };
-      if (selectionMode(selection) === "edge") current.selectMeshElement({ ...base, kind: "edge", edgeIds: pickLogicalEdge(options) });
-      else if (selectionMode(selection) === "face") current.selectMeshElement({ ...base, kind: "face",
-        triangle: pickLogicalFace({ ...options, objects: occluders, modelId: selection.modelId }) });
-      else current.selectVertex(selection.meshId, pickLogicalVertex(options));
+      if (selectionMode(selection) === "edge") current.pickMeshElement({ ...base, kind: "edge", edgeIds: pickLogicalEdge(options) }, origin.toggle);
+      else if (selectionMode(selection) === "face") current.pickMeshElement({ ...base, kind: "face",
+        triangle: pickLogicalFace({ ...options, objects: occluders, modelId: selection.modelId }) }, origin.toggle);
+      else current.pickMeshElement({ ...base, vertexId: pickLogicalVertex(options) }, origin.toggle);
     };
+    canvas.addEventListener("pointerdown", shiftStart, true);
     canvas.addEventListener("pointerdown", start); canvas.addEventListener("pointerup", end);
     const cancel = () => { down = null; };
     canvas.addEventListener("pointercancel", cancel); window.addEventListener("blur", cancel);
     return () => { canvas.removeEventListener("pointerdown", start); canvas.removeEventListener("pointerup", end);
+      canvas.removeEventListener("pointerdown", shiftStart, true);
       canvas.tabIndex = previousTabIndex;
       canvas.removeEventListener("pointercancel", cancel); window.removeEventListener("blur", cancel); };
   }, [camera, gl.domElement, scene, input.suppressClick]);

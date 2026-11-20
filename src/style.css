@@ -905,6 +905,10 @@ select {
 .mesh-selection-modes { display: flex; gap: 5px; margin: 10px 0; }
 .mesh-selection-modes button { flex: 1; padding: 7px; border-radius: 4px; background: var(--field); }
 .mesh-selection-modes button[aria-pressed="true"] { color: #ffd09a; background: #644627; }
+.mesh-selection-list { display: flex; flex-wrap: wrap; gap: 4px; max-height: 96px; overflow: auto; margin: 8px 0; }
+.mesh-selection-list button { max-width: 100%; overflow: hidden; text-overflow: ellipsis; padding: 4px 6px; background: var(--field); border-radius: 4px; font-size: 10px; }
+.group-translation > button { padding: 7px 10px; background: var(--field); border-radius: 4px; margin-bottom: 8px; }
+.group-translation small { display: block; }
 .vertex-inspector > button { display: flex; padding: 7px 9px; margin-top: 10px; border-radius: 4px; background: var(--field); }
 .tooltip {
   padding: 7px 10px;

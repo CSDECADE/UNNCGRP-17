@@ -68,6 +68,12 @@ function constrainedPosition(value: Vec3, initial: Vec3, options: TransformOptio
 /** Update a transient copy only. Timing is invalidated when the edit is committed. */
 export function updateTransformSession(session: TransformSession, values: Record<string, unknown>): TransformSession {
   if (session.mesh) {
+    const delta = readVector(values.elementDelta);
+    if (delta) {
+      const pivot = resolveElement(session.base, session.mesh.selected)?.pivot;
+      return pivot ? { ...session, draft: translateMeshElement(session.base, session.mesh.selected,
+        pivot.map((n, i) => n + delta[i]) as Vec3, session.mesh.copyId) } : session;
+    }
     const position = readVector(values.elementPosition ?? values.vertexPosition);
     return position ? { ...session, draft: translateMeshElement(session.base, session.mesh.selected, position, session.mesh.copyId) } : session;
   }

@@ -7,16 +7,44 @@ import { resourceBounds } from "./model-bounds.ts";
 /** UI selection only; IDs are stable within the active instance's resource. */
 export type VertexSelection = { modelId: string; meshId: string; vertexId: string | null };
 export type MeshSelectionMode = "vertex" | "edge" | "face";
-export type MeshSelection = VertexSelection | { modelId: string; meshId: string; kind: "edge"; edgeIds: [string, string] | null }
+export type MeshElementSelection = VertexSelection | { modelId: string; meshId: string; kind: "edge"; edgeIds: [string, string] | null }
   | { modelId: string; meshId: string; kind: "face"; triangle: number | null };
+export type MeshSelection = MeshElementSelection & { additional?: MeshElementSelection[] };
 export const selectionMode = (selected: MeshSelection): MeshSelectionMode => "kind" in selected ? selected.kind : "vertex";
 export function clearElement(selected: MeshSelection, kind = selectionMode(selected), meshId = selected.meshId): MeshSelection {
   const base = { modelId: selected.modelId, meshId };
   return kind === "edge" ? { ...base, kind, edgeIds: null } : kind === "face" ? { ...base, kind, triangle: null } : { ...base, vertexId: null };
 }
-export function elementKey(selected: MeshSelection) {
+export function singleElementKey(selected: MeshElementSelection) {
   return JSON.stringify([selected.modelId, selected.meshId, selectionMode(selected),
     "edgeIds" in selected ? selected.edgeIds && [...selected.edgeIds].sort() : "triangle" in selected ? selected.triangle : selected.vertexId]);
+}
+export function selectionElements(selected: MeshSelection): MeshElementSelection[] {
+  const elements = [selected, ...(selected.additional ?? [])], unique = new Map<string, MeshElementSelection>();
+  for (const element of elements) {
+    const present = "vertexId" in element ? element.vertexId !== null : "edgeIds" in element ? element.edgeIds !== null : element.triangle !== null;
+    if (!present) continue;
+    const { additional: _additional, ...single } = element as MeshSelection;
+    unique.set(singleElementKey(single), single);
+  }
+  return [...unique.values()];
+}
+export function elementKey(selected: MeshSelection) {
+  return JSON.stringify([selected.modelId, selected.meshId, selectionMode(selected), selectionElements(selected).map(singleElementKey).sort()]);
+}
+export function withSelectionElements(scope: MeshSelection, elements: MeshElementSelection[]): MeshSelection {
+  if (elements.some(element => element.modelId !== scope.modelId || element.meshId !== scope.meshId || selectionMode(element) !== selectionMode(scope)))
+    throw new UserInputError("多选仅支持同一对象、子网格和元素类型。");
+  const unique = elements.length ? selectionElements({ ...elements[0], additional: elements.slice(1) }) : [];
+  return unique.length ? { ...unique[0], ...(unique.length > 1 ? { additional: unique.slice(1) } : {}) } : clearElement(scope);
+}
+export function updateMeshSelection(current: MeshSelection, picked: MeshElementSelection, toggle = false): MeshSelection {
+  if (picked.modelId !== current.modelId || picked.meshId !== current.meshId || selectionMode(picked) !== selectionMode(current)) return current;
+  if (!selectionElements(picked).length) return clearElement(current);
+  if (!toggle) return withSelectionElements(current, [picked]);
+  const elements = selectionElements(current), key = singleElementKey(picked);
+  return withSelectionElements(current, elements.some(element => singleElementKey(element) === key)
+    ? elements.filter(element => singleElementKey(element) !== key) : [...elements, picked]);
 }
 export function meshEdges(resource: ObjResource, meshId: string) {
   const mesh = resource.meshes.find(m => m.id === meshId), edges = new Map<string, { ids: [string, string]; indices: [number, number] }>();
@@ -44,26 +72,35 @@ export function resolveElement(project: Project, selected: MeshSelection) {
   const resource = project.objResources?.find(r => r.id === model.resourceId);
   const mesh = resource?.meshes.find(m => m.id === selected.meshId);
   if (!resource || !mesh) return null;
-  let indices: number[] = [];
-  if ("edgeIds" in selected && selected.edgeIds) {
-    const key = JSON.stringify([...selected.edgeIds].sort());
-    indices = meshEdges(resource, mesh.id).find(edge => JSON.stringify(edge.ids) === key)?.indices ?? [];
-  } else if ("triangle" in selected && selected.triangle !== null) {
-    if (Number.isInteger(selected.triangle) && selected.triangle >= 0 && selected.triangle < mesh.triangles.length / 3)
-      indices = [...new Set(mesh.triangles.slice(selected.triangle * 3, selected.triangle * 3 + 3))];
-  } else if ("vertexId" in selected) {
-    const index = resource.vertices.findIndex(v => v.id === selected.vertexId);
-    if (index >= 0 && mesh.triangles.includes(index)) indices = [index];
+  const elements = selectionElements(selected), edgeMap = selectionMode(selected) === "edge"
+    ? new Map(meshEdges(resource, mesh.id).map(edge => [JSON.stringify(edge.ids), edge.indices])) : undefined;
+  const vertexMap = selectionMode(selected) === "vertex" ? new Map(resource.vertices.map((v, i) => [v.id, i])) : undefined;
+  const referenced = new Set(mesh.triangles);
+  const elementIndices = elements.map(element => {
+    if (element.modelId !== selected.modelId || element.meshId !== selected.meshId || selectionMode(element) !== selectionMode(selected)) return [];
+    if ("edgeIds" in element && element.edgeIds) return edgeMap?.get(JSON.stringify([...element.edgeIds].sort())) ?? [];
+    if ("triangle" in element && element.triangle !== null && Number.isInteger(element.triangle) && element.triangle >= 0 && element.triangle < mesh.triangles.length / 3)
+      return [...new Set(mesh.triangles.slice(element.triangle * 3, element.triangle * 3 + 3))];
+    if ("vertexId" in element) {
+      const index = vertexMap?.get(element.vertexId ?? "");
+      if (index !== undefined && referenced.has(index)) return [index];
+    }
+    return [];
+  });
+  const indices = elementIndices.some(indices => !indices.length) ? [] : [...new Set(elementIndices.flat())];
+  if (elements.length && !indices.length) {
+    return { model, resource, mesh, elements, elementIndices: [], indices, pivot: null };
   }
   const pivot = indices.length ? indices.reduce((point, i) => point.add(new Vector3(...resource.vertices[i].position)), new Vector3()).divideScalar(indices.length).toArray() : null;
-  return { model, resource, mesh, indices, pivot };
+  return { model, resource, mesh, elements, elementIndices, indices, pivot };
 }
 export function resolveVertex(project: Project, selected: VertexSelection) {
   const target = resolveElement(project, selected);
   return target ? { ...target, index: target.indices[0] ?? -1, vertex: target.indices.length ? target.resource.vertices[target.indices[0]] : null } : null;
 }
 export function coincidentElements(project: Project, selected: MeshSelection): MeshSelection[] {
-  const target = resolveElement(project, selected);
+  const primary = selectionElements(selected)[0];
+  const target = primary && resolveElement(project, primary);
   if (!target?.pivot) return [];
   const { resource, mesh } = target, base = { modelId: selected.modelId, meshId: selected.meshId };
   const signature = (indices: number[]) => JSON.stringify(indices.map(i => JSON.stringify(resource.vertices[i].position)).sort());

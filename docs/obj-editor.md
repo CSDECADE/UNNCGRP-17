@@ -1,8 +1,8 @@
-# OBJ Import, Object Mode, Export and Mesh Translation — Stages 1–4B
+# OBJ Import, Object Mode, Export and Mesh Translation — Stages 1–4C
 
 ## Scope
 
-Stage 1 introduced a serializable resource format and its persistence through the existing project pipeline. Stage 2 added local OBJ import, rendering, object management, and basic project JSON save/restore. Stage 3A added OBJ transformations. Stage 3A+ extended the same controls and inspector to the built-in building, cuboid and cylinder while retaining their existing yaw and dimension semantics. Stage 3B added selected-OBJ export with baked transforms and verified re-import compatibility. Stage 4A added Edit Mode with logical vertex selection and translation. Stage 4B extends the same workflow to individual edges and triangular faces. UAV editing, multiple-element selection and topology operations remain outside the implemented scope.
+Stage 1 introduced a serializable resource format and its persistence through the existing project pipeline. Stage 2 added local OBJ import, rendering, object management, and basic project JSON save/restore. Stage 3A added OBJ transformations. Stage 3A+ extended the same controls and inspector to the built-in building, cuboid and cylinder while retaining their existing yaw and dimension semantics. Stage 3B added selected-OBJ export with baked transforms and verified re-import compatibility. Stage 4A added Edit Mode with logical vertex selection and translation. Stage 4B extended the same workflow to individual edges and triangular faces. Stage 4C adds same-type multi-selection and group translation within one submesh. UAV editing and topology operations remain outside the implemented scope.
 
 Resources are stored in the existing `Project` state. They are not a second scene or editor state. An imported file creates one `kind: "obj"` instance in the existing `models` list; its `resourceId` references the geometry, including multiple submeshes. Stage 1 version 2 projects containing unattached resources remain valid. Existing built-in models and UAV workflows remain unchanged.
 
@@ -458,6 +458,97 @@ Manual acceptance:
 5. Inspect authored hard edges, UV seams and formerly smooth boundaries after moving adjacent faces. Export and re-import, hide the source instance and compare the geometry. Save/reopen project JSON in browser and native desktop modes.
 6. Check a dense representative mesh on target hardware. Edge derivation and picking are linear scans, and occlusion uses ordinary mesh raycasts; no acceleration or dense-mesh performance guarantee is introduced.
 
-Stage 4B supports one vertex, edge or triangular face at a time, with translation only. Built-in/GLTF mesh editing, multiple selection, topology reconstruction and modeling operations remain excluded. Stage 4C may consider a set of logical element identities and picking acceleration, but must retain unique-vertex resolution and one transaction per gesture. No Stage 4C work is implemented here.
+Stage 4B originally supported one vertex, edge or triangular face at a time. Stage 4C below extends selection to collections while retaining unique-vertex resolution and one transaction per gesture. Built-in/GLTF mesh editing, topology reconstruction and modeling operations remain excluded.
 
 Stage 4B validation on 20 November 2026: all 88 unit tests, the TypeScript check and production build passed. Six Electron interaction suites passed: edge/face editing, the complete Stage 4A vertex workflow, OBJ import, Object Mode, built-in transforms and OBJ export. Dense meshes, near-clipped/coplanar picking, authored shading appearance and OS-native picker behavior remain the manual checks described above.
+
+## Stage 4C: Multi-selection and Group Translation
+
+### Selection Controls
+
+Within a visible, unlocked imported OBJ's active submesh, Vertex, Edge and Face modes now support collections of their existing logical element identities:
+
+- Plain click replaces the collection with the picked element.
+- Shift + left click toggles membership: add an unselected element or remove a selected one.
+- Clicking empty space clears the collection, including a Shift click that finds no eligible element.
+- Switching element type or submesh clears all element selections and cancels any active draft, preserving the active OBJ. Re-entering Edit Mode starts with no selected vertices.
+- The inspector displays both the selected-element count and the unique logical-vertex count. Selected-item chips allow removal by identity, which is particularly useful for coincident geometry.
+- The existing coincident-element cycle acts on the first selected element and preserves other members. Already selected alternatives are skipped. **Append Coincident Element** adds an independently indexed overlapping element without merging positions or replacing the group. The cycle/add controls remain scoped to that first element's exact geometric overlap.
+
+Shift + left pointer-down is intercepted only in Edit Mode, before OrbitControls or TransformControls can start their modifier-pan/drag on that gesture. The Shift state is captured at pointer-down, so releasing the key before mouse-up does not change toggle intent. Shift dragging beyond the existing click movement threshold neither pans the camera nor changes membership. Ordinary drag navigation, wheel zoom, middle/right buttons and Object Mode's controls retain their previous behavior. Plain clicks on a visible transform handle still operate the gizmo; use **V** when selecting through a handle's screen-space footprint. Shift selection takes priority over the gizmo.
+
+No cross-submesh or mixed-element-type collection is supported. Occlusion rules, perspective-correct edge picking, triangle raycasting, clipping limitations and the absence of X-ray selection are unchanged. Coincident independent vertices, edges and faces remain distinct by ID even if their orange overlays occupy the same pixels; counts and item chips make their membership visible.
+
+### Minimal Collection Representation
+
+`MeshSelection` retains its Stage 4B primary element shape and adds an optional `additional` array of same-scope, same-type element identities. This preserves existing single-selection entry points without introducing another state store. The array contains individual elements, not nested selection groups. Canonical identity keys remove duplicate elements, and the overall membership key is independent of selection order. Coordinates are never used for identity deduplication.
+
+`selectionElements()` resolves the membership list, `updateMeshSelection()` implements replace/toggle/clear, and `withSelectionElements()` rejects scope/type mixing. `resolveElement()` resolves all members using the existing resource connectivity and returns both per-element index lists for overlays and one unique vertex-index union for editing. If any member is stale or invalid, the group has no editable pivot; it is not silently reduced to the remaining valid members.
+
+Selection changes remain temporary UI state and do not enter the existing project history. Undo after selection-only interactions still undoes the preceding geometry/project operation. Project JSON, autosave and OBJ contain geometry only, never the primary/additional selection state. Loading/reloading resets Edit Mode as before.
+
+The existing overlay is extended: point highlights use unique vertex indices, while edge and face highlights retain each selected pair/triangle's own render-corner sequence. Thus adjacent selected elements are all visible while shared endpoints receive one geometric modification. There is no separate selection renderer or topology engine.
+
+### Group Pivot and Coordinate Conventions
+
+Every group uses the arithmetic centroid of its **unique selected logical vertices** in model-local space. It is not an average of element midpoints/centroids, which would weight shared endpoints repeatedly. The existing object matrix maps this pivot to world space for the same TransformControls proxy used by single-element editing.
+
+The geometry operation is unchanged: subtract the base local pivot from an absolute local target pivot and add that common delta to each unique vertex exactly once. The new `elementDelta` transaction input simply converts a local delta to that same absolute target before invoking the existing operation. World-space gizmo positions still pass through the inverse instance matrix. Rotated and non-uniformly scaled OBJ instances therefore retain their object transforms while their selected geometry receives the intended common world displacement.
+
+Each preview is calculated from the transaction's immutable initial project and selection, rather than from the preceding draft. Relative positions, connectivity, IDs, UVs and shared-resource isolation remain intact. Fully translated triangles retain authored normals exactly; partially affected neighbours retain the Stage 4A/4B per-corner normal transport policy. Existing bounds updates, finite/range checks and degeneration rejection apply to the entire vertex union.
+
+Single selections retain the previous absolute vertex/midpoint/centroid fields. With multiple elements selected, those editable absolute fields are replaced by:
+
+1. A read-only local selection centre.
+2. Explicit local **Translation Delta X/Y/Z** (`平移增量`) inputs.
+3. **Apply Translation** (`应用平移`), which submits the complete vector as one undoable operation.
+
+Entering values alone does not move geometry. Apply settles the currently focused input before reading the vector, so a click directly from a field includes its latest text. Successful application clears the delta inputs to zero and moves the group pivot with the geometry. Zero application adds no history entry. A rejected operation retains the entered delta for correction while restoring all geometry. Changing collection membership resets the pending numeric form; any other committed edit/undo/redo resets it as well. Gizmo dragging does not apply a prepared numerical vector; its successful commit clears that vector. During a drag, inputs are disabled and the inspector separately reports the live local displacement.
+
+### Transactions, Restrictions and Persistence
+
+The existing mesh target, immutable base/draft project, reserved copy-on-write resource ID, camera suspension, cancellation and history completion are reused for all three element types. No group-specific geometry algorithm or history store is introduced.
+
+A completed group drag or Apply action creates one entry. Cancel, focus loss, pointer cancellation, tool/mode/submesh changes and playback/candidate transitions restore the entire gesture base. Invalid drag samples retain the last valid group draft. Range/degeneration failures cannot update only some vertices. Final serialization validates the complete project, including resource-copy and normal-array costs, before committing. A capacity failure rolls back the whole group and adds no history entry.
+
+Hidden, locked, playback, candidate and UAV-camera restrictions are unchanged. Built-in parametric/GLTF models and UAV geometry cannot enter Edit Mode. Existing scene routing prevents element selection from creating viewpoints or selecting unrelated scene objects. Saving and OBJ export use committed project geometry and remain unavailable during an active gesture; group selection metadata does not affect either format.
+
+### Files and Verification
+
+Stage 4C changes `src/core/mesh-edit.ts`, `src/core/editor.tsx`, `src/core/transform.ts`, `src/features/mesh-edit/VertexOverlay.tsx`, `VertexInspector.tsx`, `src/style.css` and the existing Electron harness. It adds `tests/mesh-multiselect.test.ts` and `scripts/verify-mesh-multiselect-cases.cjs`. The existing ObjectGizmo, runtime mesh ownership, project serialization and OBJ exporter are reused without new dependencies or persisted schema fields.
+
+Step A selection was independently verified before enabling group transformations. Focused tests cover collections, Shift toggling, replace/clear, scope changes, coincident identities, shared-vertex deduplication, an asymmetric centroid case, geometry/UV/normal preservation, object transforms, world-gizmo/local-delta equivalence, base-relative previews, stale/no-op/cancel history, resource sharing, restrictions, JSON and OBJ round trips.
+
+With the Vite server running, use the existing isolated-profile Electron harness:
+
+```sh
+env -u ELECTRON_RUN_AS_NODE node node_modules/electron/cli.js scripts/verify-obj-transform-ui.cjs http://127.0.0.1:5176/ multi-selection
+env -u ELECTRON_RUN_AS_NODE node node_modules/electron/cli.js scripts/verify-obj-transform-ui.cjs http://127.0.0.1:5176/ multi
+```
+
+The first suite checks native Shift-click membership, every selected highlight, normal-click replacement, empty/mode/submesh clearing, independent coincident elements, no camera conflict and no selection-only history. The full suite additionally exercises all world axes for each group type under XYZ rotation and non-uniform scale, centroid placement, one-entry numeric vector application and reset, zero operations, undo/redo, Esc/blur/mode/preview cancellation, camera recovery, unchanged UAV data, project save/reload, actual OBJ download/re-import and a shared-resource capacity failure that must roll back the complete group.
+
+### Measured Performance and Limits
+
+A local Node CPU measurement on 20 November 2026 used planar regular grids with 100 uniformly sampled selected edges. Each cell contributed two triangles. Resolution/draft figures are medians of seven runs after warm-up; edge-picking figures are medians of three runs with ordinary Three.js occlusion raycasting against the same mesh, a 1,000 × 1,000 viewport and a perspective camera. The draft measurement includes selection resolution. It excludes React, GPU buffer upload and drawing, so these are component timings, not frame-rate guarantees.
+
+| Triangles | Unique selected vertices | Resolve collection (ms) | Create draft (ms) | Pick edge with occlusion (ms) |
+| --- | --- | --- | --- | --- |
+| 1,250 | 199 | 0.88 | 1.51 | 1.78 |
+| 9,800 | 200 | 6.99 | 8.33 | 10.58 |
+| 45,000 | 200 | 47.31 | 47.94 | 47.11 |
+
+Dense topology is a clear limitation of the existing linear edge derivation and raycasts. Several resolutions and affected-buffer updates can occur during a browser interaction, so end-to-end latency can exceed these numbers. No acceleration library or new editing architecture is introduced here. A subsequent optimization should first profile representative browser assets, then consider caching ID/edge lookup tables by topology revision, reducing repeated resolution and updating affected buffers in place. An acceleration structure should be justified by those measurements and include explicit invalidation tests.
+
+Manual acceptance:
+
+- In each mode, build a group with Shift clicks, remove members, replace it with a plain click and clear it on empty space. Test Shift release before mouse-up, Shift click on a gizmo footprint and Shift drag; confirm normal camera controls still work.
+- On overlapping geometry, append independent coincident elements and remove them by chip. Orbit and change zoom, then switch submesh/type and confirm the full group is cleared.
+- Use an asymmetric selection to check the unique-vertex centroid. Rotate/non-uniformly scale the object, drag every axis, and compare a prepared local numeric delta with the corresponding world movement. Check direct field-to-Apply clicks and input focus/Tab without editing.
+- Cancel group movement with Esc, window switching, mode changes and preview. Try degeneration, coordinate limits and an oversized shared-resource copy. Verify all vertices roll back together and the next Undo still targets the preceding operation.
+- Save/reopen project JSON in browser and native desktop modes. Export/re-import OBJ, hide the original to inspect the overlap, and inspect authored seams and partially deformed smooth boundaries. Recheck UAV playback and analysis.
+- Measure a representative dense mesh on the target machine; the synthetic CPU results above do not establish a maximum interactive asset size.
+
+Stage 4C remains same-type selection within one submesh and translation only. Box/lasso selection, cross-submesh groups, topology changes, proportional editing, element rotation/scaling and built-in/UAV mesh editing remain excluded. No subsequent stage is automatically implemented.
+
+Stage 4C validation on 20 November 2026: all 106 unit tests, the TypeScript check and production build passed. The independent multi-selection Step A suite passed, followed by seven full Electron suites: group editing, single edge/face editing, vertex editing, OBJ import, Object Mode, built-in transforms and OBJ export. Native picker behavior, dense-asset responsiveness and the overlapping/clipped-surface cases above remain manual acceptance checks.

@@ -36,7 +36,7 @@ import {
 } from "./transform";
 import { prepareObjImport } from "../features/obj-import/obj";
 import { UserInputError } from "./errors";
-import { clearElement, editableObj, resolveElement, type MeshSelection, type MeshSelectionMode } from "./mesh-edit";
+import { clearElement, editableObj, resolveElement, selectionElements, updateMeshSelection, type MeshElementSelection, type MeshSelection, type MeshSelectionMode } from "./mesh-edit";
 
 const STORAGE = "p15.project.v1";
 type History = {
@@ -160,10 +160,14 @@ function useEditorState() {
   function selectMeshElement(next: MeshSelection) {
     if (!vertexSelectionRef.current || next.modelId !== vertexSelectionRef.current.modelId) return;
     const resolved = resolveElement(readProject(), next);
-    const empty = "vertexId" in next ? next.vertexId === null : "edgeIds" in next ? next.edgeIds === null : next.triangle === null;
+    const empty = selectionElements(next).length === 0;
     if (!resolved || (!empty && !resolved.pivot)) return;
     cancelTransform();
     vertexSelectionRef.current = next; setVertexSelectionState(next);
+  }
+  function pickMeshElement(picked: MeshElementSelection, toggle = false) {
+    const current = vertexSelectionRef.current;
+    if (current) selectMeshElement(updateMeshSelection(current, picked, toggle));
   }
   function setMeshSelectionMode(mode: MeshSelectionMode) {
     if (!vertexSelectionRef.current) return;
@@ -487,6 +491,7 @@ function useEditorState() {
     vertexSelection,
     meshSelection: vertexSelection,
     selectMeshElement,
+    pickMeshElement,
     setMeshSelectionMode,
     enterEditMode,
     exitEditMode,
