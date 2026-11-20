@@ -51,7 +51,26 @@ module.exports = async ({win,run,wait,click,key,snapshot,delay,input,before,sele
  await key('f');await delay(100);
  const objectBase=await snapshot(), original=objectBase.objResources[0], close=(a,b,eps=1e-6)=>a.forEach((n,i)=>assert.ok(Math.abs(n-b[i])<eps,`${a} != ${b}`));
  const world=state=>run(`(async()=>{const {objMatrix}=await import('/src/core/obj-transform.ts'),{Vector3}=await import('/node_modules/.vite/deps/three.js');const p=${JSON.stringify(state)},m=p.models.find(m=>m.id===${JSON.stringify(model.id)});return p.objResources.find(r=>r.id===m.resourceId).vertices.map(v=>new Vector3(...v.position).applyMatrix4(objMatrix(m)).toArray());})()`);
- const verifyPivot=async(state,indices)=>{const positions=await world(state);close(await run(`${control}.object.position.toArray()`),[0,1,2].map(axis=>indices.reduce((n,i)=>n+positions[i][axis],0)/indices.length));};
+ const verifyPivot=async(state,indices)=>{
+  const positions=await world(state), actual=await run(`${control}.object.position.toArray()`),
+   expected=[0,1,2].map(axis=>indices.reduce((n,i)=>n+positions[i][axis],0)/indices.length);
+  try { close(actual,expected); } catch(error) {
+   if(process.env.OBJ_PIVOT_DIAGNOSTICS){
+    const observation={actual,expected,indices,mode:await run(`document.querySelector('.vertex-inspector h3').textContent`)};
+    observation.members=await run(`[...document.querySelectorAll('.mesh-selection-list button')].map(e=>e.textContent)`);
+    observation.count=await run(`document.querySelector('[aria-label="已选元素数量"]').parentElement.textContent`);
+    observation.scene=await run(`(()=>{const result=[];window.__root.getState().scene.traverse(o=>{
+     if(o.name==='object-transform-gizmo'||o.name==='object-transform-pivot'||o.name.startsWith('selected-edit-'))
+      result.push({name:o.name,uuid:o.uuid,position:o.position.toArray(),target:o.controls?.object?.position.toArray(),vertices:o.geometry?.getAttribute('position')?.count});
+    });return result;})()`);
+    await run('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');
+    observation.afterTwoRaf=await run(`${control}.object.position.toArray()`);
+    await delay(250);observation.after250ms=await run(`${control}.object.position.toArray()`);
+    console.log('PIVOT_DIAGNOSTIC',JSON.stringify(observation));
+   }
+   throw error; // Diagnostics never retry, relax or replace the original assertion.
+  }
+ };
  await click('切换编辑模式');await wait(`!!document.querySelector('.vertex-inspector')`);
  let numeric;
  for(const [mode,a,b,indices] of [
@@ -61,6 +80,23 @@ module.exports = async ({win,run,wait,click,key,snapshot,delay,input,before,sele
  ]) {
   await click(mode+'选择');await delay(180);await pick(a);await click('移动 M');await wait(`!!(${control}?.object)`);
   await pick(b,true);assert.equal(await count(),2);await wait(`!!(${control}?.object)`);
+  if(mode==='面') {
+   // Faces 2 and 3 coincide but reference different logical vertices. A native
+   // ray may legitimately pick either. Establish the intended 1+2 fixture via
+   // the existing coincident-face selector before asserting its four-vertex pivot.
+   const members=()=>run(`[...document.querySelectorAll('.mesh-selection-list button')].map(e=>e.getAttribute('aria-label')).sort()`);
+   const picked=await members();
+   assert.ok(JSON.stringify(picked)===JSON.stringify(['移除 三角面 1','移除 三角面 2'])||
+    JSON.stringify(picked)===JSON.stringify(['移除 三角面 1','移除 三角面 3']),JSON.stringify(picked));
+   if(picked.includes('移除 三角面 3')) {
+    await click('移除 三角面 1');assert.equal(await count(),1);
+    await run(`(()=>{const button=[...document.querySelectorAll('.vertex-inspector button')].find(e=>e.textContent.startsWith('切换重合面'));if(!button)throw new Error('Missing coincident-face selector');button.click();})()`);
+    await pick(a,true);
+    checks.push('coincident-face-alternative-resolved-through-existing-UI');
+   }
+   assert.deepEqual(await members(),['移除 三角面 1','移除 三角面 2']);
+   assert.equal(await count(),2);
+  }
   assert.equal(await run('window.__root.getState().controls.enabled'),true);await verifyPivot(objectBase,indices);
   for(const [axis,component] of [['X',0],['Y',1],['Z',2]]) {
    const s=await dragStart(axis), e=await dragMove(s);assert.deepEqual(await snapshot(),objectBase);

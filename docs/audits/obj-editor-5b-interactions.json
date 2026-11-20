@@ -1,0 +1,137 @@
+{
+  "beforeOptimization": [
+    {
+      "mode": "audit",
+      "status": 0,
+      "stdout": "{\"auditCase\":[9800,false],\"preview\":{\"n\":20,\"p50\":87,\"p95\":92.9,\"max\":93},\"commit\":{\"n\":5,\"p50\":125.3,\"p95\":141,\"max\":141},\"resolveCalls\":{\"selectionElements\":21,\"meshEdges\":15,\"resolveElement.map\":11,\"other\":8},\"gpuCycle\":[134,150,134,150,150]}\n{\"auditCase\":[45000,false],\"preview\":{\"n\":20,\"p50\":506,\"p95\":555.2,\"max\":711.2},\"commit\":{\"n\":5,\"p50\":756.8,\"p95\":864.1,\"max\":864.1},\"resolveCalls\":{\"selectionElements\":21,\"meshEdges\":15,\"resolveElement.map\":11,\"other\":8},\"gpuCycle\":[150,150,150,150,150]}\n{\"auditCase\":[45000,true],\"preview\":{\"n\":20,\"p50\":508.7,\"p95\":587.8,\"max\":771.9},\"commit\":{\"n\":5,\"p50\":786.4,\"p95\":848.2,\"max\":848.2},\"resolveCalls\":{\"selectionElements\":21,\"meshEdges\":15,\"resolveElement.map\":11,\"other\":8},\"gpuCycle\":[134,150,150,150,150]}\n{\"auditReport\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-kSjFS1/audit-ui.json\"}\n{\"passed\":true,\"checks\":[\"native-dense-drags\",\"real-editor-undo-redo\",\"separate-untimed-call-profile\",\"GPU-mode-cycle-observation\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-kSjFS1/audit.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "mode": "multi",
+      "status": 1,
+      "stdout": "",
+      "stderr": "phase drag Y\nAssertionError [ERR_ASSERTION]: 41.24264968425855,16.075614879335028,20.227887358007152 != 42.000000000000014,17.000000000000007,19.999999999999996\n    at /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:120\n    at Array.forEach (<anonymous>)\n    at close (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:98)\n    at verifyPivot (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:54:78)\n    at async module.exports (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:64:77)\n    at async /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-obj-transform-ui.cjs:87:17 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\nrendererErrors []\n/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-05f1ZF\n"
+    },
+    {
+      "mode": "multi",
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"顶点: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"边: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"面: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"independent-coincident-members\",\"submesh-reset\",\"selection-no-project-history\",\"顶点: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"边: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"面: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"blur-element-mode-preview-cancel\",\"camera-recovery\",\"UAV-unchanged\",\"JSON-save-reload-no-selection-metadata\",\"OBJ-actual-file-roundtrip\",\"whole-group-capacity-rollback-no-extra-history\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-9MPHpE/multi.png\"}\n",
+      "stderr": ""
+    }
+  ],
+  "baselineFailureDiagnostics": [
+    {
+      "iteration": 0,
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"顶点: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"边: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"面: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"independent-coincident-members\",\"submesh-reset\",\"selection-no-project-history\",\"顶点: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"边: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"面: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"blur-element-mode-preview-cancel\",\"camera-recovery\",\"UAV-unchanged\",\"JSON-save-reload-no-selection-metadata\",\"OBJ-actual-file-roundtrip\",\"whole-group-capacity-rollback-no-extra-history\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-EXFb4P/multi.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "iteration": 1,
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"顶点: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"边: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"面: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"independent-coincident-members\",\"submesh-reset\",\"selection-no-project-history\",\"顶点: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"边: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"面: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"blur-element-mode-preview-cancel\",\"camera-recovery\",\"UAV-unchanged\",\"JSON-save-reload-no-selection-metadata\",\"OBJ-actual-file-roundtrip\",\"whole-group-capacity-rollback-no-extra-history\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-2QJ5DF/multi.png\"}\n",
+      "stderr": ""
+    }
+  ],
+  "afterOptimizationBeforeFixtureDisambiguation": [
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "audit",
+      "status": 0,
+      "stdout": "{\"auditCase\":[9800,false],\"preview\":{\"n\":20,\"p50\":23.1,\"p95\":24.7,\"max\":25.8},\"commit\":{\"n\":5,\"p50\":18.9,\"p95\":21.5,\"max\":21.5},\"resolveCalls\":{\"selectionElements\":21,\"other\":8},\"gpuCycle\":[134,150,150,150,150]}\n{\"auditCase\":[45000,false],\"preview\":{\"n\":20,\"p50\":80.7,\"p95\":102.5,\"max\":104},\"commit\":{\"n\":5,\"p50\":87.7,\"p95\":106.6,\"max\":106.6},\"resolveCalls\":{\"selectionElements\":21,\"other\":8},\"gpuCycle\":[134,150,150,150,150]}\n{\"auditCase\":[45000,true],\"preview\":{\"n\":20,\"p50\":77.6,\"p95\":103.7,\"max\":143.9},\"commit\":{\"n\":5,\"p50\":113,\"p95\":125.6,\"max\":125.6},\"resolveCalls\":{\"selectionElements\":21,\"other\":8},\"gpuCycle\":[134,150,150,150,150]}\n{\"auditReport\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-bii4DD/audit-ui.json\"}\n{\"passed\":true,\"checks\":[\"native-dense-drags\",\"real-editor-undo-redo\",\"separate-untimed-call-profile\",\"GPU-mode-cycle-observation\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-bii4DD/audit.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "multi",
+      "status": 1,
+      "stdout": "PIVOT_DIAGNOSTIC {\"actual\":[41.24264968425855,16.075614879335028,20.227887358007152],\"expected\":[42.000000000000014,17.000000000000007,19.999999999999996],\"indices\":[0,1,2,3],\"mode\":\"编辑模式 · 面\",\"afterTwoRaf\":[41.24264968425855,16.075614879335028,20.227887358007152],\"after250ms\":[41.24264968425855,16.075614879335028,20.227887358007152]}\n",
+      "stderr": "phase drag Y\nAssertionError [ERR_ASSERTION]: 41.24264968425855,16.075614879335028,20.227887358007152 != 42.000000000000014,17.000000000000007,19.999999999999996\n    at /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:120\n    at Array.forEach (<anonymous>)\n    at close (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:98)\n    at verifyPivot (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:57:9)\n    at async module.exports (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:77:77)\n    at async /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-obj-transform-ui.cjs:87:17 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\nrendererErrors []\n/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-pFB2PR\n"
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "elements",
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"native-edge-picking-highlight-dedup\",\"midpoint-world-pivot\",\"world-edge-move-rotated-nonuniform\",\"degenerate-rejection\",\"edge-history-cancel-mode-switch\",\"native-face-raycast-highlight\",\"centroid-world-pivot\",\"numeric-reference-delta\",\"face-world-XYZ-common-translation\",\"normals-UV-and-independent-vertices\",\"active-submesh-face-scope\",\"mode-reset-keeps-active-object-and-submesh\",\"vertex-mode-and-UAV-compatibility\",\"JSON-save-reload\",\"OBJ-actual-file-export-reimport\",\"preview-restriction\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-5cuD9N/elements.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "edit",
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"mode-and-input-focus\",\"native-logical-vertex-picking\",\"coincident-IDs\",\"active-submesh\",\"selection-does-not-change-project\",\"native-world-XYZ-under-rotated-nonuniform-model\",\"single-gesture-undo-redo\",\"logical-corners-and-object-transform-unchanged\",\"escape-blur-mode-switch-cancel\",\"camera-recovery-no-extra-history\",\"numeric-local-edit\",\"JSON-save-and-OBJ-export-round-trip\",\"preview-lock-hidden-UAV-restrictions\",\"reload-geometry-restored-mode-is-transient\",\"actual-file-reimport-after-vertex-edit\",\"shared-resource-detachment-capacity-failure-atomic-history\",\"shared-instance-detach-undo-redo\",\"unrelated-submesh-GPU-buffers-retained\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-opFEvW/edit.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "file": "verify-obj-ui.cjs",
+      "mode": "",
+      "status": 0,
+      "stdout": "{\"passed\":true,\"scenePicked\":true,\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-stage2-ui-y2CtJc/imported.png\",\"snapshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-stage2-ui-y2CtJc/snapshot.json\",\"checks\":[\"import-menu\",\"file-input\",\"multi-mesh\",\"selection\",\"visibility\",\"lock-delete\",\"focus\",\"save-download\",\"undo-import\",\"undo-redo\",\"restore-file\",\"reload-autosave\",\"invalid-input\",\"playback\",\"analysis\",\"quota-failure-save-fallback\",\"no-console-errors\"]}\n",
+      "stderr": ""
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "",
+      "status": 0,
+      "stdout": "{\"passed\":true,\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-aeJkyO/transformed.png\",\"checks\":[\"native-translation\",\"single-gesture-undo-redo\",\"live-inspector-sync\",\"cancel\",\"numeric-XYZ\",\"pending-input-before-drag\",\"native-rotation\",\"non-uniform-scale\",\"uniform-scale\",\"locked-hidden-preview-candidate\",\"geometry-unchanged\",\"save-reload\",\"UAV-unchanged\",\"camera-recovery\"]}\n",
+      "stderr": ""
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "builtin",
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"building: native move/yaw/dimensions, numeric-render sync, cancel/history, visibility/lock\",\"box: native move/yaw/dimensions, numeric-render sync, cancel/history, visibility/lock\",\"cylinder: native move/yaw/dimensions, numeric-render sync, cancel/history, visibility/lock\",\"version-1 save/reload, preview/candidate restrictions, UAV playback/analysis regression, no UAV editing\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-cHMURb/builtins.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "export",
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"active-transaction-disabled\",\"hidden-locked-read-only-export\",\"native-cancel-and-error-state-unchanged\",\"browser-plain-text-download\",\"export-does-not-create-history\",\"multi-submesh-UV-connectivity\",\"rendered-world-geometry-round-trip\",\"UAV-paths-unchanged\",\"project-JSON-save-regression\",\"builtin-UAV-disabled\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-dD4iWR/export.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "multi",
+      "status": 1,
+      "stdout": "PIVOT_DIAGNOSTIC {\"actual\":[41.24264968425855,16.075614879335028,20.227887358007152],\"expected\":[42.000000000000014,17.000000000000007,19.999999999999996],\"indices\":[0,1,2,3],\"mode\":\"编辑模式 · 面\",\"scene\":[{\"name\":\"selected-edit-face\",\"uuid\":\"1aebfd73-34f7-4d1e-9806-ba60062c7be8\",\"position\":[0,0,0],\"vertices\":6},{\"name\":\"object-transform-pivot\",\"uuid\":\"2e4de716-66c2-4e9a-9189-671842ca5e2b\",\"position\":[41.24264968425855,16.075614879335028,20.227887358007152]},{\"name\":\"object-transform-gizmo\",\"uuid\":\"19890b94-0892-43af-97c4-0eafdb6ec1fa\",\"position\":[0,0,0],\"target\":[41.24264968425855,16.075614879335028,20.227887358007152]}],\"afterTwoRaf\":[41.24264968425855,16.075614879335028,20.227887358007152],\"after250ms\":[41.24264968425855,16.075614879335028,20.227887358007152]}\n",
+      "stderr": "phase drag Y\nAssertionError [ERR_ASSERTION]: 41.24264968425855,16.075614879335028,20.227887358007152 != 42.000000000000014,17.000000000000007,19.999999999999996\n    at /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:120\n    at Array.forEach (<anonymous>)\n    at close (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:98)\n    at verifyPivot (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:57:9)\n    at async module.exports (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:81:77)\n    at async /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-obj-transform-ui.cjs:87:17 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\nrendererErrors []\n/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-q9DkwW\n"
+    },
+    {
+      "file": "verify-obj-transform-ui.cjs",
+      "mode": "multi",
+      "status": 1,
+      "stdout": "PIVOT_DIAGNOSTIC {\"actual\":[41.24264968425855,16.075614879335028,20.227887358007152],\"expected\":[42.000000000000014,17.000000000000007,19.999999999999996],\"indices\":[0,1,2,3],\"mode\":\"编辑模式 · 面\",\"scene\":[{\"name\":\"selected-edit-face\",\"uuid\":\"45fbe307-8c76-4c76-b57e-29cf2aad7212\",\"position\":[0,0,0],\"vertices\":6},{\"name\":\"object-transform-pivot\",\"uuid\":\"c64995ce-d482-41b5-a2a1-338b89f3027f\",\"position\":[41.24264968425855,16.075614879335028,20.227887358007152]},{\"name\":\"object-transform-gizmo\",\"uuid\":\"e88f1289-8205-447d-9489-e9e85811f0a9\",\"position\":[0,0,0],\"target\":[41.24264968425855,16.075614879335028,20.227887358007152]}],\"afterTwoRaf\":[41.24264968425855,16.075614879335028,20.227887358007152],\"after250ms\":[41.24264968425855,16.075614879335028,20.227887358007152]}\n",
+      "stderr": "phase drag Y\nAssertionError [ERR_ASSERTION]: 41.24264968425855,16.075614879335028,20.227887358007152 != 42.000000000000014,17.000000000000007,19.999999999999996\n    at /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:120\n    at Array.forEach (<anonymous>)\n    at close (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:98)\n    at verifyPivot (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:57:9)\n    at async module.exports (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:81:77)\n    at async /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-obj-transform-ui.cjs:87:17 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\nrendererErrors []\n/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-ZycGED\n"
+    }
+  ],
+  "faceIdentityDiagnosis": [
+    {
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"顶点: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"边: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"面: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"independent-coincident-members\",\"submesh-reset\",\"selection-no-project-history\",\"顶点: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"边: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"面: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"blur-element-mode-preview-cancel\",\"camera-recovery\",\"UAV-unchanged\",\"JSON-save-reload-no-selection-metadata\",\"OBJ-actual-file-roundtrip\",\"whole-group-capacity-rollback-no-extra-history\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-A6sY4I/multi.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "status": 1,
+      "stdout": "PIVOT_DIAGNOSTIC {\"actual\":[41.24264968425855,16.075614879335028,20.227887358007152],\"expected\":[42.000000000000014,17.000000000000007,19.999999999999996],\"indices\":[0,1,2,3],\"mode\":\"编辑模式 · 面\",\"members\":[\"三角面 1 ×\",\"三角面 3 ×\"],\"count\":\"已选 2 个面 · 5 个逻辑顶点\",\"scene\":[{\"name\":\"selected-edit-face\",\"uuid\":\"88cc43af-585c-400d-bdf9-d003dfc426c7\",\"position\":[0,0,0],\"vertices\":6},{\"name\":\"object-transform-pivot\",\"uuid\":\"2e5d2611-7313-444d-81e3-02c79aafbf33\",\"position\":[41.24264968425855,16.075614879335028,20.227887358007152]},{\"name\":\"object-transform-gizmo\",\"uuid\":\"2a1ea9bc-2d09-442f-bf02-9bc85e20e934\",\"position\":[0,0,0],\"target\":[41.24264968425855,16.075614879335028,20.227887358007152]}],\"afterTwoRaf\":[41.24264968425855,16.075614879335028,20.227887358007152],\"after250ms\":[41.24264968425855,16.075614879335028,20.227887358007152]}\n",
+      "stderr": "phase drag Y\nAssertionError [ERR_ASSERTION]: 41.24264968425855,16.075614879335028,20.227887358007152 != 42.000000000000014,17.000000000000007,19.999999999999996\n    at /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:120\n    at Array.forEach (<anonymous>)\n    at close (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:52:98)\n    at verifyPivot (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:57:9)\n    at async module.exports (/Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-mesh-multiselect-cases.cjs:83:77)\n    at async /Users/daidaiyuchi/Documents/UNNCGRP-17/scripts/verify-obj-transform-ui.cjs:87:17 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\nrendererErrors []\n/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-ZpWgzq\n"
+    }
+  ],
+  "afterFixtureDisambiguation": [
+    {
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"顶点: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"边: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"面: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"independent-coincident-members\",\"submesh-reset\",\"selection-no-project-history\",\"顶点: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"边: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"面: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"blur-element-mode-preview-cancel\",\"camera-recovery\",\"UAV-unchanged\",\"JSON-save-reload-no-selection-metadata\",\"OBJ-actual-file-roundtrip\",\"whole-group-capacity-rollback-no-extra-history\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-EX8oz0/multi.png\"}\n",
+      "stderr": "[17864:1120/201008.273274:ERROR:base/process/process_mac.cc:45] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)\n[17864:1120/201008.273978:ERROR:base/process/process_mac.cc:90] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)\n"
+    },
+    {
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"顶点: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"边: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"面: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"independent-coincident-members\",\"submesh-reset\",\"selection-no-project-history\",\"顶点: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"边: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"面: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"blur-element-mode-preview-cancel\",\"camera-recovery\",\"UAV-unchanged\",\"JSON-save-reload-no-selection-metadata\",\"OBJ-actual-file-roundtrip\",\"whole-group-capacity-rollback-no-extra-history\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-9a0bwK/multi.png\"}\n",
+      "stderr": ""
+    },
+    {
+      "status": 0,
+      "stdout": "{\"passed\":true,\"checks\":[\"顶点: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"边: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"面: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict\",\"independent-coincident-members\",\"submesh-reset\",\"selection-no-project-history\",\"顶点: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"边: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"coincident-face-alternative-resolved-through-existing-UI\",\"面: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel\",\"blur-element-mode-preview-cancel\",\"camera-recovery\",\"UAV-unchanged\",\"JSON-save-reload-no-selection-metadata\",\"OBJ-actual-file-roundtrip\",\"whole-group-capacity-rollback-no-extra-history\"],\"screenshot\":\"/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-sJFSYe/multi.png\"}\n",
+      "stderr": ""
+    }
+  ]
+}

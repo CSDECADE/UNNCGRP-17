@@ -1,0 +1,2333 @@
+{
+  "conditions": {
+    "url": "http://127.0.0.1:5177/",
+    "window": [
+      1440,
+      1000
+    ],
+    "note": "Vite development React StrictMode. Actual native pointer drags; each sample is observed through two RAF callbacks. Hidden Electron window, not displayed paint or GPU completion. Instrumentation is test-only. Context access is used for deterministic 100-element fixture setup.",
+    "renderer": {
+      "renderer": "WebKit WebGL",
+      "vendor": "WebKit",
+      "unmasked": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)"
+    }
+  },
+  "cases": [
+    {
+      "triangles": 9800,
+      "attributes": false,
+      "warmupGestures": 1,
+      "measuredGestures": 5,
+      "preview": [
+        {
+          "twoRafMs": 59.700000286102295,
+          "renderMatchMs": 93,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 62.10000038146973,
+          "renderMatchMs": 92.7000002861023,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 56,
+          "renderMatchMs": 90.7999997138977,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 55.59999990463257,
+          "renderMatchMs": 85.69999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 54.09999990463257,
+          "renderMatchMs": 83.80000019073486,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 56.299999713897705,
+          "renderMatchMs": 87.5,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 58.799999713897705,
+          "renderMatchMs": 90,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 56.59999990463257,
+          "renderMatchMs": 86.69999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 57.5,
+          "renderMatchMs": 89.19999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 57.200000286102295,
+          "renderMatchMs": 88.60000038146973,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 58.59999990463257,
+          "renderMatchMs": 89.19999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 59.90000009536743,
+          "renderMatchMs": 92.80000019073486,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 54,
+          "renderMatchMs": 84.69999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 53.799999713897705,
+          "renderMatchMs": 85.19999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 62,
+          "renderMatchMs": 92.90000009536743,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 55.80000019073486,
+          "renderMatchMs": 87,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 54.30000019073486,
+          "renderMatchMs": 83.80000019073486,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 54.40000009536743,
+          "renderMatchMs": 84.69999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 54,
+          "renderMatchMs": 83.60000038146973,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 55.5,
+          "renderMatchMs": 84.7000002861023,
+          "geometryChanged": true
+        }
+      ],
+      "commit": [
+        {
+          "twoRafMs": 123,
+          "renderMatchMs": 123,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 125.09999990463257,
+          "renderMatchMs": 125.09999990463257,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 125.2999997138977,
+          "renderMatchMs": 125.2999997138977,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 126.40000009536743,
+          "renderMatchMs": 126.5,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 141,
+          "renderMatchMs": 141,
+          "geometryChanged": false
+        }
+      ],
+      "undo": [
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 78.09999990463257
+        },
+        {
+          "dispatchMs": 0,
+          "twoRafMs": 78.5
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 84.59999990463257
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 79.30000019073486
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 86.2999997138977
+        }
+      ],
+      "redo": [
+        {
+          "dispatchMs": 0.10000038146972656,
+          "twoRafMs": 78.40000009536743
+        },
+        {
+          "dispatchMs": 0.19999980926513672,
+          "twoRafMs": 78.39999961853027
+        },
+        {
+          "dispatchMs": 0.19999980926513672,
+          "twoRafMs": 84
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 78.89999961853027
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 83.90000009536743
+        }
+      ],
+      "select": [
+        {
+          "dispatchMs": 5.300000190734863,
+          "twoRafMs": 56.80000019073486
+        },
+        {
+          "dispatchMs": 5.5,
+          "twoRafMs": 57.09999990463257
+        },
+        {
+          "dispatchMs": 5.399999618530273,
+          "twoRafMs": 54.69999980926514
+        },
+        {
+          "dispatchMs": 4.799999713897705,
+          "twoRafMs": 56.09999990463257
+        },
+        {
+          "dispatchMs": 5.700000286102295,
+          "twoRafMs": 50.30000019073486
+        }
+      ],
+      "idle": {
+        "draws": [
+          0.5999999046325684,
+          0.39999961853027344,
+          0.5999999046325684,
+          0.5,
+          0.40000009536743164,
+          0.3000001907348633,
+          0.5,
+          0.3000001907348633,
+          0.3000001907348633,
+          0.09999990463256836,
+          0.39999961853027344,
+          0.19999980926513672,
+          0.09999990463256836,
+          0.40000009536743164,
+          0.40000009536743164,
+          0.40000009536743164,
+          0.19999980926513672,
+          0.20000028610229492,
+          0.3000001907348633,
+          0.19999980926513672,
+          0.2999997138977051,
+          0.09999990463256836,
+          0.40000009536743164,
+          0.3000001907348633,
+          0.09999990463256836,
+          0.19999980926513672,
+          0.5,
+          0.3000001907348633,
+          0.3000001907348633,
+          0.39999961853027344,
+          0.20000028610229492,
+          0.5999999046325684,
+          0.5999999046325684,
+          0.7000002861022949,
+          0.6999998092651367,
+          0.2999997138977051
+        ],
+        "intervals": [
+          8.400000000000091,
+          8.299999999999727,
+          7.800000000000182,
+          8.900000000000091,
+          8.400000000000091,
+          8.199999999999818,
+          8.400000000000091,
+          8.199999999999818,
+          8.400000000000091,
+          8.400000000000091,
+          8.299999999999727,
+          7.600000000000364,
+          9.199999999999818,
+          8.199999999999818,
+          8.400000000000091,
+          8.300000000000182,
+          8.400000000000091,
+          8.299999999999727,
+          8.300000000000182,
+          8.299999999999727,
+          8.400000000000091,
+          8.300000000000182,
+          7.699999999999818,
+          8.900000000000091,
+          8.400000000000091,
+          7.799999999999727,
+          9,
+          8.200000000000273,
+          8.400000000000091,
+          8.299999999999727,
+          8.400000000000091,
+          8.300000000000182,
+          8.199999999999818,
+          7.900000000000091,
+          8.699999999999818,
+          8.5
+        ]
+      },
+      "diagnostics": {
+        "calls": {
+          "counts": {
+            "selectionElements": 21,
+            "meshEdges": 15,
+            "resolveElement.map": 11,
+            "other": 8
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at translateMeshElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:187:18)\n    at updateTransformSession (http://127.0.0.1:5177/src/core/transform.ts:51:44)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at TransformControls.change (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:104:9)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:22:41\n    at _l (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:5061:18)\n    at Object.useMemo (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:9262:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:22:41\n    at _l (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:5064:13)\n    at Object.useMemo (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:9262:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 1
+          }
+        },
+        "commitCalls": {
+          "counts": {
+            "selectionElements": 21,
+            "meshEdges": 13,
+            "resolveElement.map": 11,
+            "other": 8
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at finish (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:80:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at http://127.0.0.1:5177/src/core/editor.tsx:151:91\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:20049:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 1
+          }
+        },
+        "autosaveCalls": {
+          "counts": {
+            "other": 7,
+            "selectionElements": 19,
+            "meshEdges": 11,
+            "resolveElement.map": 9
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 1
+          }
+        },
+        "geometry": {
+          "baselineGpu": 150,
+          "afterGpu": 148,
+          "importedGeometryTracking": {
+            "created": 90,
+            "disposed": 44,
+            "undisposed": 46
+          }
+        },
+        "gpuAfterModeCycles": [
+          134,
+          150,
+          134,
+          150,
+          150
+        ],
+        "gpuWithoutGizmo": 134
+      },
+      "draws": [
+        0.2999997138977051,
+        0.3000001907348633,
+        0.7999997138977051,
+        0.40000009536743164,
+        0.3000001907348633,
+        0.40000009536743164,
+        0.5999999046325684,
+        0.40000009536743164,
+        0.20000028610229492,
+        0.3000001907348633,
+        0.5999999046325684,
+        0.2999997138977051,
+        0.40000009536743164,
+        0.40000009536743164,
+        0.6999998092651367,
+        0.3000001907348633,
+        0.40000009536743164,
+        0.19999980926513672,
+        0.19999980926513672,
+        0.40000009536743164,
+        0.6999998092651367,
+        0.19999980926513672,
+        0.2999997138977051,
+        0.5,
+        0.20000028610229492,
+        0.2999997138977051,
+        0.5,
+        0.09999990463256836,
+        0.19999980926513672,
+        0.2999997138977051,
+        0.5999999046325684,
+        0.40000009536743164,
+        0.19999980926513672,
+        0.39999961853027344,
+        0.7000002861022949,
+        0.40000009536743164,
+        0.2999997138977051,
+        0.2999997138977051,
+        0.7000002861022949,
+        0.3000001907348633,
+        0.2999997138977051,
+        0.3000001907348633,
+        0.5999999046325684,
+        0.19999980926513672,
+        0.19999980926513672,
+        0.40000009536743164,
+        0.40000009536743164,
+        0.2999997138977051,
+        0.5999999046325684,
+        0,
+        0.3000001907348633,
+        0.5,
+        0.20000028610229492,
+        0.40000009536743164,
+        0.5999999046325684,
+        0.19999980926513672,
+        0.2999997138977051,
+        0.3000001907348633,
+        0.5999999046325684,
+        0.19999980926513672,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.6999998092651367,
+        0.20000028610229492,
+        0.19999980926513672,
+        0.3000001907348633,
+        0.5,
+        0.19999980926513672,
+        0.3000001907348633,
+        0.40000009536743164,
+        0.5999999046325684,
+        0.09999990463256836,
+        0.40000009536743164,
+        0.40000009536743164,
+        0.19999980926513672,
+        0.20000028610229492,
+        0.5,
+        0.19999980926513672,
+        0.2999997138977051,
+        0.5999999046325684,
+        0.19999980926513672,
+        0.19999980926513672,
+        0.6000003814697266,
+        0.09999990463256836,
+        0.19999980926513672,
+        0.40000009536743164,
+        0.5999999046325684,
+        0.20000028610229492,
+        0.3000001907348633,
+        0.2999997138977051,
+        0.5999999046325684,
+        0.2999997138977051,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.5,
+        0.20000028610229492,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.6999998092651367,
+        0.20000028610229492,
+        0.2999997138977051,
+        0.20000028610229492,
+        0.20000028610229492,
+        0.19999980926513672,
+        0.5999999046325684,
+        0.09999990463256836,
+        0.19999980926513672,
+        0.40000009536743164,
+        0.5,
+        0.09999990463256836,
+        0.3000001907348633,
+        0.5,
+        0,
+        0.40000009536743164,
+        0.3000001907348633,
+        0.7000002861022949,
+        0.19999980926513672,
+        0.20000028610229492,
+        0.40000009536743164,
+        0.5999999046325684,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.2999997138977051,
+        0.7000002861022949,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.2999997138977051,
+        0.5999999046325684,
+        0.19999980926513672,
+        0.19999980926513672,
+        0.20000028610229492,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.20000028610229492,
+        0.3000001907348633,
+        0.5999999046325684,
+        0.09999990463256836,
+        0.20000028610229492,
+        0.7000002861022949,
+        0.09999990463256836,
+        0.20000028610229492,
+        0.2999997138977051,
+        0.5999999046325684,
+        0.19999980926513672
+      ],
+      "intervals": [
+        8.399999999999636,
+        8.199999999999818,
+        50.100000000000364,
+        32.80000000000018,
+        8.199999999999818,
+        8.5,
+        50.399999999999636,
+        33.400000000000546,
+        7.399999999999636,
+        9.399999999999636,
+        41.5,
+        33.400000000000546,
+        50,
+        25,
+        50,
+        25,
+        8.300000000000182,
+        75,
+        41.599999999999454,
+        16.800000000000182,
+        50,
+        33.30000000000018,
+        8.399999999999636,
+        41.600000000000364,
+        25,
+        7.5,
+        42.5,
+        33.30000000000018,
+        8.399999999999636,
+        8.300000000000182,
+        41.69999999999982,
+        33.30000000000018,
+        8.300000000000182,
+        8.399999999999636,
+        41.600000000000364,
+        33.29999999999927,
+        8.400000000000546,
+        8.399999999999636,
+        49.80000000000018,
+        25.100000000000364,
+        8.399999999999636,
+        58.30000000000018,
+        41.69999999999982,
+        32.399999999999636,
+        9.300000000000182,
+        74.90000000000055,
+        40.79999999999927,
+        16.700000000000728,
+        50.899999999999636,
+        33.30000000000018,
+        8.399999999999636,
+        41.600000000000364,
+        25.099999999999454,
+        8.300000000000182,
+        49.900000000000546,
+        33.399999999999636,
+        8.300000000000182,
+        8.399999999999636,
+        41.600000000000364,
+        33.30000000000018,
+        8.299999999999272,
+        8.400000000000546,
+        41.69999999999982,
+        33.30000000000018,
+        8.300000000000182,
+        8.399999999999636,
+        49,
+        26,
+        8.300000000000182,
+        58.30000000000018,
+        50,
+        33.399999999999636,
+        8.300000000000182,
+        66.30000000000018,
+        50.399999999999636,
+        15.800000000000182,
+        59.19999999999982,
+        25,
+        8.300000000000182,
+        50,
+        25,
+        16.699999999999818,
+        41.600000000000364,
+        24.899999999999636,
+        8.300000000000182,
+        8.399999999999636,
+        40.900000000000546,
+        34.100000000000364,
+        8.199999999998909,
+        8.399999999999636,
+        41.70000000000073,
+        33.29999999999927,
+        8.300000000001091,
+        8.399999999999636,
+        50,
+        32.79999999999927,
+        8.900000000001455,
+        49.899999999999636,
+        50,
+        24.69999999999891,
+        8.700000000000728,
+        74.70000000000073,
+        50.29999999999927,
+        16.399999999999636,
+        50.20000000000073,
+        25,
+        8.399999999999636,
+        8.299999999999272,
+        41.70000000000073,
+        25,
+        8.299999999999272,
+        41.600000000000364,
+        33.399999999999636,
+        8.200000000000728,
+        8.5,
+        41.70000000000073,
+        33.29999999999927,
+        8.399999999999636,
+        8.200000000000728,
+        41.69999999999891,
+        33.30000000000109,
+        8.399999999999636,
+        8.299999999999272,
+        41.400000000001455,
+        33.599999999998545,
+        8.300000000001091,
+        41.69999999999891,
+        50,
+        25,
+        8.400000000001455,
+        8.299999999999272,
+        74.89999999999964,
+        58.399999999999636,
+        16.700000000000728,
+        8.299999999999272,
+        49.70000000000073,
+        25.399999999999636,
+        8.200000000000728,
+        50,
+        25.100000000000364,
+        8.299999999999272,
+        8.299999999999272,
+        41.70000000000073,
+        24.899999999999636
+      ],
+      "previewSummary": {
+        "n": 20,
+        "p50": 87,
+        "p95": 92.9,
+        "max": 93
+      },
+      "commitSummary": {
+        "n": 5,
+        "p50": 125.3,
+        "p95": 141,
+        "max": 141
+      },
+      "undoSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 0.1,
+          "p95": 0.1,
+          "max": 0.1
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 79.3,
+          "p95": 86.3,
+          "max": 86.3
+        }
+      },
+      "redoSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 0.1,
+          "p95": 0.2,
+          "max": 0.2
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 78.9,
+          "p95": 84,
+          "max": 84
+        }
+      },
+      "selectSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 5.4,
+          "p95": 5.7,
+          "max": 5.7
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 56.1,
+          "p95": 57.1,
+          "max": 57.1
+        }
+      },
+      "renderSubmitSummary": {
+        "n": 144,
+        "p50": 0.3,
+        "p95": 0.7,
+        "max": 0.8
+      },
+      "rafDuringEditingSummary": {
+        "n": 144,
+        "p50": 25.1,
+        "p95": 58.3,
+        "max": 75
+      },
+      "idleSummary": {
+        "renderSubmit": {
+          "n": 36,
+          "p50": 0.3,
+          "p95": 0.7,
+          "max": 0.7
+        },
+        "raf": {
+          "n": 36,
+          "p50": 8.3,
+          "p95": 9,
+          "max": 9.2
+        }
+      }
+    },
+    {
+      "triangles": 45000,
+      "attributes": false,
+      "warmupGestures": 1,
+      "measuredGestures": 5,
+      "preview": [
+        {
+          "twoRafMs": 337,
+          "renderMatchMs": 523.9000000953674,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 353.5,
+          "renderMatchMs": 528.0999999046326,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 294.09999990463257,
+          "renderMatchMs": 457.19999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 298.30000019073486,
+          "renderMatchMs": 460.80000019073486,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 308.19999980926514,
+          "renderMatchMs": 473.8999996185303,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 306.3999996185303,
+          "renderMatchMs": 475.8999996185303,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 300.09999990463257,
+          "renderMatchMs": 466.2000002861023,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 308.19999980926514,
+          "renderMatchMs": 482.2999997138977,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 358.09999990463257,
+          "renderMatchMs": 547.7000002861023,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 329,
+          "renderMatchMs": 492.2000002861023,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 324.09999990463257,
+          "renderMatchMs": 511.5,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 336.7999997138977,
+          "renderMatchMs": 508,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 354.69999980926514,
+          "renderMatchMs": 544,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 357.59999990463257,
+          "renderMatchMs": 555.1999998092651,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 339.69999980926514,
+          "renderMatchMs": 531.2999997138977,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 494.6000003814697,
+          "renderMatchMs": 711.2000002861023,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 331.80000019073486,
+          "renderMatchMs": 506,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 312.2000002861023,
+          "renderMatchMs": 474.7000002861023,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 300.80000019073486,
+          "renderMatchMs": 472.69999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 336.5,
+          "renderMatchMs": 516.8000001907349,
+          "geometryChanged": true
+        }
+      ],
+      "commit": [
+        {
+          "twoRafMs": 714.3999996185303,
+          "renderMatchMs": 714.5,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 756.8000001907349,
+          "renderMatchMs": 756.8000001907349,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 792.8000001907349,
+          "renderMatchMs": 792.9000000953674,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 864,
+          "renderMatchMs": 864.1000003814697,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 733.8000001907349,
+          "renderMatchMs": 733.8000001907349,
+          "geometryChanged": false
+        }
+      ],
+      "undo": [
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 466.40000009536743
+        },
+        {
+          "dispatchMs": 2.1999998092651367,
+          "twoRafMs": 676.7999997138977
+        },
+        {
+          "dispatchMs": 0,
+          "twoRafMs": 475.1000003814697
+        },
+        {
+          "dispatchMs": 0.19999980926513672,
+          "twoRafMs": 521.5999999046326
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 495.8999996185303
+        }
+      ],
+      "redo": [
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 468.5
+        },
+        {
+          "dispatchMs": 0,
+          "twoRafMs": 526.3000001907349
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 470.19999980926514
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 478.40000009536743
+        },
+        {
+          "dispatchMs": 0.10000038146972656,
+          "twoRafMs": 441.90000009536743
+        }
+      ],
+      "select": [
+        {
+          "dispatchMs": 33.59999990463257,
+          "twoRafMs": 300.7000002861023
+        },
+        {
+          "dispatchMs": 31.5,
+          "twoRafMs": 284.69999980926514
+        },
+        {
+          "dispatchMs": 30.800000190734863,
+          "twoRafMs": 290.2000002861023
+        },
+        {
+          "dispatchMs": 32.89999961853027,
+          "twoRafMs": 318.8999996185303
+        },
+        {
+          "dispatchMs": 36.59999990463257,
+          "twoRafMs": 308.80000019073486
+        }
+      ],
+      "idle": {
+        "draws": [
+          0.40000009536743164,
+          0.20000028610229492,
+          0.40000009536743164,
+          0.19999980926513672,
+          0.09999990463256836,
+          0.3000001907348633,
+          0.20000028610229492,
+          0.20000028610229492,
+          0.19999980926513672,
+          0.20000028610229492,
+          0.20000028610229492,
+          0.09999990463256836,
+          0.10000038146972656,
+          0.40000009536743164,
+          0.19999980926513672,
+          0.20000028610229492,
+          0.19999980926513672,
+          0.09999990463256836,
+          0.3000001907348633,
+          0.09999990463256836,
+          0.09999990463256836,
+          0.20000028610229492,
+          0.40000009536743164,
+          0.19999980926513672,
+          0.10000038146972656,
+          0.19999980926513672,
+          0.19999980926513672,
+          0.20000028610229492,
+          0.09999990463256836,
+          0.40000009536743164,
+          0.10000038146972656,
+          0.5,
+          0.5999999046325684,
+          0.5999999046325684,
+          0.3000001907348633,
+          0.19999980926513672
+        ],
+        "intervals": [
+          33.30000000000109,
+          8.399999999999636,
+          8,
+          8.700000000000728,
+          8.299999999999272,
+          8,
+          8.5,
+          8.5,
+          8.299999999999272,
+          8.300000000001091,
+          8.399999999999636,
+          8.299999999999272,
+          8.300000000001091,
+          8.399999999999636,
+          8.299999999999272,
+          8.300000000001091,
+          8.399999999999636,
+          8.299999999999272,
+          8.300000000001091,
+          7.899999999999636,
+          8.799999999999272,
+          8.300000000001091,
+          8.399999999999636,
+          8.299999999999272,
+          8.300000000001091,
+          8.299999999999272,
+          8.399999999999636,
+          8.400000000001455,
+          8.199999999998909,
+          8.399999999999636,
+          8.200000000000728,
+          8.5,
+          8.399999999999636,
+          8.300000000001091,
+          7.699999999998909,
+          9
+        ]
+      },
+      "diagnostics": {
+        "calls": {
+          "counts": {
+            "selectionElements": 21,
+            "meshEdges": 15,
+            "resolveElement.map": 11,
+            "other": 8
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at translateMeshElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:187:18)\n    at updateTransformSession (http://127.0.0.1:5177/src/core/transform.ts:51:44)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at TransformControls.change (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:104:9)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:22:41\n    at _l (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:5061:18)\n    at Object.useMemo (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:9262:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:22:41\n    at _l (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:5064:13)\n    at Object.useMemo (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:9262:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 1
+          }
+        },
+        "commitCalls": {
+          "counts": {
+            "selectionElements": 40,
+            "meshEdges": 24,
+            "resolveElement.map": 20,
+            "other": 14
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at finish (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:80:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at http://127.0.0.1:5177/src/core/editor.tsx:151:91\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:20049:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 2
+          }
+        },
+        "autosaveCalls": {
+          "counts": {
+            "other": 7,
+            "selectionElements": 19,
+            "meshEdges": 11,
+            "resolveElement.map": 9
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 1
+          }
+        },
+        "geometry": {
+          "baselineGpu": 150,
+          "afterGpu": 148,
+          "importedGeometryTracking": {
+            "created": 90,
+            "disposed": 44,
+            "undisposed": 46
+          }
+        },
+        "gpuAfterModeCycles": [
+          150,
+          150,
+          150,
+          150,
+          150
+        ],
+        "gpuWithoutGizmo": 134
+      },
+      "draws": [
+        0.09999990463256836,
+        0.2999997138977051,
+        2.1999998092651367,
+        0.40000009536743164,
+        0,
+        0.3000001907348633,
+        0.19999980926513672,
+        1.9000000953674316,
+        0.19999980926513672,
+        0.19999980926513672,
+        0.3000001907348633,
+        1.5999999046325684,
+        0.19999980926513672,
+        0.3000001907348633,
+        0.3000001907348633,
+        2,
+        0.09999990463256836,
+        0.20000028610229492,
+        0.19999980926513672,
+        0.2999997138977051,
+        0.40000009536743164,
+        1.5999999046325684,
+        0.3000001907348633,
+        0.5,
+        0.2999997138977051,
+        2.0999999046325684,
+        0.3000001907348633,
+        0.40000009536743164,
+        0.2999997138977051,
+        1.9000000953674316,
+        0.19999980926513672,
+        0.5,
+        0.19999980926513672,
+        0.40000009536743164,
+        1.6999998092651367,
+        0.20000028610229492,
+        0.09999990463256836,
+        0.3000001907348633,
+        0.39999961853027344,
+        1.6999998092651367,
+        0.2999997138977051,
+        0.2999997138977051,
+        0.39999961853027344,
+        1.799999713897705,
+        0.19999980926513672,
+        0.09999990463256836,
+        0.19999980926513672,
+        0.3000001907348633,
+        1.799999713897705,
+        0.3000001907348633,
+        0.10000038146972656,
+        0.40000009536743164,
+        0.3000001907348633,
+        0.2999997138977051,
+        10.699999809265137,
+        0.40000009536743164,
+        3.0999999046325684,
+        0.40000009536743164,
+        0.19999980926513672,
+        0.40000009536743164,
+        2.200000286102295,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.2999997138977051,
+        1.6000003814697266,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.2999997138977051,
+        1.8999996185302734,
+        0.2999997138977051,
+        0.20000028610229492,
+        0.2999997138977051,
+        1.700000286102295,
+        0.19999980926513672,
+        0.3000001907348633,
+        0.2999997138977051,
+        1.6999998092651367,
+        0.19999980926513672,
+        0.19999980926513672,
+        0.39999961853027344,
+        0.2999997138977051,
+        1.6000003814697266,
+        0.09999990463256836,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        2.6000003814697266,
+        0.19999980926513672,
+        0.40000009536743164,
+        0.40000009536743164,
+        1.799999713897705,
+        0.19999980926513672,
+        0.3000001907348633,
+        0.39999961853027344,
+        1.5999999046325684,
+        0.2999997138977051,
+        0.19999980926513672,
+        0.2999997138977051,
+        0.40000009536743164,
+        1.5999999046325684,
+        0.2999997138977051,
+        0.19999980926513672,
+        0.40000009536743164,
+        1.9000000953674316,
+        0.5,
+        0.09999990463256836,
+        0.3000001907348633,
+        0.3000001907348633,
+        1.8000001907348633,
+        0.19999980926513672,
+        0.20000028610229492,
+        0.5,
+        1.700000286102295,
+        1.9000000953674316,
+        0.40000009536743164,
+        0.2999997138977051,
+        0.2999997138977051,
+        0.2999997138977051,
+        0.3000001907348633,
+        0.2999997138977051,
+        0.40000009536743164,
+        3.299999713897705,
+        0.40000009536743164,
+        0.40000009536743164,
+        0.19999980926513672,
+        2.3000001907348633,
+        0.2999997138977051,
+        0.3000001907348633,
+        0.2999997138977051,
+        2.200000286102295,
+        0.2999997138977051,
+        0.3000001907348633,
+        0.20000028610229492,
+        0.3000001907348633,
+        1.9000000953674316,
+        0.20000028610229492,
+        0.09999990463256836,
+        0.2999997138977051,
+        0.40000009536743164,
+        2,
+        0.20000028610229492,
+        0.3000001907348633,
+        0.20000028610229492,
+        2,
+        0.19999980926513672,
+        0.19999980926513672,
+        0.39999961853027344,
+        0.19999980926513672,
+        2.3000001907348633,
+        0.19999980926513672,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.19999980926513672,
+        0.2999997138977051,
+        2.0999999046325684,
+        0.40000009536743164,
+        0.40000009536743164,
+        0.19999980926513672,
+        2.9000000953674316,
+        0.40000009536743164,
+        0.20000028610229492,
+        0.19999980926513672,
+        2,
+        0.2999997138977051,
+        0.2999997138977051
+      ],
+      "intervals": [
+        8.400000000001455,
+        66.70000000000073,
+        266.59999999999854,
+        183.40000000000146,
+        8.299999999999272,
+        8.400000000001455,
+        83.29999999999927,
+        266.59999999999854,
+        175.10000000000218,
+        8.299999999999272,
+        50,
+        241.59999999999854,
+        157.5,
+        17.200000000000728,
+        58.29999999999927,
+        233.70000000000073,
+        166.70000000000073,
+        8.299999999999272,
+        457.40000000000146,
+        250.89999999999782,
+        91.60000000000218,
+        316.6999999999971,
+        166.70000000000073,
+        275.1000000000022,
+        125,
+        291.59999999999854,
+        175,
+        283.40000000000146,
+        108.29999999999927,
+        341.59999999999854,
+        191.70000000000073,
+        258.40000000000146,
+        8.299999999999272,
+        58.400000000001455,
+        250,
+        157.70000000000073,
+        9,
+        8.299999999999272,
+        58.29999999999927,
+        241.70000000000073,
+        175.09999999999854,
+        8.200000000000728,
+        58.400000000001455,
+        241.59999999999854,
+        158.29999999999927,
+        8.400000000001455,
+        8.099999999998545,
+        58.5,
+        250.10000000000218,
+        166.59999999999854,
+        8.400000000001455,
+        8.299999999999272,
+        475,
+        274.90000000000146,
+        157.5,
+        122.39999999999782,
+        482.6000000000022,
+        191.59999999999854,
+        299.59999999999854,
+        108.80000000000291,
+        358.29999999999563,
+        200,
+        307.90000000000146,
+        117.09999999999854,
+        308.5,
+        191.60000000000582,
+        266.3999999999942,
+        8.400000000001455,
+        8.400000000001455,
+        75,
+        283.29999999999563,
+        182.40000000000146,
+        9.400000000001455,
+        66.5,
+        258.40000000000146,
+        166.59999999999854,
+        8.400000000001455,
+        58.299999999995634,
+        266.5,
+        183.40000000000146,
+        7.400000000001455,
+        9.30000000000291,
+        66.59999999999854,
+        266.6999999999971,
+        175,
+        8.400000000001455,
+        491.6999999999971,
+        291.6000000000058,
+        108.39999999999418,
+        16.400000000001455,
+        291.8000000000029,
+        183.40000000000146,
+        258.3999999999942,
+        125,
+        291.70000000000437,
+        174.90000000000146,
+        241.29999999999563,
+        117,
+        283.40000000000146,
+        166.6999999999971,
+        283.3000000000029,
+        8,
+        66.90000000000146,
+        283.40000000000146,
+        191.6999999999971,
+        8,
+        67,
+        291.70000000000437,
+        191.59999999999854,
+        8.400000000001455,
+        7.69999999999709,
+        67.20000000000437,
+        266.79999999999563,
+        190.70000000000437,
+        9.299999999995634,
+        8.200000000004366,
+        66.69999999999709,
+        428.8000000000029,
+        208.79999999999563,
+        8.30000000000291,
+        7.599999999998545,
+        566.5999999999985,
+        292.40000000000146,
+        100,
+        275,
+        333.3000000000029,
+        191.6999999999971,
+        275,
+        125.09999999999854,
+        283.3000000000029,
+        199.79999999999563,
+        283.5,
+        100,
+        358.3000000000029,
+        191.59999999999854,
+        283.40000000000146,
+        8.30000000000291,
+        66.69999999999709,
+        258.3000000000029,
+        175.09999999999854,
+        8.299999999995634,
+        8.400000000001455,
+        65.90000000000146,
+        242.40000000000146,
+        158.29999999999563,
+        16.60000000000582,
+        58.39999999999418,
+        241.70000000000437,
+        166.59999999999854,
+        8.30000000000291,
+        8.39999999999418,
+        66.60000000000582,
+        266.5,
+        183.09999999999854,
+        8.900000000001455,
+        483.1999999999971,
+        241.6999999999971,
+        108.30000000000291,
+        25,
+        308.3000000000029,
+        191.6999999999971,
+        258.40000000000146,
+        108.29999999999563,
+        300,
+        166.70000000000437,
+        266.59999999999854,
+        91.5,
+        300.1999999999971,
+        183.3000000000029,
+        258.40000000000146
+      ],
+      "previewSummary": {
+        "n": 20,
+        "p50": 506,
+        "p95": 555.2,
+        "max": 711.2
+      },
+      "commitSummary": {
+        "n": 5,
+        "p50": 756.8,
+        "p95": 864.1,
+        "max": 864.1
+      },
+      "undoSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 0.1,
+          "p95": 2.2,
+          "max": 2.2
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 495.9,
+          "p95": 676.8,
+          "max": 676.8
+        }
+      },
+      "redoSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 0.1,
+          "p95": 0.1,
+          "max": 0.1
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 470.2,
+          "p95": 526.3,
+          "max": 526.3
+        }
+      },
+      "selectSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 32.9,
+          "p95": 36.6,
+          "max": 36.6
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 300.7,
+          "p95": 318.9,
+          "max": 318.9
+        }
+      },
+      "renderSubmitSummary": {
+        "n": 170,
+        "p50": 0.3,
+        "p95": 2.2,
+        "max": 10.7
+      },
+      "rafDuringEditingSummary": {
+        "n": 170,
+        "p50": 166.7,
+        "p95": 358.3,
+        "max": 566.6
+      },
+      "idleSummary": {
+        "renderSubmit": {
+          "n": 36,
+          "p50": 0.2,
+          "p95": 0.6,
+          "max": 0.6
+        },
+        "raf": {
+          "n": 36,
+          "p50": 8.3,
+          "p95": 9,
+          "max": 33.3
+        }
+      }
+    },
+    {
+      "triangles": 45000,
+      "attributes": true,
+      "warmupGestures": 1,
+      "measuredGestures": 5,
+      "preview": [
+        {
+          "twoRafMs": 346.5,
+          "renderMatchMs": 535.0999999046326,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 342.40000009536743,
+          "renderMatchMs": 532.3000001907349,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 407.1000003814697,
+          "renderMatchMs": 587.8000001907349,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 556.4000000953674,
+          "renderMatchMs": 771.9000000953674,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 340.7999997138977,
+          "renderMatchMs": 505.8999996185303,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 303.59999990463257,
+          "renderMatchMs": 485.40000009536743,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 347.40000009536743,
+          "renderMatchMs": 520.5999999046326,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 339.5,
+          "renderMatchMs": 531.4000000953674,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 341.3999996185303,
+          "renderMatchMs": 526,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 384.7999997138977,
+          "renderMatchMs": 567,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 355.2000002861023,
+          "renderMatchMs": 538.1000003814697,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 338.2999997138977,
+          "renderMatchMs": 524.1999998092651,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 334.09999990463257,
+          "renderMatchMs": 496.69999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 310.7000002861023,
+          "renderMatchMs": 482.5,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 336.5,
+          "renderMatchMs": 508.69999980926514,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 309.7999997138977,
+          "renderMatchMs": 472.40000009536743,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 314.2000002861023,
+          "renderMatchMs": 477.40000009536743,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 300.2999997138977,
+          "renderMatchMs": 466.5,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 295.80000019073486,
+          "renderMatchMs": 456,
+          "geometryChanged": true
+        },
+        {
+          "twoRafMs": 313.90000009536743,
+          "renderMatchMs": 481.09999990463257,
+          "geometryChanged": true
+        }
+      ],
+      "commit": [
+        {
+          "twoRafMs": 834.2000002861023,
+          "renderMatchMs": 834.2000002861023,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 848.0999999046326,
+          "renderMatchMs": 848.2000002861023,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 786.3999996185303,
+          "renderMatchMs": 786.3999996185303,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 688.2000002861023,
+          "renderMatchMs": 688.2000002861023,
+          "geometryChanged": false
+        },
+        {
+          "twoRafMs": 703.3999996185303,
+          "renderMatchMs": 703.5,
+          "geometryChanged": false
+        }
+      ],
+      "undo": [
+        {
+          "dispatchMs": 0,
+          "twoRafMs": 490.30000019073486
+        },
+        {
+          "dispatchMs": 0.10000038146972656,
+          "twoRafMs": 527.9000000953674
+        },
+        {
+          "dispatchMs": 0.19999980926513672,
+          "twoRafMs": 473.30000019073486
+        },
+        {
+          "dispatchMs": 0,
+          "twoRafMs": 464.2999997138977
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 499.5
+        }
+      ],
+      "redo": [
+        {
+          "dispatchMs": 0.10000038146972656,
+          "twoRafMs": 505.30000019073486
+        },
+        {
+          "dispatchMs": 0,
+          "twoRafMs": 509
+        },
+        {
+          "dispatchMs": 0,
+          "twoRafMs": 455.8999996185303
+        },
+        {
+          "dispatchMs": 0.09999990463256836,
+          "twoRafMs": 467.2999997138977
+        },
+        {
+          "dispatchMs": 0,
+          "twoRafMs": 500.69999980926514
+        }
+      ],
+      "select": [
+        {
+          "dispatchMs": 32.200000286102295,
+          "twoRafMs": 355.30000019073486
+        },
+        {
+          "dispatchMs": 33.59999990463257,
+          "twoRafMs": 373.09999990463257
+        },
+        {
+          "dispatchMs": 30.799999713897705,
+          "twoRafMs": 378.7999997138977
+        },
+        {
+          "dispatchMs": 33.89999961853027,
+          "twoRafMs": 369.2999997138977
+        },
+        {
+          "dispatchMs": 33.69999980926514,
+          "twoRafMs": 352.5
+        }
+      ],
+      "idle": {
+        "draws": [
+          0.5,
+          0.19999980926513672,
+          0.20000028610229492,
+          0.19999980926513672,
+          0.2999997138977051,
+          0.10000038146972656,
+          0.09999990463256836,
+          0.19999980926513672,
+          0.20000028610229492,
+          0.2999997138977051,
+          0.19999980926513672,
+          0.10000038146972656,
+          0.3000001907348633,
+          0.2999997138977051,
+          0.10000038146972656,
+          0.2999997138977051,
+          0.19999980926513672,
+          0.2999997138977051,
+          0.20000028610229492,
+          0.19999980926513672,
+          0.3000001907348633,
+          0.3000001907348633,
+          0.2999997138977051,
+          0.3000001907348633,
+          0.19999980926513672,
+          0.40000009536743164,
+          0.2999997138977051,
+          0.19999980926513672,
+          0.2999997138977051,
+          0.5,
+          0.9000000953674316,
+          1,
+          0.9000000953674316,
+          0.6000003814697266,
+          0.9000000953674316,
+          0.9000000953674316,
+          1
+        ],
+        "intervals": [
+          33.29999999998836,
+          8.80000000000291,
+          8.400000000008731,
+          8.299999999988358,
+          8.30000000000291,
+          8.30000000000291,
+          8.39999999999418,
+          8.400000000008731,
+          8.30000000000291,
+          8.099999999991269,
+          8.5,
+          8.400000000008731,
+          8.299999999988358,
+          7.7000000000116415,
+          9,
+          8.299999999988358,
+          8.30000000000291,
+          8.400000000008731,
+          8.299999999988358,
+          8.30000000000291,
+          8.400000000008731,
+          8.299999999988358,
+          8.30000000000291,
+          8.30000000000291,
+          8.39999999999418,
+          8.400000000008731,
+          8.30000000000291,
+          8.39999999999418,
+          8.19999999999709,
+          8.400000000008731,
+          8,
+          8.19999999999709,
+          8.80000000000291,
+          8.299999999988358,
+          8.30000000000291,
+          8.400000000008731,
+          8.299999999988358
+        ]
+      },
+      "diagnostics": {
+        "calls": {
+          "counts": {
+            "selectionElements": 21,
+            "meshEdges": 15,
+            "resolveElement.map": 11,
+            "other": 8
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at translateMeshElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:187:18)\n    at updateTransformSession (http://127.0.0.1:5177/src/core/transform.ts:51:44)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at TransformControls.change (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:104:9)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:22:41\n    at _l (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:5061:18)\n    at Object.useMemo (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:9262:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:22:41\n    at _l (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:5064:13)\n    at Object.useMemo (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:9262:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 1
+          }
+        },
+        "commitCalls": {
+          "counts": {
+            "selectionElements": 40,
+            "meshEdges": 24,
+            "resolveElement.map": 20,
+            "other": 14
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at finish (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:80:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at http://127.0.0.1:5177/src/core/editor.tsx:151:91\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:20049:20)": 1,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 4,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 2
+          }
+        },
+        "autosaveCalls": {
+          "counts": {
+            "other": 7,
+            "selectionElements": 19,
+            "meshEdges": 11,
+            "resolveElement.map": 9
+          },
+          "stacks": {
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:87:31)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:96:29)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at coincidentElements (http://127.0.0.1:5177/src/core/mesh-edit.ts:101:50)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:90:22)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexInspector (http://127.0.0.1:5177/src/features/mesh-edit/VertexInspector.tsx:92:21)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:19991:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at VertexOverlay (http://127.0.0.1:5177/src/features/mesh-edit/VertexOverlay.tsx:17:58)\n    at Object.react_stack_bottom_frame (http://127.0.0.1:5177/node_modules/.vite/deps/chunk-NZIY6UEQ.js?v=e655c4d4:8943:20)": 2,
+            "    at meshEdges (http://127.0.0.1:5177/src/core/mesh-edit.ts:45:86)\n    at resolveElement (http://127.0.0.1:5177/src/core/mesh-edit.ts:69:104)\n    at sync (http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:36:22)\n    at http://127.0.0.1:5177/src/features/obj-transform/ObjectGizmo.tsx:61:5": 1
+          }
+        },
+        "geometry": {
+          "baselineGpu": 150,
+          "afterGpu": 148,
+          "importedGeometryTracking": {
+            "created": 90,
+            "disposed": 44,
+            "undisposed": 46
+          }
+        },
+        "gpuAfterModeCycles": [
+          134,
+          150,
+          150,
+          150,
+          150
+        ],
+        "gpuWithoutGizmo": 134
+      },
+      "draws": [
+        0.3000001907348633,
+        0.2999997138977051,
+        2.4000000953674316,
+        0.19999980926513672,
+        0.09999990463256836,
+        0.3000001907348633,
+        0.3000001907348633,
+        3.1000003814697266,
+        0.3000001907348633,
+        0.40000009536743164,
+        0.20000028610229492,
+        3,
+        0.40000009536743164,
+        0.2999997138977051,
+        0.19999980926513672,
+        1.8000001907348633,
+        0.3000001907348633,
+        0.40000009536743164,
+        3.8000001907348633,
+        0.3000001907348633,
+        0.6999998092651367,
+        0.2999997138977051,
+        1.9000000953674316,
+        0.6999998092651367,
+        4.700000286102295,
+        0.40000009536743164,
+        3.799999713897705,
+        0.3000001907348633,
+        0.09999990463256836,
+        0.5,
+        0.40000009536743164,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        2.9000000953674316,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.2999997138977051,
+        2.0999999046325684,
+        0.40000009536743164,
+        0.5,
+        0.39999961853027344,
+        2.0999999046325684,
+        0.20000028610229492,
+        0.20000028610229492,
+        0.3000001907348633,
+        0.2999997138977051,
+        1.9000000953674316,
+        0.3000001907348633,
+        0.19999980926513672,
+        0.09999990463256836,
+        0.2999997138977051,
+        1.9000000953674316,
+        0.20000028610229492,
+        0.09999990463256836,
+        0.20000028610229492,
+        0.40000009536743164,
+        1.799999713897705,
+        0.20000028610229492,
+        0,
+        0.19999980926513672,
+        0.40000009536743164,
+        2,
+        0.2999997138977051,
+        0.10000038146972656,
+        0.2999997138977051,
+        0.2999997138977051,
+        0.2999997138977051,
+        0.40000009536743164,
+        0.2999997138977051,
+        2.5,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.2999997138977051,
+        1.9000000953674316,
+        0.3000001907348633,
+        0.19999980926513672,
+        0.2999997138977051,
+        1.8000001907348633,
+        0.3000001907348633,
+        0.19999980926513672,
+        0.20000028610229492,
+        0.39999961853027344,
+        2.1000003814697266,
+        0.3000001907348633,
+        0.20000028610229492,
+        0.3000001907348633,
+        0.2999997138977051,
+        2.0999999046325684,
+        0.20000028610229492,
+        0.09999990463256836,
+        0.3000001907348633,
+        0.40000009536743164,
+        1.8000001907348633,
+        0.19999980926513672,
+        0.09999990463256836,
+        0.40000009536743164,
+        0.2999997138977051,
+        2,
+        0.2999997138977051,
+        0.09999990463256836,
+        0.19999980926513672,
+        0.2999997138977051,
+        0.2999997138977051,
+        0.10000038146972656,
+        0.19999980926513672,
+        0.2999997138977051,
+        1.700000286102295,
+        0.2999997138977051,
+        0.19999980926513672,
+        0.3000001907348633,
+        1.799999713897705,
+        0.3000001907348633,
+        0.2999997138977051,
+        0.3000001907348633,
+        2,
+        0.2999997138977051,
+        0.19999980926513672,
+        0.40000009536743164,
+        0.2999997138977051,
+        1.799999713897705,
+        0.20000028610229492,
+        0.09999990463256836,
+        0.39999961853027344,
+        0.3000001907348633,
+        2,
+        0.2999997138977051,
+        0.19999980926513672,
+        0.2999997138977051,
+        0.5,
+        2,
+        0.3000001907348633,
+        0.19999980926513672,
+        0.20000028610229492,
+        0.39999961853027344,
+        2,
+        0.40000009536743164,
+        0.09999990463256836,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        0.3000001907348633,
+        1.799999713897705,
+        0.3000001907348633,
+        0.5,
+        0.3000001907348633,
+        1.799999713897705,
+        0.2999997138977051,
+        0.2999997138977051,
+        0.2999997138977051,
+        2.1999998092651367,
+        0.2999997138977051,
+        0.20000028610229492,
+        0.19999980926513672,
+        0.3000001907348633,
+        2,
+        0.40000009536743164,
+        0.09999990463256836,
+        0.3000001907348633,
+        0.19999980926513672,
+        2.200000286102295,
+        0.19999980926513672,
+        0.09999990463256836,
+        0.19999980926513672,
+        0.3000001907348633,
+        1.700000286102295,
+        0.2999997138977051,
+        0.09999990463256836,
+        0.20000028610229492,
+        0.3000001907348633,
+        1.9000000953674316,
+        0.19999980926513672,
+        0,
+        0.3000001907348633,
+        0.2999997138977051,
+        0.20000028610229492,
+        0.2999997138977051,
+        0.5,
+        2.5,
+        0.2999997138977051,
+        0.39999961853027344,
+        0.3000001907348633,
+        2,
+        0.39999961853027344,
+        0.19999980926513672,
+        0.3000001907348633,
+        1.9000000953674316,
+        0.2999997138977051,
+        0.19999980926513672
+      ],
+      "intervals": [
+        8.30000000000291,
+        75.10000000000582,
+        266.59999999999127,
+        191.70000000001164,
+        8.299999999988358,
+        8.30000000000291,
+        75.10000000000582,
+        266.59999999999127,
+        183.40000000000873,
+        16.69999999999709,
+        124.89999999999418,
+        283.3000000000029,
+        183.40000000000873,
+        7.399999999994179,
+        34.19999999999709,
+        7.80000000000291,
+        8.60000000000582,
+        8.599999999991269,
+        8.30000000000291,
+        8.39999999999418,
+        8.30000000000291,
+        8.400000000008731,
+        8.299999999988358,
+        8.30000000000291,
+        8.400000000008731,
+        163.79999999998836,
+        390.40000000000873,
+        215.8000000000029,
+        25.79999999998836,
+        8.30000000000291,
+        533.4000000000087,
+        287.5,
+        108.29999999998836,
+        66.60000000000582,
+        312.5,
+        175,
+        316.6999999999971,
+        58.30000000000291,
+        316.5,
+        191.89999999999418,
+        316.6000000000058,
+        16.69999999999709,
+        366.6999999999971,
+        200,
+        291.6000000000058,
+        8.30000000000291,
+        91.69999999999709,
+        241.8000000000029,
+        166.5,
+        16.69999999999709,
+        8.400000000008731,
+        58.30000000000291,
+        241.6999999999971,
+        183.1999999999971,
+        8,
+        8.80000000000291,
+        66.59999999999127,
+        275,
+        175,
+        8.400000000008731,
+        8.30000000000291,
+        66.59999999999127,
+        275.1000000000058,
+        191.59999999999127,
+        8.30000000000291,
+        8.400000000008731,
+        533.2999999999884,
+        308.3000000000029,
+        125.10000000000582,
+        366.59999999999127,
+        333.3000000000029,
+        200,
+        300.1000000000058,
+        66.59999999999127,
+        308.40000000000873,
+        199.89999999999418,
+        283.1999999999971,
+        58.30000000000291,
+        308.5,
+        183.40000000000873,
+        266.6999999999971,
+        8.30000000000291,
+        66.59999999999127,
+        275,
+        182.8000000000029,
+        8,
+        9.30000000000291,
+        74.89999999999418,
+        308.40000000000873,
+        183.29999999998836,
+        16.70000000001164,
+        8.299999999988358,
+        75.10000000000582,
+        274.8999999999942,
+        182.90000000000873,
+        17.09999999999127,
+        8.400000000008731,
+        66.59999999999127,
+        266.70000000001164,
+        191.59999999999127,
+        8.400000000008731,
+        7.7999999999883585,
+        8.900000000008731,
+        499.8999999999942,
+        275.1000000000058,
+        108.30000000000291,
+        50,
+        308.29999999998836,
+        166.60000000000582,
+        250.10000000000582,
+        50,
+        291.6999999999971,
+        166.59999999999127,
+        283.3000000000029,
+        16.69999999999709,
+        366.70000000001164,
+        175,
+        275,
+        8.39999999999418,
+        65.80000000000291,
+        267.5,
+        157.6999999999971,
+        17.30000000000291,
+        8.30000000000291,
+        66.59999999999127,
+        241.10000000000582,
+        175.6999999999971,
+        8.30000000000291,
+        8.30000000000291,
+        75,
+        258.29999999998836,
+        175.10000000000582,
+        8.30000000000291,
+        8.30000000000291,
+        66.59999999999127,
+        241.6999999999971,
+        158.40000000000873,
+        16.59999999999127,
+        8.400000000008731,
+        433.3000000000029,
+        250,
+        91.69999999999709,
+        341.59999999999127,
+        175.10000000000582,
+        258.1999999999971,
+        58.40000000000873,
+        291.6999999999971,
+        174.89999999999418,
+        266.6999999999971,
+        8,
+        358.70000000001164,
+        175,
+        266.59999999999127,
+        8.30000000000291,
+        66.59999999999127,
+        241.10000000000582,
+        167.3000000000029,
+        16.69999999999709,
+        8.30000000000291,
+        58.29999999998836,
+        241.70000000001164,
+        166.59999999999127,
+        7.80000000000291,
+        9,
+        58.19999999999709,
+        232.6999999999971,
+        159,
+        16.70000000001164,
+        8.299999999988358,
+        58.30000000000291,
+        250,
+        166.8000000000029,
+        16.60000000000582,
+        8.299999999988358,
+        441.70000000001164,
+        258.3999999999942,
+        108.19999999999709,
+        50,
+        308.40000000000873,
+        191.6999999999971,
+        283,
+        58.59999999999127,
+        308.40000000000873,
+        191.59999999999127,
+        275,
+        50,
+        283.40000000000873,
+        158.3000000000029,
+        258.09999999999127
+      ],
+      "previewSummary": {
+        "n": 20,
+        "p50": 508.7,
+        "p95": 587.8,
+        "max": 771.9
+      },
+      "commitSummary": {
+        "n": 5,
+        "p50": 786.4,
+        "p95": 848.2,
+        "max": 848.2
+      },
+      "undoSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 0.1,
+          "p95": 0.2,
+          "max": 0.2
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 490.3,
+          "p95": 527.9,
+          "max": 527.9
+        }
+      },
+      "redoSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 0,
+          "p95": 0.1,
+          "max": 0.1
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 500.7,
+          "p95": 509,
+          "max": 509
+        }
+      },
+      "selectSummary": {
+        "dispatch": {
+          "n": 5,
+          "p50": 33.6,
+          "p95": 33.9,
+          "max": 33.9
+        },
+        "twoRaf": {
+          "n": 5,
+          "p50": 369.3,
+          "p95": 378.8,
+          "max": 378.8
+        }
+      },
+      "renderSubmitSummary": {
+        "n": 189,
+        "p50": 0.3,
+        "p95": 2.2,
+        "max": 4.7
+      },
+      "rafDuringEditingSummary": {
+        "n": 189,
+        "p50": 158.4,
+        "p95": 358.7,
+        "max": 533.4
+      },
+      "idleSummary": {
+        "renderSubmit": {
+          "n": 37,
+          "p50": 0.3,
+          "p95": 1,
+          "max": 1
+        },
+        "raf": {
+          "n": 37,
+          "p50": 8.3,
+          "p95": 9,
+          "max": 33.3
+        }
+      }
+    }
+  ]
+}

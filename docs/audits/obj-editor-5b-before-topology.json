@@ -1,0 +1,90 @@
+{
+  "conditions": {
+    "node": "v25.9.0",
+    "runs": 15,
+    "warmup": 3,
+    "note": "CPU milliseconds. Cold queries use fresh resource objects sharing unchanged fixture inputs, without translation inheritance. GC only outside timed operations. Heap is V8 retained heap, not GPU/RSS."
+  },
+  "cases": [
+    {
+      "triangles": 1250,
+      "edges": 1925,
+      "reusesCollection": false,
+      "topologyHeapMiB": 0.042,
+      "coldEdgeQuery": {
+        "n": 15,
+        "p50": 0.499875,
+        "p95": 0.666333,
+        "max": 0.666333
+      },
+      "warmEdgeQuery": {
+        "n": 15,
+        "p50": 0.356625,
+        "p95": 0.621292,
+        "max": 0.621292
+      },
+      "repeatedGesture30Previews": {
+        "n": 15,
+        "p50": 51.681583,
+        "p95": 57.00775,
+        "max": 57.00775
+      }
+    },
+    {
+      "triangles": 9800,
+      "edges": 14840,
+      "reusesCollection": false,
+      "topologyHeapMiB": -0.169,
+      "coldEdgeQuery": {
+        "n": 15,
+        "p50": 4.336667,
+        "p95": 6.388666,
+        "max": 6.388666
+      },
+      "warmEdgeQuery": {
+        "n": 15,
+        "p50": 3.891958,
+        "p95": 9.177375,
+        "max": 9.177375
+      },
+      "repeatedGesture30Previews": {
+        "n": 15,
+        "p50": 413.205084,
+        "p95": 434.7815,
+        "max": 434.7815
+      }
+    },
+    {
+      "triangles": 45000,
+      "edges": 67800,
+      "reusesCollection": false,
+      "topologyHeapMiB": -0.968,
+      "coldEdgeQuery": {
+        "n": 15,
+        "p50": 27.796,
+        "p95": 33.841416,
+        "max": 33.841416
+      },
+      "warmEdgeQuery": {
+        "n": 15,
+        "p50": 27.484167,
+        "p95": 40.205,
+        "max": 40.205
+      },
+      "repeatedGesture30Previews": {
+        "n": 15,
+        "p50": 2444.116,
+        "p95": 2848.529416,
+        "max": 2848.529416
+      }
+    }
+  ],
+  "retirement": {
+    "heldDerivedEdges": 67800,
+    "resourceCollected": true,
+    "vertexArrayCollected": true,
+    "normalArrayCollected": true,
+    "previewResourcesCollected": 8,
+    "previewResources": 8
+  }
+}

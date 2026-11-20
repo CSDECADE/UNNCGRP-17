@@ -46,17 +46,60 @@ export function updateMeshSelection(current: MeshSelection, picked: MeshElementS
   return withSelectionElements(current, elements.some(element => singleElementKey(element) === key)
     ? elements.filter(element => singleElementKey(element) !== key) : [...elements, picked]);
 }
-export function meshEdges(resource: ObjResource, meshId: string) {
-  const mesh = resource.meshes.find(m => m.id === meshId), edges = new Map<string, { ids: [string, string]; indices: [number, number] }>();
-  if (!mesh) return [];
+type MeshEdge = { ids: [string, string]; indices: [number, number] };
+type MeshTopology = {
+  referenced?: Set<number>;
+  indices?: number[];
+  edges?: MeshEdge[];
+  edgeMap?: Map<string, MeshEdge>;
+};
+type ResourceTopology = { vertices?: Map<string, number>; meshes: Map<string, MeshTopology> };
+// Resources are immutable snapshots. Values contain only derived IDs/indices:
+// no resources, vertex objects, position/normal arrays or history references.
+// A restored/replaced resource gets its own entry even if all IDs are reused.
+const topologyCache = new WeakMap<ObjResource, ResourceTopology>();
+function resourceTopology(resource: ObjResource) {
+  let topology = topologyCache.get(resource);
+  if (!topology) { topology = { meshes: new Map() }; topologyCache.set(resource, topology); }
+  return topology;
+}
+function meshTopology(resource: ObjResource, mesh: ObjMesh) {
+  const owner = resourceTopology(resource);
+  let topology = owner.meshes.get(mesh.id);
+  if (!topology) { topology = {}; owner.meshes.set(mesh.id, topology); }
+  return topology;
+}
+function referencedVertices(resource: ObjResource, mesh: ObjMesh) {
+  const topology = meshTopology(resource, mesh);
+  if (!topology.referenced) {
+    topology.referenced = new Set(mesh.triangles);
+    topology.indices = [...topology.referenced];
+    Object.freeze(topology.indices);
+  }
+  return topology;
+}
+function edgeTopology(resource: ObjResource, mesh: ObjMesh) {
+  const topology = meshTopology(resource, mesh);
+  if (topology.edges) return topology;
+  const edges = new Map<string, MeshEdge>();
   for (let i = 0; i < mesh.triangles.length; i += 3) for (const [a, b] of [[0, 1], [1, 2], [2, 0]]) {
     let x = mesh.triangles[i + a], y = mesh.triangles[i + b];
     if (x === y) continue;
     if (resource.vertices[x].id > resource.vertices[y].id) [x, y] = [y, x];
     const ids: [string, string] = [resource.vertices[x].id, resource.vertices[y].id];
-    edges.set(JSON.stringify(ids), { ids, indices: [x, y] });
+    const edge: MeshEdge = { ids, indices: [x, y] };
+    Object.freeze(edge.ids); Object.freeze(edge.indices); Object.freeze(edge);
+    edges.set(JSON.stringify(ids), edge);
   }
-  return [...edges.values()];
+  topology.edgeMap = edges;
+  topology.edges = [...edges.values()];
+  Object.freeze(topology.edges);
+  return topology;
+}
+/** Shared read-only derived collection; coordinates always come from resource.vertices. */
+export function meshEdges(resource: ObjResource, meshId: string) {
+  const mesh = resource.meshes.find(m => m.id === meshId);
+  return mesh ? edgeTopology(resource, mesh).edges! : [];
 }
 export type EditRestrictions = { preview: boolean; playing: boolean; candidate: boolean; droneView: boolean };
 export function editableObj(project: Project, selection: Selection, restrictions: EditRestrictions) {
@@ -72,18 +115,19 @@ export function resolveElement(project: Project, selected: MeshSelection) {
   const resource = project.objResources?.find(r => r.id === model.resourceId);
   const mesh = resource?.meshes.find(m => m.id === selected.meshId);
   if (!resource || !mesh) return null;
-  const elements = selectionElements(selected), edgeMap = selectionMode(selected) === "edge"
-    ? new Map(meshEdges(resource, mesh.id).map(edge => [JSON.stringify(edge.ids), edge.indices])) : undefined;
-  const vertexMap = selectionMode(selected) === "vertex" ? new Map(resource.vertices.map((v, i) => [v.id, i])) : undefined;
-  const referenced = new Set(mesh.triangles);
+  const elements = selectionElements(selected), kind = selectionMode(selected);
+  const edgeMap = kind === "edge" ? edgeTopology(resource, mesh).edgeMap : undefined;
+  const owner = kind === "vertex" ? resourceTopology(resource) : undefined;
+  const vertexMap = owner && (owner.vertices ??= new Map(resource.vertices.map((v, i) => [v.id, i])));
+  const referenced = kind === "vertex" ? referencedVertices(resource, mesh).referenced : undefined;
   const elementIndices = elements.map(element => {
     if (element.modelId !== selected.modelId || element.meshId !== selected.meshId || selectionMode(element) !== selectionMode(selected)) return [];
-    if ("edgeIds" in element && element.edgeIds) return edgeMap?.get(JSON.stringify([...element.edgeIds].sort())) ?? [];
+    if ("edgeIds" in element && element.edgeIds) return edgeMap?.get(JSON.stringify([...element.edgeIds].sort()))?.indices ?? [];
     if ("triangle" in element && element.triangle !== null && Number.isInteger(element.triangle) && element.triangle >= 0 && element.triangle < mesh.triangles.length / 3)
       return [...new Set(mesh.triangles.slice(element.triangle * 3, element.triangle * 3 + 3))];
     if ("vertexId" in element) {
       const index = vertexMap?.get(element.vertexId ?? "");
-      if (index !== undefined && referenced.has(index)) return [index];
+      if (index !== undefined && referenced?.has(index)) return [index];
     }
     return [];
   });
@@ -113,7 +157,8 @@ export function coincidentElements(project: Project, selected: MeshSelection): M
     .map(i => ({ ...base, vertexId: resource.vertices[i].id }));
 }
 export function meshVertexIndices(resource: ObjResource, meshId: string) {
-  return [...new Set(resource.meshes.find(m => m.id === meshId)?.triangles ?? [])];
+  const mesh = resource.meshes.find(m => m.id === meshId);
+  return mesh ? referencedVertices(resource, mesh).indices! : [];
 }
 export function vertexWorldPosition(model: ObjModel, resource: ObjResource, index: number) {
   return new Vector3(...resource.vertices[index].position).applyMatrix4(objMatrix(model));
@@ -255,6 +300,12 @@ export function translateMeshElement(base: Project, selected: MeshSelection, pos
   changed = { ...changed, meshes };
   const shared = base.models.some(m => m.kind === "obj" && m.id !== model.id && m.resourceId === resource.id);
   if (shared) changed = { ...changed, id: copyId };
+  // This operation changes only coordinates and authored normals. Vertex IDs,
+  // order, mesh IDs and triangle connectivity are unchanged, including COW.
+  // Keep this inheritance private to this topology-preserving operation;
+  // future topology changes must create a new resource without inheriting it.
+  const topology = topologyCache.get(resource);
+  if (topology) topologyCache.set(changed, topology);
   return { ...base, models: shared ? base.models.map(m => m.id === model.id ? { ...m, resourceId: copyId } : m) : base.models,
     objResources: shared ? [...base.objResources!, changed] : base.objResources!.map(r => r.id === resource.id ? changed : r) };
 }
