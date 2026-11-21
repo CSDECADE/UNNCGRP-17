@@ -12,6 +12,7 @@ import type { CameraView, ModelKind, Selection, Tool } from "./core/types";
 import { Scene } from "./Scene";
 import { Inspector as SceneInspector } from "./Inspector";
 import { HistoryPanel } from "./HistoryPanel";
+import { CapturePanel } from "./capture/CapturePanel";
 import { StartScreen } from "./StartScreen";
 import { Icon } from "./ui/Icon";
 import { TextField, ToolButton } from "./ui/Controls";
@@ -56,7 +57,7 @@ export function App() {
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
-  const [tab, setTab] = useState<"layers" | "assets" | "history">("layers"),
+  const [tab, setTab] = useState<"layers" | "assets" | "history" | "capture">("layers"),
     [leftOpen, setLeftOpen] = useState(true),
     [rightOpen, setRightOpen] = useState(true),
     [search, setSearch] = useState("");
@@ -439,6 +440,12 @@ export function App() {
               >
                 历史
               </button>
+              <button
+                className={tab === "capture" ? "tab-active" : ""}
+                onClick={() => setTab("capture")}
+              >
+                采集
+              </button>
               <ToolButton
                 icon="search"
                 label="搜索对象"
@@ -583,6 +590,8 @@ export function App() {
               </div>
             ) : tab === "history" ? (
               <HistoryPanel />
+            ) : tab === "capture" ? (
+              <CapturePanel />
             ) : (
               <div className="assets-scroll">
                 <div className="section-heading">
