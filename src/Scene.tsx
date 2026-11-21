@@ -44,6 +44,7 @@ import { cameraUp } from "./scene/dragMath";
 import { DEFAULT_SCENE_BACKGROUND } from "./core/background";
 import { SceneBackground } from "./scene/SceneBackground";
 import { fitBackground } from "./scene/backgroundTexture";
+import { BuildingModels } from "./scene/BuildingModels";
 
 function Label({
   text,
@@ -497,6 +498,7 @@ function World() {
         />
       )}
       <CameraRig />
+      <BuildingModels />
       <ambientLight intensity={1.2} />
       <hemisphereLight args={["#d6e5ff", "#505562", 1.3]} />
       <directionalLight
