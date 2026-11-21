@@ -1,0 +1,16 @@
+{
+  "name": "aero-demo-building",
+  "private": true,
+  "type": "module",
+  "description": "Offline tool: derive an aligned low-poly proxy (white model) from a textured photogrammetry glb.",
+  "scripts": {
+    "proxy": "node make-proxy.mjs"
+  },
+  "dependencies": {
+    "@gltf-transform/core": "^4.2.0",
+    "@gltf-transform/extensions": "^4.2.0",
+    "@gltf-transform/functions": "^4.2.0",
+    "draco3dgltf": "^1.5.7",
+    "meshoptimizer": "^0.22.0"
+  }
+}
