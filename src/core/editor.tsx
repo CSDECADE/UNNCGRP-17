@@ -35,6 +35,7 @@ import {
   type History,
   type Session,
 } from "./history";
+import { defaultReconstruction, type ReconstructionSetup } from "./reconstruction";
 import {
   beginTransformSession,
   updateTransformSession,
@@ -48,6 +49,7 @@ function useEditorState() {
   const [active, setActive] = useState(false);
   const [history, setHistory] = useState<History>(() => startHistory(emptyProject(), "新建项目")),
     [checkpoints, setCheckpointsState] = useState<Checkpoint[]>([]),
+    [reconstruction, setReconstructionState] = useState<ReconstructionSetup | undefined>(undefined),
     [selection, setSelectionState] = useState<Selection>(null);
   const [tool, setToolState] = useState<Tool>("select"),
     [view, setViewState] = useState<CameraView>("perspective");
@@ -65,7 +67,7 @@ function useEditorState() {
     [snap, setSnapState] = useState(0),
     [lockHeight, setLockHeightState] = useState(false);
   // Event callbacks can run before React renders again; these refs cancel or finish synchronously.
-  const historyRef = useRef(history), checkpointsRef = useRef(checkpoints), selectionRef = useRef(selection),
+  const historyRef = useRef(history), checkpointsRef = useRef(checkpoints), reconstructionRef = useRef(reconstruction), selectionRef = useRef(selection),
     toolRef = useRef(tool), viewRef = useRef(view), previewRef = useRef(preview),
     playingRef = useRef(playing), candidateRef = useRef(candidate),
     transformTargetRef = useRef(transformTarget), snapRef = useRef(snap),
@@ -315,9 +317,17 @@ function useEditorState() {
   function deleteCheckpoint(id: string) {
     writeCheckpoints((all) => all.filter((c) => c.id !== id));
   }
+  /** Reconstruction settings are not undoable; they change rarely and hold large model files. */
+  function setReconstruction(update: (r: ReconstructionSetup) => ReconstructionSetup | undefined) {
+    const next = update(reconstructionRef.current ?? defaultReconstruction());
+    reconstructionRef.current = next;
+    setReconstructionState(next);
+  }
   /** Snapshot of the committed session, used for .aeproj packages and autosave. */
   function exportSession(): Session {
-    return { history: historyRef.current, checkpoints: checkpointsRef.current };
+    const session: Session = { history: historyRef.current, checkpoints: checkpointsRef.current };
+    if (reconstructionRef.current) session.reconstruction = reconstructionRef.current;
+    return session;
   }
   /** Replace the whole session, e.g. after opening a package. */
   function loadSession(session: Session) {
@@ -328,6 +338,8 @@ function useEditorState() {
     historyRef.current = session.history;
     setHistory(session.history);
     writeCheckpoints(() => session.checkpoints);
+    reconstructionRef.current = session.reconstruction;
+    setReconstructionState(session.reconstruction);
     setActive(true);
   }
   function remove() {
@@ -455,6 +467,8 @@ function useEditorState() {
     deleteCheckpoint,
     exportSession,
     loadSession,
+    reconstruction,
+    setReconstruction,
     newProject: () => loadSession({ history: startHistory(emptyProject(), "新建项目"), checkpoints: [] }),
     example: () => loadSession({ history: startHistory(exampleProject(), "打开示例"), checkpoints: [] }),
   };

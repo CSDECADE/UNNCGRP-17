@@ -2,11 +2,14 @@
 // localStorage is too small for full histories with background images.
 import { validateProject } from "./project.ts";
 import { startHistory, type Session } from "./history.ts";
+import { serializeReconstruction, validateReconstruction, type MeshAsset } from "./reconstruction.ts";
 
 const DB_NAME = "aero-p15";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const SESSION_STORE = "session";
 const RECENT_STORE = "recent";
+/** Large binary assets (models) keyed by sha256, written once and referenced from the session. */
+const ASSET_STORE = "assets";
 const LEGACY_KEY = "p15.project.v1";
 export const MAX_WEB_RECENT = 8;
 
@@ -21,6 +24,7 @@ function db(): Promise<IDBDatabase> {
       const d = request.result;
       if (!d.objectStoreNames.contains(SESSION_STORE)) d.createObjectStore(SESSION_STORE);
       if (!d.objectStoreNames.contains(RECENT_STORE)) d.createObjectStore(RECENT_STORE, { keyPath: "id" });
+      if (!d.objectStoreNames.contains(ASSET_STORE)) d.createObjectStore(ASSET_STORE);
     };
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
@@ -40,8 +44,29 @@ async function run<T>(store: string, mode: IDBTransactionMode, action: (s: IDBOb
   });
 }
 
+const storedAssets = new Set<string>();
+async function storeAsset(a: MeshAsset) {
+  if (storedAssets.has(a.sha256)) return;
+  await run(ASSET_STORE, "readwrite", (s) => s.put(a.bytes, a.sha256));
+  storedAssets.add(a.sha256);
+}
 export async function saveAutosave(record: AutosaveRecord): Promise<void> {
-  await run(SESSION_STORE, "readwrite", (s) => s.put(record, "current"));
+  const r = record.session.reconstruction;
+  let stored: unknown = record;
+  if (r) {
+    for (const a of [r.reference, r.proxy]) if (a) await storeAsset(a);
+    const ref = (a: MeshAsset) => ({ name: a.name, sha256: a.sha256 });
+    stored = { ...record, session: { ...record.session, reconstruction: serializeReconstruction(r, ref) } };
+  }
+  await run(SESSION_STORE, "readwrite", (s) => s.put(stored, "current"));
+  // Drop model files the autosaved session no longer references.
+  const keep = new Set([r?.reference?.sha256, r?.proxy?.sha256]);
+  const keys = await run<IDBValidKey[]>(ASSET_STORE, "readonly", (s) => s.getAllKeys());
+  for (const key of keys)
+    if (!keep.has(String(key))) {
+      await run(ASSET_STORE, "readwrite", (s) => s.delete(key));
+      storedAssets.delete(String(key));
+    }
   try {
     localStorage.removeItem(LEGACY_KEY);
   } catch {
@@ -55,13 +80,30 @@ export async function loadAutosave(): Promise<AutosaveRecord | null> {
     // Re-validate: storage is shared with other builds and may be stale.
     const h = stored.session.history;
     const fix = <T extends { project: unknown }>(e: T) => ({ ...e, project: validateProject(e.project) });
-    return {
-      ...stored,
-      session: {
-        history: { past: h.past.map(fix), present: fix(h.present), future: h.future.map(fix) },
-        checkpoints: stored.session.checkpoints.map(fix),
-      },
+    const session: Session = {
+      history: { past: h.past.map(fix), present: fix(h.present), future: h.future.map(fix) },
+      checkpoints: stored.session.checkpoints.map(fix),
     };
+    if (stored.session.reconstruction) {
+      const assets = new Map<string, Uint8Array>();
+      const raw = stored.session.reconstruction as unknown as Record<string, { sha256?: string } | undefined>;
+      for (const key of ["reference", "proxy"]) {
+        const sha = raw[key]?.sha256;
+        if (typeof sha !== "string") continue;
+        const bytes = await run<Uint8Array | undefined>(ASSET_STORE, "readonly", (s) => s.get(sha));
+        if (bytes) {
+          assets.set(sha, bytes);
+          storedAssets.add(sha);
+        }
+      }
+      session.reconstruction = validateReconstruction(raw, (ref) => {
+        const r = ref as { name?: unknown; sha256?: unknown };
+        const bytes = typeof r?.sha256 === "string" ? assets.get(r.sha256) : undefined;
+        // A missing asset (storage cleared) drops the model rather than the whole session.
+        return bytes ? { name: String(r.name ?? "model.glb"), sha256: r.sha256 as string, bytes } : undefined;
+      });
+    }
+    return { ...stored, session };
   }
   let legacy: string | null = null;
   try {
