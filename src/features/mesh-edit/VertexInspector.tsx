@@ -7,7 +7,13 @@ import type { Vec3 } from "../../core/types";
 function GroupTranslation() {
   const e = useEditor(), [delta, setDelta] = useState<Vec3>([0, 0, 0]), pending = useRef(delta);
   const form = useRef<HTMLDivElement>(null);
-  useEffect(() => { pending.current = [0, 0, 0]; setDelta([0, 0, 0]); }, [e.committedProject]);
+  useEffect(() => {
+    // A history change clears a pending delta once; an already-zero panel must
+    // not schedule a fresh array update after every Undo/Redo commit.
+    if (pending.current.some(n => n !== 0)) {
+      pending.current = [0, 0, 0]; setDelta(pending.current);
+    }
+  }, [e.committedProject]);
   function apply() {
     const focused = document.activeElement;
     if (focused instanceof HTMLInputElement && form.current?.contains(focused)) focused.blur();

@@ -1,0 +1,357 @@
+{
+  "dev": "http://127.0.0.1:5180/",
+  "production": "http://127.0.0.1:5181/",
+  "serial": true,
+  "freshProfilePerCase": true,
+  "results": [
+    {
+      "name": "continuous50-1",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 23805,
+      "log": "continuous50-1.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-u7kVMd/release.png"
+      }
+    },
+    {
+      "name": "continuous50-2",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 22480,
+      "log": "continuous50-2.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-w6OPN5/release.png"
+      }
+    },
+    {
+      "name": "continuous50-3",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 23481,
+      "log": "continuous50-3.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-6khTid/release.png"
+      }
+    },
+    {
+      "name": "continuous35",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 22737,
+      "log": "continuous35.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-r3o4w0/release.png"
+      }
+    },
+    {
+      "name": "continuous120",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 29815,
+      "log": "continuous120.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-MQGGkS/release.png"
+      }
+    },
+    {
+      "name": "batched50",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 26039,
+      "log": "batched50.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-nwfNpF/release.png"
+      }
+    },
+    {
+      "name": "production-continuous50",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 17630,
+      "log": "production-continuous50.log",
+      "result": {
+        "report": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-release-production-cdwVK2/production-stress.json",
+        "passed": true
+      }
+    },
+    {
+      "name": "history-state",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 3686,
+      "log": "history-state.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-history-pending-delta-reset",
+          "autosave-dirty-error-retry",
+          "exact-project-recovery"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-Pq789H/history-state.png"
+      }
+    },
+    {
+      "name": "multi",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 43326,
+      "log": "multi.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "\u9876\u70b9: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict",
+          "\u8fb9: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict",
+          "\u9762: Shift-add-remove, plain-replace, empty-clear, all-highlights, no-camera-conflict",
+          "independent-coincident-members",
+          "submesh-reset",
+          "selection-no-project-history",
+          "\u9876\u70b9: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel",
+          "\u8fb9: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel",
+          "coincident-face-alternative-resolved-through-existing-UI",
+          "\u9762: unique-centroid, world-XYZ rotated/nonuniform group, atomic numeric delta, one-entry/no-op/undo-redo/cancel",
+          "blur-element-mode-preview-cancel",
+          "camera-recovery",
+          "UAV-unchanged",
+          "JSON-save-reload-no-selection-metadata",
+          "OBJ-actual-file-roundtrip",
+          "whole-group-capacity-rollback-no-extra-history"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-D9A9hD/multi.png"
+      }
+    },
+    {
+      "name": "elements",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 20054,
+      "log": "elements.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-edge-picking-highlight-dedup",
+          "midpoint-world-pivot",
+          "world-edge-move-rotated-nonuniform",
+          "degenerate-rejection",
+          "edge-history-cancel-mode-switch",
+          "native-face-raycast-highlight",
+          "centroid-world-pivot",
+          "numeric-reference-delta",
+          "face-world-XYZ-common-translation",
+          "normals-UV-and-independent-vertices",
+          "active-submesh-face-scope",
+          "mode-reset-keeps-active-object-and-submesh",
+          "vertex-mode-and-UAV-compatibility",
+          "JSON-save-reload",
+          "OBJ-actual-file-export-reimport",
+          "preview-restriction"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-6R19QR/elements.png"
+      }
+    },
+    {
+      "name": "edit",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 21436,
+      "log": "edit.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "mode-and-input-focus",
+          "native-logical-vertex-picking",
+          "coincident-IDs",
+          "active-submesh",
+          "selection-does-not-change-project",
+          "native-world-XYZ-under-rotated-nonuniform-model",
+          "single-gesture-undo-redo",
+          "logical-corners-and-object-transform-unchanged",
+          "escape-blur-mode-switch-cancel",
+          "camera-recovery-no-extra-history",
+          "numeric-local-edit",
+          "JSON-save-and-OBJ-export-round-trip",
+          "preview-lock-hidden-UAV-restrictions",
+          "reload-geometry-restored-mode-is-transient",
+          "actual-file-reimport-after-vertex-edit",
+          "shared-resource-detachment-capacity-failure-atomic-history",
+          "shared-instance-detach-undo-redo",
+          "unrelated-submesh-GPU-buffers-retained"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-uAj9T7/edit.png"
+      }
+    },
+    {
+      "name": "default",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 18254,
+      "log": "default.log",
+      "result": {
+        "passed": true,
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-royQo0/transformed.png",
+        "checks": [
+          "native-translation",
+          "single-gesture-undo-redo",
+          "live-inspector-sync",
+          "cancel",
+          "numeric-XYZ",
+          "pending-input-before-drag",
+          "native-rotation",
+          "non-uniform-scale",
+          "uniform-scale",
+          "locked-hidden-preview-candidate",
+          "geometry-unchanged",
+          "save-reload",
+          "UAV-unchanged",
+          "camera-recovery"
+        ]
+      }
+    },
+    {
+      "name": "builtin",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 30499,
+      "log": "builtin.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "building: native move/yaw/dimensions, numeric-render sync, cancel/history, visibility/lock",
+          "box: native move/yaw/dimensions, numeric-render sync, cancel/history, visibility/lock",
+          "cylinder: native move/yaw/dimensions, numeric-render sync, cancel/history, visibility/lock",
+          "version-1 save/reload, preview/candidate restrictions, UAV playback/analysis regression, no UAV editing"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-eAizwt/builtins.png"
+      }
+    },
+    {
+      "name": "export",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 10273,
+      "log": "export.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "active-transaction-disabled",
+          "hidden-locked-read-only-export",
+          "native-cancel-and-error-state-unchanged",
+          "browser-plain-text-download",
+          "export-does-not-create-history",
+          "multi-submesh-UV-connectivity",
+          "rendered-world-geometry-round-trip",
+          "UAV-paths-unchanged",
+          "project-JSON-save-regression",
+          "builtin-UAV-disabled"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-HWE2X6/export.png"
+      }
+    },
+    {
+      "name": "import-playback-analysis",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 4553,
+      "log": "import-playback-analysis.log",
+      "result": {
+        "passed": true,
+        "scenePicked": true,
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-stage2-ui-8Flnz1/imported.png",
+        "snapshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-stage2-ui-8Flnz1/snapshot.json",
+        "checks": [
+          "import-menu",
+          "file-input",
+          "multi-mesh",
+          "selection",
+          "visibility",
+          "lock-delete",
+          "focus",
+          "save-download",
+          "undo-import",
+          "undo-redo",
+          "restore-file",
+          "reload-autosave",
+          "invalid-input",
+          "playback",
+          "analysis",
+          "quota-failure-save-fallback",
+          "no-console-errors"
+        ]
+      }
+    },
+    {
+      "name": "pointer-latency",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 22829,
+      "log": "pointer-latency.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "native-dense-drags",
+          "real-editor-undo-redo",
+          "separate-untimed-call-profile",
+          "GPU-mode-cycle-observation"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-n6aiS9/audit.png"
+      }
+    },
+    {
+      "name": "renderer-memory",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 50714,
+      "log": "renderer-memory.log",
+      "result": {
+        "passed": true,
+        "checks": [
+          "actual-OBJ-import-render",
+          "history60",
+          "undo-redo-3cycles",
+          "redo-branch-release",
+          "undoable-deletion",
+          "history-eviction-resource-release"
+        ],
+        "screenshot": "/var/folders/zt/6vjr7lt15_b1pyxvn8r3scyr0000gn/T/aero-transform-ui-IaTk89/memory.png"
+      }
+    }
+  ],
+  "branch": "feature/obj-editor",
+  "baseline": "67aca3d",
+  "mainUnchanged": "1320078a65c021b589fc27a3f5bd096d62eab334",
+  "typecheck": "passed",
+  "unitIntegrationTests": {
+    "passed": 123,
+    "failed": 0
+  },
+  "productionBuild": "passed",
+  "productionBundle": "index-BHfaGNkx.js",
+  "stressScriptUnchanged": true,
+  "dependencyInstrumentationRemoved": true,
+  "committed": false,
+  "pushed": false
+}

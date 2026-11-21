@@ -1,0 +1,333 @@
+{
+  "conditions": "Diagnostic-only instrumentation of installed React DOM development dispatcher; original 45k/60-history/50ms scenario. Instrumentation and ablation are removed before actual fix verification. No warnings suppressed.",
+  "baseline": {
+    "warningAtNativeKey": 52,
+    "throwAtNativeKey": 53,
+    "passiveDispatchSources": {
+      "GroupTranslation": 59,
+      "EditorProvider": 59
+    },
+    "firstKeyTrace": [
+      {
+        "type": "dispatch",
+        "key": 1,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 1,
+        "name": "EditorProvider",
+        "action": "boolean",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 1,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 1,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 1,
+        "name": "EditorProvider",
+        "action": "number",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 1,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": false,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0,
+        "passive": false
+      },
+      {
+        "type": "commit",
+        "key": 1,
+        "lanes": 2,
+        "remainingLanes": 0,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0
+      },
+      {
+        "type": "dispatch",
+        "key": 1,
+        "name": "GroupTranslation",
+        "action": "array",
+        "oldArray": true,
+        "same": false,
+        "lane": 32,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0,
+        "passive": true
+      },
+      {
+        "type": "dispatch",
+        "key": 1,
+        "name": "EditorProvider",
+        "action": "string",
+        "oldArray": false,
+        "same": false,
+        "lane": 32,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 0,
+        "passive": true
+      },
+      {
+        "type": "passiveEnd",
+        "key": 1,
+        "scheduled": true,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1
+      },
+      {
+        "type": "commit",
+        "key": 1,
+        "lanes": 2,
+        "remainingLanes": 32,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1
+      },
+      {
+        "type": "dispatch",
+        "key": 2,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 2,
+        "name": "EditorProvider",
+        "action": "boolean",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 2,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 2,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 2,
+        "name": "EditorProvider",
+        "action": "number",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 2,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": false,
+        "lane": 2,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1,
+        "passive": false
+      },
+      {
+        "type": "commit",
+        "key": 2,
+        "lanes": 34,
+        "remainingLanes": 0,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1
+      },
+      {
+        "type": "dispatch",
+        "key": 2,
+        "name": "GroupTranslation",
+        "action": "array",
+        "oldArray": true,
+        "same": false,
+        "lane": 32,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1,
+        "passive": true
+      },
+      {
+        "type": "dispatch",
+        "key": 2,
+        "name": "EditorProvider",
+        "action": "string",
+        "oldArray": false,
+        "same": true,
+        "lane": 32,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 1,
+        "passive": true
+      },
+      {
+        "type": "passiveEnd",
+        "key": 2,
+        "scheduled": true,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 2
+      },
+      {
+        "type": "commit",
+        "key": 2,
+        "lanes": 34,
+        "remainingLanes": 32,
+        "nestedUpdateCount": 0,
+        "nestedPassiveUpdateCount": 2
+      }
+    ],
+    "limitTrace": [
+      {
+        "type": "passiveEnd",
+        "key": 51,
+        "scheduled": true,
+        "nestedUpdateCount": 49,
+        "nestedPassiveUpdateCount": 51
+      },
+      {
+        "type": "commit",
+        "key": 51,
+        "lanes": 34,
+        "remainingLanes": 32,
+        "nestedUpdateCount": 49,
+        "nestedPassiveUpdateCount": 51
+      },
+      {
+        "type": "dispatch",
+        "key": 52,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 50,
+        "nestedPassiveUpdateCount": 51,
+        "passive": false
+      },
+      {
+        "type": "dispatch",
+        "key": 53,
+        "name": "EditorProvider",
+        "action": "object",
+        "oldArray": false,
+        "same": true,
+        "lane": 2,
+        "nestedUpdateCount": 51,
+        "nestedPassiveUpdateCount": 0,
+        "passive": false
+      }
+    ]
+  },
+  "ablations": [
+    {
+      "skipped": [
+        "GroupTranslation passive reset"
+      ],
+      "passed": false,
+      "warnings": [
+        {
+          "phase": "undo",
+          "stack": "Error\n    at console.error (<anonymous>:1:226)\n    at getRootForUpdatedFiber (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:3476:143)\n    at enqueueConcurrentHookUpdate (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:3457:16)\n    at dispatchSetStateInternal (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:6841:20)\n    at dispatchSetState (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:6810:9)\n    at cancelTransform (http://127.0.0.1:5180/src/core/editor.tsx:101:5)\n    at Object.undo (http://127.0.0.1:5180/src/core/editor.tsx:368:5)\n    at onKey (http://127.0.0.1:5180/src/App.tsx:142:38)"
+        }
+      ],
+      "maxNestedUpdates": 51,
+      "maxNestedPassiveUpdates": 51,
+      "uncaughtDepthError": true
+    },
+    {
+      "skipped": [
+        "EditorProvider equal-value passive status update"
+      ],
+      "passed": false,
+      "warnings": [],
+      "maxNestedUpdates": 51,
+      "maxNestedPassiveUpdates": 51,
+      "uncaughtDepthError": true
+    },
+    {
+      "skipped": [
+        "GroupTranslation passive reset",
+        "EditorProvider equal-value passive status update"
+      ],
+      "passed": true,
+      "keys": 120,
+      "checks": [
+        "native-undo60-redo60-exact-geometry"
+      ],
+      "warnings": [],
+      "maxNestedUpdates": 0,
+      "maxNestedPassiveUpdates": 1
+    }
+  ]
+}

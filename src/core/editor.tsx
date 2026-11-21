@@ -107,7 +107,6 @@ function useEditorState() {
   const [autosavePaused] = useState(!!history.autosavePaused);
   useEffect(() => {
     if (autosavePaused) return;
-    setAutosaveStatus("saving");
     const persist = () => {
       try {
         setAutosaveStatus(persistProject(localStorage, STORAGE, history.present));
@@ -128,8 +127,11 @@ function useEditorState() {
     return () => clearTimeout(id);
   }, [message]);
   function writeHistory(update: (h: History) => History) {
-    const next = update(historyRef.current);
+    const previous = historyRef.current, next = update(previous);
     historyRef.current = next;
+    // Mark dirty in the history transaction, not a passive effect that can keep
+    // scheduling work behind consecutive high-priority keyboard updates.
+    if (!autosavePaused && next.present !== previous.present) setAutosaveStatus("saving");
     setHistory(next);
   }
   function cancelTransform() {

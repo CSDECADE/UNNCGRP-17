@@ -84,6 +84,8 @@ No P0 data corruption was observed in successful import/edit/save/export workflo
 
 ### P1 development defect — Continuous native Undo can terminate the development render
 
+**Follow-up:** [Stage 5E](obj-editor-undo-reliability.md) subsequently established and corrected the two passive-update sources. Repeated uninstrumented native regressions pass. The following 5D observations remain the historical before-fix evidence.
+
 Reproduction: run the `release` stress scenario with `OBJ_RELEASE_SCENARIO=stress`, default 50 ms key interval and no batches. Import the attributed 150×150 grid, select 100 edges, establish 60 paced Z-offset commits, focus canvas and send sixty native Ctrl+Z keydowns. This reproduced before and after the shortcut fix in independent profiles.
 
 Expected: return exactly to pre-edit geometry without renderer errors. Actual: React reports `Maximum update depth exceeded`, followed by an uncaught update-depth error; the sixty-Undo geometry assertion fails. The captured warning stack passes through React state dispatch, `cancelTransform`, `undo` and `App`'s key handler. This identifies the observed update path, **not the root causal effect or a proven minimal fix**. Development rendering/context synchronization and passive state updates require further isolation. No speculative inspector/autosave guards were introduced.

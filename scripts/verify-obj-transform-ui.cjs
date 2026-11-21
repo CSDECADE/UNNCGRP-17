@@ -82,12 +82,12 @@ app.whenReady().then(async () => {
   await wait("!!document.querySelector('canvas') && !!localStorage.getItem('p15.project.v1')");
   await setupRoot();
   const before=await snapshot();
-  if(['builtin','export','edit-selection','edit','elements','multi-selection','multi','audit','memory','release'].includes(process.argv[3])){
-   const cases=process.argv[3]==='release'?'./verify-obj-release-cases.cjs':process.argv[3]==='memory'?'./benchmark-history-ui-cases.cjs':process.argv[3]==='audit'?'./benchmark-obj-editor-ui-cases.cjs':process.argv[3].startsWith('multi')?'./verify-mesh-multiselect-cases.cjs':process.argv[3]==='elements'?'./verify-mesh-elements-cases.cjs':process.argv[3].startsWith('edit')?'./verify-mesh-edit-cases.cjs':process.argv[3]==='export'?'./verify-obj-export-cases.cjs':'./verify-builtin-transform-cases.cjs';
+  if(['builtin','export','edit-selection','edit','elements','multi-selection','multi','audit','memory','release','history'].includes(process.argv[3])){
+   const cases=process.argv[3]==='history'?'./verify-history-state-cases.cjs':process.argv[3]==='release'?'./verify-obj-release-cases.cjs':process.argv[3]==='memory'?'./benchmark-history-ui-cases.cjs':process.argv[3]==='audit'?'./benchmark-obj-editor-ui-cases.cjs':process.argv[3].startsWith('multi')?'./verify-mesh-multiselect-cases.cjs':process.argv[3]==='elements'?'./verify-mesh-elements-cases.cjs':process.argv[3].startsWith('edit')?'./verify-mesh-edit-cases.cjs':process.argv[3]==='export'?'./verify-obj-export-cases.cjs':'./verify-builtin-transform-cases.cjs';
    const checks=await require(cases)({win,run,wait,click,key,snapshot,delay,input,
     dragStart,dragMove,release,setupRoot,control,before,testDir,selectionOnly:['edit-selection','multi-selection'].includes(process.argv[3])});
    assert.equal(errors.length,0,JSON.stringify(errors));
-   const screenshot=process.argv[3]==='release'?'release.png':process.argv[3]==='memory'?'memory.png':process.argv[3]==='audit'?'audit.png':process.argv[3].startsWith('multi')?'multi.png':process.argv[3]==='elements'?'elements.png':process.argv[3]==='edit-selection'?'edit-selection.png':process.argv[3]==='export'?'export.png':process.argv[3]==='edit'?'edit.png':'builtins.png';
+   const screenshot=process.argv[3]==='history'?'history-state.png':process.argv[3]==='release'?'release.png':process.argv[3]==='memory'?'memory.png':process.argv[3]==='audit'?'audit.png':process.argv[3].startsWith('multi')?'multi.png':process.argv[3]==='elements'?'elements.png':process.argv[3]==='edit-selection'?'edit-selection.png':process.argv[3]==='export'?'export.png':process.argv[3]==='edit'?'edit.png':'builtins.png';
    console.log(JSON.stringify({passed:true,checks,screenshot:path.join(testDir,screenshot)}));
    clearTimeout(timeout);app.exit(0);return;
   }

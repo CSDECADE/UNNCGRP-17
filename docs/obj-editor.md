@@ -560,3 +560,5 @@ The [Stage 5B topology optimization report](obj-editor-topology-optimization.md)
 The [Stage 5C history-memory report](obj-editor-history-memory.md) separates necessary snapshot storage from redundant normal copies and a renderer-side closure retainer. It documents the targeted fixes, controlled-GC measurements, performance tradeoffs and remaining limitations while preserving the 60-entry history.
 
 The [Stage 5D release-readiness report](obj-editor-release-readiness.md) records authored-asset compatibility, native keyboard pressure, capacity boundaries, post-optimization benchmarks and the qualified integration recommendation.
+
+The [Stage 5E Undo/Redo reliability report](obj-editor-undo-reliability.md) establishes the continuous-input scheduling cause, documents the two-site correction and records repeated native/production regression results and the remaining manual acceptance checklist.

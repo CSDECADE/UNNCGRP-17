@@ -1,0 +1,280 @@
+{
+  "baseline": "67aca3d",
+  "before": {
+    "exitCode": 1,
+    "originalScenario": {
+      "scenario": "stress",
+      "conditions": {
+        "build": "Vite development",
+        "hiddenWindow": true,
+        "nativeRendererKeyEvents": true,
+        "intervalMs": 50,
+        "batch": 0,
+        "triangles": 45000,
+        "historyEntries": 60
+      },
+      "checks": [],
+      "importToRenderGeometryMs": 184.5,
+      "autosaveStatus": "saving",
+      "projectBytes": 2942564,
+      "stress": {
+        "warnings": [
+          {
+            "phase": "undo",
+            "stack": "Error\n    at console.error (<anonymous>:1:226)\n    at getRootForUpdatedFiber (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:3476:143)\n    at enqueueConcurrentHookUpdate (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:3457:16)\n    at dispatchSetStateInternal (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:6839:20)\n    at dispatchSetState (http://127.0.0.1:5180/node_modules/.vite/deps/chunk-UASHBMZJ.js?v=e655c4d4:6810:9)\n    at cancelTransform (http://127.0.0.1:5180/src/core/editor.tsx:101:5)\n    at Object.undo (http://127.0.0.1:5180/src/core/editor.tsx:368:5)\n    at onKey (http://127.0.0.1:5180/src/App.tsx:142:38)"
+          }
+        ],
+        "keys": 60,
+        "RAFIntervalSummaryMs": {
+          "n": 5,
+          "p50": 305.10000000000036,
+          "p95": 2618.000000000002,
+          "max": 2618.000000000002,
+          "note": "Hidden-window callback intervals, not displayed FPS."
+        }
+      }
+    },
+    "uncaughtDepthError": true
+  },
+  "after": [
+    {
+      "name": "continuous50-1",
+      "exitCode": 0,
+      "scenario": {
+        "scenario": "stress",
+        "conditions": {
+          "build": "Vite development",
+          "hiddenWindow": true,
+          "nativeRendererKeyEvents": true,
+          "intervalMs": 50,
+          "batch": 0,
+          "triangles": 45000,
+          "historyEntries": 60
+        },
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "importToRenderGeometryMs": 174,
+        "autosaveStatus": "saved",
+        "projectBytes": 2942564,
+        "stress": {
+          "warnings": [],
+          "keys": 120,
+          "RAFIntervalSummaryMs": {
+            "n": 22,
+            "p50": 8.5,
+            "p95": 1958.2999999999993,
+            "max": 2409.699999999999,
+            "note": "Hidden-window callback intervals, not displayed FPS."
+          }
+        },
+        "firstTopologyMs": 43.59999990463257
+      }
+    },
+    {
+      "name": "continuous50-2",
+      "exitCode": 0,
+      "scenario": {
+        "scenario": "stress",
+        "conditions": {
+          "build": "Vite development",
+          "hiddenWindow": true,
+          "nativeRendererKeyEvents": true,
+          "intervalMs": 50,
+          "batch": 0,
+          "triangles": 45000,
+          "historyEntries": 60
+        },
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "importToRenderGeometryMs": 168,
+        "autosaveStatus": "saved",
+        "projectBytes": 2942564,
+        "stress": {
+          "warnings": [],
+          "keys": 120,
+          "RAFIntervalSummaryMs": {
+            "n": 23,
+            "p50": 14.100000000002183,
+            "p95": 1680.6000000000004,
+            "max": 2457,
+            "note": "Hidden-window callback intervals, not displayed FPS."
+          }
+        },
+        "firstTopologyMs": 42
+      }
+    },
+    {
+      "name": "continuous50-3",
+      "exitCode": 0,
+      "scenario": {
+        "scenario": "stress",
+        "conditions": {
+          "build": "Vite development",
+          "hiddenWindow": true,
+          "nativeRendererKeyEvents": true,
+          "intervalMs": 50,
+          "batch": 0,
+          "triangles": 45000,
+          "historyEntries": 60
+        },
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "importToRenderGeometryMs": 159.7000002861023,
+        "autosaveStatus": "saved",
+        "projectBytes": 2942564,
+        "stress": {
+          "warnings": [],
+          "keys": 120,
+          "RAFIntervalSummaryMs": {
+            "n": 27,
+            "p50": 7.69999999999709,
+            "p95": 2638.999999999998,
+            "max": 3229.2000000000007,
+            "note": "Hidden-window callback intervals, not displayed FPS."
+          }
+        },
+        "firstTopologyMs": 43.09999990463257
+      }
+    },
+    {
+      "name": "continuous35",
+      "exitCode": 0,
+      "scenario": {
+        "scenario": "stress",
+        "conditions": {
+          "build": "Vite development",
+          "hiddenWindow": true,
+          "nativeRendererKeyEvents": true,
+          "intervalMs": 35,
+          "batch": 0,
+          "triangles": 45000,
+          "historyEntries": 60
+        },
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "importToRenderGeometryMs": 160.90000009536743,
+        "autosaveStatus": "saved",
+        "projectBytes": 2942564,
+        "stress": {
+          "warnings": [],
+          "keys": 120,
+          "RAFIntervalSummaryMs": {
+            "n": 24,
+            "p50": 7,
+            "p95": 3395.7999999999993,
+            "max": 3465.699999999997,
+            "note": "Hidden-window callback intervals, not displayed FPS."
+          }
+        },
+        "firstTopologyMs": 51.80000019073486
+      }
+    },
+    {
+      "name": "continuous120",
+      "exitCode": 0,
+      "scenario": {
+        "scenario": "stress",
+        "conditions": {
+          "build": "Vite development",
+          "hiddenWindow": true,
+          "nativeRendererKeyEvents": true,
+          "intervalMs": 120,
+          "batch": 0,
+          "triangles": 45000,
+          "historyEntries": 60
+        },
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "importToRenderGeometryMs": 170.30000019073486,
+        "autosaveStatus": "saved",
+        "projectBytes": 2942564,
+        "stress": {
+          "warnings": [],
+          "keys": 120,
+          "RAFIntervalSummaryMs": {
+            "n": 1202,
+            "p50": 7,
+            "p95": 76.39999999999782,
+            "max": 84.39999999999964,
+            "note": "Hidden-window callback intervals, not displayed FPS."
+          }
+        },
+        "firstTopologyMs": 46.19999980926514
+      }
+    },
+    {
+      "name": "batched50",
+      "exitCode": 0,
+      "scenario": {
+        "scenario": "stress",
+        "conditions": {
+          "build": "Vite development",
+          "hiddenWindow": true,
+          "nativeRendererKeyEvents": true,
+          "intervalMs": 50,
+          "batch": 20,
+          "triangles": 45000,
+          "historyEntries": 60
+        },
+        "checks": [
+          "native-undo60-redo60-exact-geometry"
+        ],
+        "importToRenderGeometryMs": 172,
+        "autosaveStatus": "saved",
+        "projectBytes": 2942564,
+        "stress": {
+          "warnings": [],
+          "keys": 120,
+          "RAFIntervalSummaryMs": {
+            "n": 438,
+            "p50": 6.900000000001455,
+            "p95": 145.89999999999964,
+            "max": 1048.699999999997,
+            "note": "Hidden-window callback intervals, not displayed FPS."
+          }
+        },
+        "firstTopologyMs": 47.19999980926514
+      }
+    }
+  ],
+  "productionAfter": {
+    "build": "production",
+    "hiddenWindow": true,
+    "intervalMs": 50,
+    "batch": 0,
+    "errors": [],
+    "setupErrors": [],
+    "phases": [
+      {
+        "phase": "undo",
+        "actual": "90a30ae38d18a0e61e45096bb4f178c2e8a44a16b7d50f99f3c9168c0431b3e6",
+        "expected": "90a30ae38d18a0e61e45096bb4f178c2e8a44a16b7d50f99f3c9168c0431b3e6",
+        "exact": true
+      },
+      {
+        "phase": "redo",
+        "actual": "4ade31258b8d9f08c0aaabe2716a2b49f0a9815ddb5f1977debcfb5780b03fbe",
+        "expected": "4ade31258b8d9f08c0aaabe2716a2b49f0a9815ddb5f1977debcfb5780b03fbe",
+        "exact": true
+      }
+    ],
+    "keys": 120,
+    "passed": true
+  },
+  "historyStateAfter": {
+    "passed": true,
+    "checks": [
+      "native-Undo-Redo-clears-nonzero-group-delta",
+      "reset-clears-pending-application",
+      "dirty-status-with-history-change",
+      "quota-failure-preserves-old-autosave-and-live-history",
+      "Redo-retries-autosave-and-recovers-status",
+      "exact-project-recovery"
+    ]
+  }
+}
