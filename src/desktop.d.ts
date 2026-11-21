@@ -27,6 +27,10 @@ declare global {
       savePackage(request: { name: string; bytes: Uint8Array; saveAs?: boolean }): Promise<{ fileName: string } | null>;
       recentProjects(): Promise<RecentProject[]>;
       removeRecent(id: string): Promise<void>;
+      /** Ask for a parent folder and create a new photo package folder inside it. */
+      captureBegin(name: string): Promise<{ token: string; folderName: string } | null>;
+      captureWrite(token: string, path: string, bytes: Uint8Array): Promise<void>;
+      captureEnd(token: string, reveal: boolean): Promise<void>;
       saveFile(request: {
         kind: "project" | "export";
         name: string;

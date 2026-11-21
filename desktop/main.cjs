@@ -8,8 +8,10 @@ const {
   net,
   protocol,
   session,
+  shell,
 } = require("electron");
-const { mkdirSync } = require("node:fs");
+const fs = require("node:fs");
+const { mkdirSync } = fs;
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { randomUUID } = require("node:crypto");
@@ -225,6 +227,39 @@ handle("p15:save-package", async (request) => {
   } finally {
     fileOperation = false;
   }
+});
+// ---- photo packages (aero-capture) -------------------------------------------
+// The renderer streams files into a new folder chosen by the user; paths are whitelisted.
+const captures = new Map();
+const CAPTURE_PATH = /^(capture\.json|images\/[A-Za-z0-9_.-]{1,80}\.(jpg|jpeg|png)|ground_truth\/(poses\.json|reference\.glb|reference_frame\.json|colmap\/(cameras|images|points3D)\.txt))$/;
+handle("p15:capture-begin", async (name) => {
+  if (typeof name !== "string" || name.length > 120) throw new Error("无效的照片包名称");
+  const result = await dialog.showOpenDialog(win, {
+    title: "选择照片包的保存位置",
+    properties: ["openDirectory", "createDirectory"],
+  });
+  if (result.canceled || !result.filePaths[0]) return null;
+  const base = name.replace(/[\\/:*?"<>|]/g, "-").trim() || "capture";
+  let folder = path.join(result.filePaths[0], base);
+  for (let i = 2; fs.existsSync(folder); i++) folder = path.join(result.filePaths[0], `${base}-${i}`);
+  mkdirSync(folder, { recursive: true });
+  const token = randomUUID();
+  captures.set(token, folder);
+  return { token, folderName: path.basename(folder) };
+});
+handle("p15:capture-write", async (token, relative, bytes) => {
+  const folder = captures.get(token);
+  if (!folder) throw fileError("EXPIRED");
+  if (typeof relative !== "string" || !CAPTURE_PATH.test(relative)) throw new Error("不允许的照片包文件");
+  if (!(bytes instanceof Uint8Array) || bytes.byteLength > 256 * 1024 * 1024) throw fileError("TOO_LARGE");
+  const filename = path.join(folder, ...relative.split("/"));
+  mkdirSync(path.dirname(filename), { recursive: true });
+  await writeFileAtomic(filename, bytes);
+});
+handle("p15:capture-end", async (token, reveal) => {
+  const folder = captures.get(token);
+  captures.delete(token);
+  if (folder && reveal) shell.showItemInFolder(path.join(folder, "capture.json"));
 });
 handle("p15:recent-list", () => recent.list());
 handle("p15:recent-remove", async (id) => {
