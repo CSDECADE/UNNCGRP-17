@@ -1,6 +1,6 @@
 # 三维重建：模拟拍摄与照片包接口（设计）
 
-> 维护：基础框架　分支：`feat/reconstruction-capture`　状态：设计 + 第一阶段实现
+> 维护：基础框架　分支：`feat/reconstruction-capture`　状态：第一阶段已实现（到照片包输出为止）
 > 本阶段只做到**输出照片包**。COLMAP 调用、CUDA 环境和重建结果显示由后续同学负责，见 [`reconstruction-handover.md`](reconstruction-handover.md)。
 
 ## 1. 目标
@@ -86,7 +86,7 @@ type Session = { history; checkpoints; reconstruction?: ReconstructionSetup };
 
 1. 按拍摄点顺序（按无人机分组，与航线顺序一致）逐张渲染。
 2. 使用**独立的离屏 WebGL 渲染器**和独立场景，场景里只有参考模型和天空背景，不受编辑器的辅助线、标签、白模影响。
-3. 相机：位置和朝向取拍摄点的 `position → target`；`up` 方向沿用编辑器的 `cameraUp` 规则；垂直视场角取该无人机的 `fov`；宽高比 = `width / height`。
+3. 相机：位置和朝向取拍摄点的 `position → target`；`up` 方向沿用编辑器的 `cameraUp` 规则（视线接近竖直时改用 +Z 作为参考上方向）；垂直视场角取该无人机的 `fov`；宽高比 = `width / height`。真值位姿与 three.js 相机的投影结果一致，有单元测试保证（`tests/capture.test.ts`）。
 4. 内参：`fy = (H/2) / tan(fov/2)`，`fx = fy`，`cx = W/2`，`cy = H/2`（PINHOLE 模型，无畸变）。
 5. 输出 JPEG。逐张写盘，可以随时取消，进度显示在面板上。
 
@@ -118,10 +118,13 @@ type Session = { history; checkpoints; reconstruction?: ReconstructionSetup };
   "generator": { "name": "Aero", "version": "0.4.0" },
   "project": "校园航拍 · 方案 01",
   "crs": { "type": "local-enu", "units": "m", "origin": { "lat": 29.8, "lon": 121.56, "alt": 0 } },
-  "camera": { "model": "PINHOLE", "width": 2048, "height": 1536, "params": [fx, fy, cx, cy] },  // 真机可以为 null
+  "cameras": [                                // 每种视场角一台相机；真机可以为空数组，由 COLMAP 自行标定
+    { "id": 1, "model": "PINHOLE", "width": 2048, "height": 1536, "params": [fx, fy, cx, cy] }
+  ],
   "frames": [
     {
       "file": "images/0001.jpg",
+      "camera": 1,
       "droneId": "…", "viewpointId": "…", "index": 0,
       "position": [e, n, u],                   // 带噪声的位置先验，对应真机的 GPS 记录
       "gps": { "lat": …, "lon": …, "alt": … }, // 和 position 一致（含噪声）
@@ -133,7 +136,7 @@ type Session = { history; checkpoints; reconstruction?: ReconstructionSetup };
 }
 ```
 
-**规则：重建流程只能使用真机也能拿到的信息**，即 `images/`、`frames[].position/gps/positionSigma` 和可选的 `camera`。`ground_truth/` 只用于评估精度，否则 demo 的结果会好得不真实。
+**规则：重建流程只能使用真机也能拿到的信息**，即 `images/`、`frames[].position/gps/positionSigma` 和可选的 `cameras`。`ground_truth/` 只用于评估精度，否则 demo 的结果会好得不真实。
 
 ## 7. 临时航线（环绕）
 
