@@ -4,6 +4,7 @@ import { Color, PerspectiveCamera, Scene, SRGBColorSpace, WebGLRenderer } from "
 import type { BuildingFrame, MeshAsset } from "../core/reconstruction";
 import { cameraUpApp } from "../core/capture/format";
 import type { Vec3 } from "../core/types";
+import { UserInputError } from "../core/feedback";
 import { instantiate, loadGlb } from "./meshLoader";
 
 export type Shot = { position: Vec3; target: Vec3; fov: number };
@@ -11,7 +12,13 @@ export type Shot = { position: Vec3; target: Vec3; fov: number };
 export async function createCaptureRenderer(reference: MeshAsset, frame: BuildingFrame, width: number, height: number) {
   const gltf = await loadGlb(reference);
   const canvas = document.createElement("canvas");
-  const renderer = new WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: "high-performance" });
+  let renderer: WebGLRenderer;
+  try {
+    renderer = new WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: "high-performance" });
+  } catch (error) {
+    console.error(error);
+    throw new UserInputError("无法创建 WebGL 渲染器。请更新显卡驱动，或在支持硬件加速的电脑上运行。");
+  }
   renderer.setPixelRatio(1);
   renderer.setSize(width, height, false);
   renderer.outputColorSpace = SRGBColorSpace;
@@ -19,7 +26,7 @@ export async function createCaptureRenderer(reference: MeshAsset, frame: Buildin
   const max = Math.min(gl.getParameter(gl.MAX_RENDERBUFFER_SIZE), gl.getParameter(gl.MAX_VIEWPORT_DIMS)[0]);
   if (width > max || height > max) {
     renderer.dispose();
-    throw new Error(`照片尺寸超过显卡支持的 ${max} 像素`);
+    throw new UserInputError(`照片尺寸超过显卡支持的 ${max} 像素，请调小宽或高。`);
   }
   const scene = new Scene();
   // Overcast sky; the textures already carry the scene's lighting.

@@ -12,7 +12,7 @@ import { Icon } from "../ui/Icon";
 import { exportCapture, type CaptureProgress } from "./exportCapture";
 
 const DEMO_ATTRIBUTION = "Drone Building Scans — Matthew Guertin, 2026. CC BY 4.0. https://github.com/Matt1Up/drone-building-scans-dataset";
-const mb = (n: number) => `${(n / 1024 / 1024).toFixed(1)} MB`;
+const mb = (n: number) => (n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))} KB` : `${(n / 1024 / 1024).toFixed(1)} MB`);
 
 /** Bounds of the proxy (or the reference) in app coordinates. */
 function useBuildingBounds(r: ReconstructionSetup | undefined) {
@@ -152,7 +152,7 @@ export function CapturePanel() {
                 </button>
               ))}
             </div>
-            <div className="vector-fields">
+            <div className="capture-fields">
               {(["X", "Y", "Z"] as const).map((axis, i) => (
                 <NumberField key={axis} label={`偏移 ${axis}`} unit="m" value={r.frame.offset[i]} disabled={running}
                   onChange={(n) => update((c) => {
@@ -187,7 +187,7 @@ export function CapturePanel() {
 
       <section className="property-section">
         <h3>临时航线 · 环绕</h3>
-        <div className="vector-fields">
+        <div className="capture-fields">
           <NumberField label="层数" value={orbit.rings} min={1} max={10} onChange={(n) => setOrbit({ ...orbit, rings: Math.round(n) })} />
           <NumberField label="每层" value={orbit.perRing} min={3} max={120} onChange={(n) => setOrbit({ ...orbit, perRing: Math.round(n) })} />
           <NumberField label="离墙" unit="m" value={orbit.standoff} min={2} max={200} onChange={(n) => setOrbit({ ...orbit, standoff: n })} />
@@ -206,7 +206,7 @@ export function CapturePanel() {
       {r && cap && (
         <section className="property-section">
           <h3>模拟拍摄</h3>
-          <div className="vector-fields">
+          <div className="capture-fields">
             <NumberField label="宽" unit="px" value={cap.width} min={64} max={8192} disabled={running} onChange={(n) => update((c) => ({ ...c, capture: { ...c.capture, width: Math.round(n) } }))} />
             <NumberField label="高" unit="px" value={cap.height} min={64} max={8192} disabled={running} onChange={(n) => update((c) => ({ ...c, capture: { ...c.capture, height: Math.round(n) } }))} />
             <NumberField label="GPS 水平" unit="m" value={cap.gpsNoise.horizontal} min={0} max={100} disabled={running} onChange={(n) => update((c) => ({ ...c, capture: { ...c.capture, gpsNoise: { ...c.capture.gpsNoise, horizontal: n } } }))} />
