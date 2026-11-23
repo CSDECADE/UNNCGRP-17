@@ -16,17 +16,34 @@
 | 路径 | 内容 |
 | --- | --- |
 | `mimetype` | `application/vnd.aero.project+zip`，第一个条目，不压缩 |
-| `manifest.json` | `format: "aeproj"`、`formatVersion: 1`、生成程序及版本、创建 / 保存时间，以及其余每个文件的 SHA-256 和字节数 |
-| `project.json` | 当前场景（`Project` version 1） |
+| `manifest.json` | `format: "aeproj"`、`formatVersion`（1 或 2，见下文）、`projectVersion`、生成程序及版本、创建 / 保存时间，以及其余每个文件的 SHA-256 和字节数 |
+| `project.json` | 当前场景（`Project` version 1，含 OBJ 时为 version 2） |
 | `history.json` | `{ limit, present: {label, at}, past: [...], future: [...] }`，每条记录为 `{ label, at, project }` |
 | `checkpoints.json` | `[{ id, name, createdAt, project }]` |
-| `assets/<sha256>.<png\|jpg\|webp>` | 被任一状态引用的二进制资源（目前是背景图片），按内容去重 |
+| `reconstruction.json` | 可选：重建设置，参考模型 / 白模以 `asset: "assets/<sha256>.glb"` 引用 |
+| `assets/<sha256>.<png\|jpg\|webp\|glb>` | 被任一状态引用的二进制资源（背景图片、重建模型），按内容去重 |
+| `resources/<sha256>.json` | OBJ 网格资源（`objResources` 的单个元素），按内容去重；仅 `formatVersion: 2` |
 
-包内场景的 `background.image` 用 `asset: "assets/…"` 引用资源，不内嵌 data URL；读取时再还原。所有内容都在包内，不引用包外的文件。
+包内场景的 `background.image` 用 `asset: "assets/…"` 引用资源，不内嵌 data URL；`objResources` 的每个元素写成 `{ "resource": "resources/…" }`。读取时再还原。所有内容都在包内，不引用包外的文件。
+
+### OBJ 资源去重
+
+每个历史状态和检查点都保存一份完整场景。OBJ 网格如果内嵌在场景里，会被重复保存（50 步撤销 + 50 步重做 + 检查点，最多一百多份）。因此网格单独写入 `resources/`，文件名是其 JSON 内容的 SHA-256：没有改动的网格在整个包里只存一份，修改过顶点的状态各自多一个文件。实测 KayKit building_H（1,558 个顶点）、50 步历史和 10 个检查点：包从 1.78 MB 降到 0.03 MB，打包从约 1 s 降到 20 ms。
+
+读取时同一个 `resources/` 文件只解析一次，经过 `validateProject` 后，引用同一文件的所有状态拿到的是**同一个对象**，和编辑时的结构共享一致。
+
+### 格式版本
+
+| `formatVersion` | 含义 |
+| --- | --- |
+| 1 | 不含 `resources/`。没有 OBJ 资源的项目仍按版本 1 写出，旧版应用可以打开 |
+| 2 | 含 `resources/` 引用。旧版应用打开时提示更新应用 |
+
+读取端接受 1 和 2；更高的版本提示用户更新应用。
 
 ## 读取校验
 
-打开时会校验：ZIP 结构、CRC、大小上限（包 ≤ 256 MB，解压后 ≤ 1 GB）、`mimetype`、清单中的 SHA-256，并拒绝清单之外的文件。每个历史状态和检查点都会经过 `validateProject`。超过 50 步的历史在读取时截断，不会报错。`formatVersion` 不认识的包会提示用户更新应用。
+打开时会校验：ZIP 结构、CRC、大小上限（包 ≤ 256 MB，解压后 ≤ 1 GB）、`mimetype`、清单中的 SHA-256，并拒绝清单之外的文件。`resources/` 和 `assets/*.glb` 的文件名还必须等于清单中登记的哈希。每个历史状态和检查点都会经过 `validateProject`。超过 50 步的历史在读取时截断，不会报错。`formatVersion` 高于 2 的包会提示用户更新应用。
 
 ## 存储与最近项目
 

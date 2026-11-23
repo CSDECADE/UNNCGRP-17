@@ -187,13 +187,31 @@ export function useProjectFiles(close: () => void, acceptPlan: (text: string) =>
 | 文件 | 用例 |
 | --- | --- |
 | `history.test.ts` | 连续提交 80 次后 `past.length === 50`；撤销到底正好 50 次；全部重做后回到最新；`jumpHistory` 前后跳转并保留另一侧；跳转后再提交会清空重做 |
-| `aeproj.test.ts` | 带背景图片和 60 步历史的会话 `packSession → unpackSession` 后 `deepEqual`；多个状态共用同一张图时包里只有 1 个 `assets/*`；改动包中间的 1 个字节会被拒绝；`formatVersion: 2` 会被拒绝；清单之外多出的文件会被拒绝；超过 50 步的历史在读取时被截断 |
+| `aeproj.test.ts` | **已加入**（基础框架维护）：背景图片和 60 步历史往返、OBJ 资源去重、格式版本、`resources/` 缺失或被篡改。仍可补充：改动包中间的 1 个字节会被拒绝；清单之外多出的文件会被拒绝 |
 | `recent.test.cjs` | `desktop/recent.cjs`：重复 `touch` 同一路径不会产生重复项且排到最前；被删除的文件 `missing: true`；最多 12 条；重新创建 store 后仍能读回 |
 
 `aeproj.test.ts` 中背景图片可以用这张 1×1 PNG：
 `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==`
 
 另外，`docs/quality.md` 的回归清单里建议加上：保存 → 在另一台电脑打开 → 撤销 / 重做 / 检查点都可用。
+
+### 4.6 戴宇驰 · OBJ 编辑 `feature/obj-editor`（合并时）
+
+项目包已经支持 OBJ 资源，`src/core/aeproj/package.ts` **不需要再改**：
+
+- `objResources` 的每个元素会单独写成 `resources/<sha256>.json`，所有历史状态和检查点共用同一份；含 OBJ 的包写为 `formatVersion: 2`。详见 `aeproj.md`「OBJ 资源去重」。
+- 读取时引用同一文件的状态拿到同一个已校验对象。**请保持「没改动的资源沿用原对象」**：写入端按对象引用跳过重复序列化，换成深拷贝不会出错，只是保存会变慢。
+- `tests/aeproj.test.ts` 最后一个用例（OBJ 往返和对象共享）现在被跳过，合并后 `validateProject` 支持 version 2，它会自动运行。已在本地用你分支的 `project.ts` 跑通。
+
+合并到 `main` 时有冲突的文件和处理方式：
+
+| 文件 | 处理 |
+| --- | --- |
+| `src/core/editor.tsx`、`src/core/transform.ts` | 历史从 `Project[]` 改为 `HistoryEntry`（`{ project, label, at }`），用 `pushHistory / undoHistory / redoHistory`（§2.3）；`commitTransformHistory` 用新签名 |
+| `src/features/modules.tsx` | 保留经过 `useDocuments()` 的保存方式。`useProjectSnapshot` 保存的 `.p15.json` 不含历史和检查点，不要作为主保存入口 |
+| `desktop/main.cjs`、`desktop/files.cjs`、`desktop/errors.cjs` | 两边新增的 IPC 和错误码都保留 |
+
+`MAX_PROJECT_BYTES`（5 MB）只限制单个场景，项目包本身的上限仍是 256 MB。
 
 ---
 
@@ -228,7 +246,7 @@ export function useProjectFiles(close: () => void, acceptPlan: (text: string) =>
 不需要。继续用 `e.project` 或 `e.committedProject`。
 
 **问：外部工具（比如算法组）能直接读 `.aeproj` 吗？**
-可以。它就是标准 ZIP 文件，解压后的 `project.json` 就是原来的 `Project` JSON（背景图片改为 `assets/` 引用，见 `aeproj.md`）。
+可以。它就是标准 ZIP 文件，解压后的 `project.json` 就是原来的 `Project` JSON（背景图片改为 `assets/` 引用，OBJ 网格改为 `resources/` 引用，见 `aeproj.md`）。
 
 **问：我的模块需要往包里存额外数据怎么办？**
 请先联系基础框架负责人。包格式受 `formatVersion` 和清单校验约束，清单之外的文件会被拒绝打开，新增条目需要统一修改 `package.ts` 和格式版本号。
