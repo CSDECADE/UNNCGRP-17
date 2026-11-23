@@ -57,6 +57,7 @@ export function App() {
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
+  const hasObjects = e.project.models.length > 0 || e.project.drones.length > 0;
   const [tab, setTab] = useState<"layers" | "assets" | "history" | "capture">("layers"),
     [leftOpen, setLeftOpen] = useState(true),
     [rightOpen, setRightOpen] = useState(true),
@@ -423,25 +424,25 @@ export function App() {
             </div>
             <div className="panel-tabs">
               <button
-                className={tab === "layers" ? "tab-active" : ""}
+                aria-pressed={tab === "layers"}
                 onClick={() => setTab("layers")}
               >
                 对象
               </button>
               <button
-                className={tab === "assets" ? "tab-active" : ""}
+                aria-pressed={tab === "assets"}
                 onClick={() => setTab("assets")}
               >
                 资源
               </button>
               <button
-                className={tab === "history" ? "tab-active" : ""}
+                aria-pressed={tab === "history"}
                 onClick={() => setTab("history")}
               >
                 历史
               </button>
               <button
-                className={tab === "capture" ? "tab-active" : ""}
+                aria-pressed={tab === "capture"}
                 onClick={() => setTab("capture")}
               >
                 采集
@@ -490,11 +491,11 @@ export function App() {
                 </div>
                 <div className="layers-heading">
                   <span>图层</span>
-                  <ToolButton
+                  {hasObjects && <ToolButton
                     icon="plus"
                     label="打开资源库"
                     onClick={() => setTab("assets")}
-                  />
+                  />}
                 </div>
                 <div className="group-heading">
                   <button
@@ -576,13 +577,10 @@ export function App() {
                           )}
                       </div>
                     ))}
-                {!e.project.models.length && !e.project.drones.length && (
+                {!hasObjects && (
                   <div className="empty-layers">
-                    <p>从一个模型开始</p>
-                    <button
-                      className="secondary-button"
-                      onClick={() => setTab("assets")}
-                    >
+                    <button className="empty-layers-action" onClick={() => setTab("assets")}>
+                      <Icon name="plus" size={13} />
                       打开资源库
                     </button>
                   </div>

@@ -95,7 +95,7 @@ export function HistoryPanel() {
           .map((entry, i) => (
             <li key={i}>
               <button
-                className={"history-row" + (i === index ? " current" : i > index ? " undone" : "")}
+                className={i > index ? "history-row undone" : "history-row"}
                 aria-current={i === index ? "step" : undefined}
                 disabled={locked}
                 onClick={() => e.jumpTo(i)}
