@@ -12,6 +12,8 @@ import type { CameraView, ModelKind, Selection, Tool } from "./core/types";
 import { Scene } from "./Scene";
 import { Inspector as SceneInspector } from "./Inspector";
 import { HistoryPanel } from "./HistoryPanel";
+import type { SparseCloud } from "./core/capture/sparseCloud";
+import { SparseCloudPanel } from "./capture/SparseCloudPanel";
 import { CapturePanel } from "./capture/CapturePanel";
 import { StartScreen } from "./StartScreen";
 import { Icon } from "./ui/Icon";
@@ -57,7 +59,15 @@ export function App() {
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
+  const [clouds, setClouds] = useState<Partial<Record<SparseCloud["kind"], SparseCloud>>>({});
+  const [activeCloud, setActiveCloud] = useState<SparseCloud["kind"] | "reference">("sparse");
+  const displayedCloud = activeCloud === "reference" ? undefined : clouds[activeCloud];
+  const hasCloud = !!(clouds.sparse || clouds.dense);
   const hasObjects = e.project.models.length > 0 || e.project.drones.length > 0;
+  function importCloud(cloud: SparseCloud) {
+    setClouds((current) => ({ ...current, [cloud.kind]: cloud }));
+    setActiveCloud(cloud.kind);
+  }
   const [tab, setTab] = useState<"layers" | "assets" | "history" | "capture">("layers"),
     [leftOpen, setLeftOpen] = useState(true),
     [rightOpen, setRightOpen] = useState(true),
@@ -301,8 +311,7 @@ export function App() {
           hidden
           onChange={(ev) => void readFile(ev.target.files?.[0])}
         />
-        {leftOpen && (
-          <aside className="left-panel">
+          <aside className="left-panel" style={leftOpen ? undefined : { display: "none" }}>
             <div className="project-header">
               <div className="project-topline">
                 <Dropdown.Root>
@@ -588,10 +597,7 @@ export function App() {
               </div>
             ) : tab === "history" ? (
               <HistoryPanel />
-            ) : tab === "capture" ? (
-              <CapturePanel />
-            ) : (
-              <div className="assets-scroll">
+            ) : tab === "capture" ? null : (              <div className="assets-scroll">
                 <div className="section-heading">
                   <h3>内置资源</h3>
                   <span className="muted">4</span>
@@ -629,6 +635,15 @@ export function App() {
                 </div>
               </div>
             )}
+            <CapturePanel hidden={tab !== "capture"} onCloud={importCloud} hasCloud={hasCloud} sparsePanel={(primaryImport) => (
+              <SparseCloudPanel clouds={clouds} active={activeCloud} hasReference={!!e.reconstruction?.reference} onSelect={setActiveCloud} primaryImport={primaryImport}
+                onImport={importCloud}
+                onRemove={() => {
+                  if (activeCloud === "reference") return;
+                  setClouds((current) => ({ ...current, [activeCloud]: undefined }));
+                  setActiveCloud(activeCloud === "sparse" ? "dense" : "sparse");
+                }} />
+            )} />
             <div className="panel-footer">
               <Icon name="grid" size={13} />
               <span>模拟工作区</span>
@@ -639,7 +654,6 @@ export function App() {
               />
             </div>
           </aside>
-        )}
         <section
           className={
             "viewport " +
@@ -647,7 +661,7 @@ export function App() {
           }
           aria-label="三维工作区"
         >
-          <Scene Controls={manualControls?.EditorControls} />
+          <Scene Controls={manualControls?.EditorControls} sparseCloud={displayedCloud} buildingMode={activeCloud === "reference" ? "reference" : displayedCloud ? "hidden" : "scene"} />
           <div className="viewport-top-left">
             {!leftOpen && (
               <ToolButton
@@ -964,7 +978,7 @@ export function App() {
             </Dialog.Content>
           </Dialog.Portal>
         </Dialog.Root>
-        {(startOpen || !e.active) && <StartScreen onDone={() => setStartOpen(false)} />}
+        {(startOpen || !e.active) && <StartScreen onDone={() => { setClouds({}); setActiveCloud("sparse"); setStartOpen(false); }} />}
       </main>
     </Tooltip.Provider>
   );

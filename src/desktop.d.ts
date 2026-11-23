@@ -30,7 +30,10 @@ declare global {
       /** Ask for a parent folder and create a new photo package folder inside it. */
       captureBegin(name: string): Promise<{ token: string; folderName: string } | null>;
       captureWrite(token: string, path: string, bytes: Uint8Array): Promise<void>;
-      captureEnd(token: string, reveal: boolean): Promise<void>;
+      captureEnd(token: string, reveal: boolean, completed?: boolean): Promise<void>;
+      captureCapabilities(): Promise<{ plan: boolean; sparse: boolean }>;
+      capturePlan(request: { obj: string; start: number[]; coverage: number; demoLimits: boolean }): Promise<{ text?: string; error?: string }>;
+      captureReconstruct(token: string): Promise<{ text?: string; error?: string }>;
       saveFile(request: {
         kind: "project" | "export";
         name: string;

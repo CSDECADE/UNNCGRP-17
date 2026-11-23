@@ -1616,8 +1616,65 @@ select {
   min-height: 0;
   flex: 1;
 }
-.capture-scroll > .file-error {
-  margin: 10px 12px 0;
+.capture-body {
+  padding: 16px;
+}
+.capture-body > h3 {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.capture-back {
+  display: flex;
+  min-height: 24px;
+  gap: 4px;
+  padding: 0 5px;
+  margin: -4px 0 8px -5px;
+  border-radius: var(--radius);
+  color: var(--muted);
+}
+.capture-back svg {
+  transform: rotate(180deg);
+}
+.capture-body > .file-error {
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+.capture-caption {
+  margin-bottom: 12px;
+  color: #c6c6c6;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.capture-settings {
+  margin-top: 10px;
+}
+.capture-settings[open] {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+}
+.capture-settings summary {
+  width: fit-content;
+  padding: 6px 0;
+  color: #c6c6c6;
+  cursor: pointer;
+}
+.capture-settings h4 {
+  margin: 12px 0 8px;
+  font-weight: 600;
+}
+.capture-text-action {
+  display: flex;
+  width: fit-content;
+  min-height: 26px;
+  margin-top: 4px;
+  margin-left: -5px;
+  padding: 4px 5px;
+  border-radius: var(--radius);
+  color: var(--muted);
+  white-space: normal;
+}
+.capture-cloud .capture-comparison {
+  margin: 0 0 10px;
 }
 .capture-model {
   display: flex;
@@ -1708,4 +1765,12 @@ select {
 }
 .capture-fields > .secondary-button {
   min-height: 29px;
+}
+
+.capture-comparison {
+  display: flex;
+  margin-top: 8px;
+}
+.capture-comparison button {
+  flex: 1;
 }

@@ -24,6 +24,7 @@ const {
   writeFileAtomic,
   validatePackage,
 } = require("./files.cjs");
+const captureWorkflow = require("./capture-workflow.cjs");
 const { createRecentStore } = require("./recent.cjs");
 const { fileError, publicErrorCode } = require("./errors.cjs");
 
@@ -231,6 +232,20 @@ handle("p15:save-package", async (request) => {
 // ---- photo packages (aero-capture) -------------------------------------------
 // The renderer streams files into a new folder chosen by the user; paths are whitelisted.
 const captures = new Map();
+let lastCapture = null;
+let captureJobRunning = false;
+async function captureJob(operation) {
+  if (captureJobRunning) return { error: "已有计算任务正在运行。" };
+  captureJobRunning = true;
+  try { return await operation(); }
+  finally { captureJobRunning = false; }
+}
+handle("p15:capture-capabilities", () => captureWorkflow.capabilities());
+handle("p15:capture-plan", (request) => captureJob(() => captureWorkflow.plan(request)));
+handle("p15:capture-reconstruct", (token) => captureJob(() => {
+  const folder = lastCapture?.token === token ? lastCapture.folder : null;
+  return captureWorkflow.reconstruct(folder);
+}));
 const CAPTURE_PATH = /^(capture\.json|images\/[A-Za-z0-9_.-]{1,80}\.(jpg|jpeg|png)|ground_truth\/(poses\.json|reference\.glb|reference_frame\.json|colmap\/(cameras|images|points3D)\.txt))$/;
 handle("p15:capture-begin", async (name) => {
   if (typeof name !== "string" || name.length > 120) throw new Error("无效的照片包名称");
@@ -256,9 +271,10 @@ handle("p15:capture-write", async (token, relative, bytes) => {
   mkdirSync(path.dirname(filename), { recursive: true });
   await writeFileAtomic(filename, bytes);
 });
-handle("p15:capture-end", async (token, reveal) => {
+handle("p15:capture-end", async (token, reveal, completed) => {
   const folder = captures.get(token);
   captures.delete(token);
+  if (folder && completed === true && fs.existsSync(path.join(folder, "capture.json"))) lastCapture = { token, folder };
   if (folder && reveal) shell.showItemInFolder(path.join(folder, "capture.json"));
 });
 handle("p15:recent-list", () => recent.list());
@@ -291,6 +307,8 @@ function createWindow() {
   win.webContents.on("will-navigate", (event) => event.preventDefault());
   win.once("ready-to-show", () => win.show());
   win.on("closed", () => {
+    lastCapture = null;
+    captures.clear();
     win = null;
   });
   void win.loadURL("p15://app/");

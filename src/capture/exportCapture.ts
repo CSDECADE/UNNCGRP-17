@@ -13,7 +13,7 @@ type Sink = { write(path: string, bytes: Uint8Array): Promise<void>; finish(): P
 
 const encode = (value: unknown) => new TextEncoder().encode(typeof value === "string" ? value : JSON.stringify(value, null, 2));
 
-async function openSink(name: string): Promise<Sink | null> {
+async function openSink(name: string, onDesktopComplete?: (token: string) => void): Promise<Sink | null> {
   const desktop = window.p15Desktop;
   if (desktop) {
     const begun = await desktop.captureBegin(name);
@@ -21,7 +21,8 @@ async function openSink(name: string): Promise<Sink | null> {
     return {
       write: (path, bytes) => desktop.captureWrite(begun.token, path, bytes),
       finish: async () => {
-        await desktop.captureEnd(begun.token, true);
+        await desktop.captureEnd(begun.token, !onDesktopComplete, !!onDesktopComplete);
+        onDesktopComplete?.(begun.token);
         return begun.folderName;
       },
       abort: () => desktop.captureEnd(begun.token, false),
@@ -53,6 +54,7 @@ export async function exportCapture(
   setup: ReconstructionSetup,
   onProgress: (p: CaptureProgress) => void,
   signal: AbortSignal,
+  onDesktopComplete?: (token: string) => void,
 ): Promise<string | null> {
   if (!setup.reference) throw new UserInputError("请先加载参考模型（代表真实建筑）。");
   if (!project.viewpoints.length) throw new UserInputError("当前没有拍摄点，请先生成或导入航线。");
@@ -63,7 +65,7 @@ export async function exportCapture(
     hasReferenceModel: true,
   });
   const stamp = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "");
-  const sink = await openSink(`${project.name.replace(/[\\/:*?"<>|]/g, "-")}-capture-${stamp}`);
+  const sink = await openSink(`${project.name.replace(/[\\/:*?"<>|]/g, "-")}-capture-${stamp}`, onDesktopComplete);
   if (!sink) return null;
   const { width, height, jpegQuality } = setup.capture;
   let renderer: Awaited<ReturnType<typeof createCaptureRenderer>> | null = null;

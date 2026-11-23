@@ -23,12 +23,13 @@ function useInstance(asset: MeshAsset | undefined, frame: BuildingFrame, style: 
   return group;
 }
 
-export function BuildingModels() {
+export function BuildingModels({ mode = "scene" }: { mode?: "scene" | "reference" | "hidden" }) {
   const e = useEditor(), input = useSceneInput();
   const r = e.reconstruction;
   const frame = r?.frame ?? { upAxis: "y", offset: [0, 0, 0] };
-  const proxy = useInstance(r?.proxy, frame, "proxy");
-  const reference = useInstance(r?.showReference ? r.reference : undefined, frame, "reference");
+  const proxy = useInstance(mode === "scene" ? r?.proxy : undefined, frame, "proxy");
+  const showReference = mode === "reference" || (mode === "scene" && (!r?.proxy || r.showReference));
+  const reference = useInstance(showReference ? r?.reference : undefined, frame, "reference");
   // Same picking rules as built-in models: add points above the surface or aim the camera at it.
   const click = (ev: ThreeEvent<MouseEvent>) => {
     if (ev.delta > 2 || input.suppressClick()) return;
