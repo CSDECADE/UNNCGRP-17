@@ -12,6 +12,9 @@ import type { CameraView, ModelKind, Selection, Tool } from "./core/types";
 import { Scene } from "./Scene";
 import { Inspector as SceneInspector } from "./Inspector";
 import { HistoryPanel } from "./HistoryPanel";
+import type { SparseCloud } from "./core/capture/sparseCloud";
+import { SparseCloudPanel } from "./capture/SparseCloudPanel";
+import { CapturePanel } from "./capture/CapturePanel";
 import { StartScreen } from "./StartScreen";
 import { Icon } from "./ui/Icon";
 import { TextField, ToolButton } from "./ui/Controls";
@@ -56,7 +59,16 @@ export function App() {
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
-  const [tab, setTab] = useState<"layers" | "assets" | "history">("layers"),
+  const [clouds, setClouds] = useState<Partial<Record<SparseCloud["kind"], SparseCloud>>>({});
+  const [activeCloud, setActiveCloud] = useState<SparseCloud["kind"] | "reference">("sparse");
+  const displayedCloud = activeCloud === "reference" ? undefined : clouds[activeCloud];
+  const hasCloud = !!(clouds.sparse || clouds.dense);
+  const hasObjects = e.project.models.length > 0 || e.project.drones.length > 0;
+  function importCloud(cloud: SparseCloud) {
+    setClouds((current) => ({ ...current, [cloud.kind]: cloud }));
+    setActiveCloud(cloud.kind);
+  }
+  const [tab, setTab] = useState<"layers" | "assets" | "history" | "capture">("layers"),
     [leftOpen, setLeftOpen] = useState(true),
     [rightOpen, setRightOpen] = useState(true),
     [search, setSearch] = useState("");
@@ -299,8 +311,7 @@ export function App() {
           hidden
           onChange={(ev) => void readFile(ev.target.files?.[0])}
         />
-        {leftOpen && (
-          <aside className="left-panel">
+          <aside className="left-panel" style={leftOpen ? undefined : { display: "none" }}>
             <div className="project-header">
               <div className="project-topline">
                 <Dropdown.Root>
@@ -422,22 +433,28 @@ export function App() {
             </div>
             <div className="panel-tabs">
               <button
-                className={tab === "layers" ? "tab-active" : ""}
+                aria-pressed={tab === "layers"}
                 onClick={() => setTab("layers")}
               >
                 对象
               </button>
               <button
-                className={tab === "assets" ? "tab-active" : ""}
+                aria-pressed={tab === "assets"}
                 onClick={() => setTab("assets")}
               >
                 资源
               </button>
               <button
-                className={tab === "history" ? "tab-active" : ""}
+                aria-pressed={tab === "history"}
                 onClick={() => setTab("history")}
               >
                 历史
+              </button>
+              <button
+                aria-pressed={tab === "capture"}
+                onClick={() => setTab("capture")}
+              >
+                采集
               </button>
               <ToolButton
                 icon="search"
@@ -483,11 +500,11 @@ export function App() {
                 </div>
                 <div className="layers-heading">
                   <span>图层</span>
-                  <ToolButton
+                  {hasObjects && <ToolButton
                     icon="plus"
                     label="打开资源库"
                     onClick={() => setTab("assets")}
-                  />
+                  />}
                 </div>
                 <div className="group-heading">
                   <button
@@ -569,13 +586,10 @@ export function App() {
                           )}
                       </div>
                     ))}
-                {!e.project.models.length && !e.project.drones.length && (
+                {!hasObjects && (
                   <div className="empty-layers">
-                    <p>从一个模型开始</p>
-                    <button
-                      className="secondary-button"
-                      onClick={() => setTab("assets")}
-                    >
+                    <button className="empty-layers-action" onClick={() => setTab("assets")}>
+                      <Icon name="plus" size={13} />
                       打开资源库
                     </button>
                   </div>
@@ -583,8 +597,7 @@ export function App() {
               </div>
             ) : tab === "history" ? (
               <HistoryPanel />
-            ) : (
-              <div className="assets-scroll">
+            ) : tab === "capture" ? null : (              <div className="assets-scroll">
                 <div className="section-heading">
                   <h3>内置资源</h3>
                   <span className="muted">4</span>
@@ -622,6 +635,15 @@ export function App() {
                 </div>
               </div>
             )}
+            <CapturePanel hidden={tab !== "capture"} onCloud={importCloud} hasCloud={hasCloud} sparsePanel={(primaryImport) => (
+              <SparseCloudPanel clouds={clouds} active={activeCloud} hasReference={!!e.reconstruction?.reference} onSelect={setActiveCloud} primaryImport={primaryImport}
+                onImport={importCloud}
+                onRemove={() => {
+                  if (activeCloud === "reference") return;
+                  setClouds((current) => ({ ...current, [activeCloud]: undefined }));
+                  setActiveCloud(activeCloud === "sparse" ? "dense" : "sparse");
+                }} />
+            )} />
             <div className="panel-footer">
               <Icon name="grid" size={13} />
               <span>模拟工作区</span>
@@ -632,7 +654,6 @@ export function App() {
               />
             </div>
           </aside>
-        )}
         <section
           className={
             "viewport " +
@@ -640,7 +661,7 @@ export function App() {
           }
           aria-label="三维工作区"
         >
-          <Scene Controls={manualControls?.EditorControls} />
+          <Scene Controls={manualControls?.EditorControls} sparseCloud={displayedCloud} buildingMode={activeCloud === "reference" ? "reference" : displayedCloud ? "hidden" : "scene"} />
           <div className="viewport-top-left">
             {!leftOpen && (
               <ToolButton
@@ -957,7 +978,7 @@ export function App() {
             </Dialog.Content>
           </Dialog.Portal>
         </Dialog.Root>
-        {(startOpen || !e.active) && <StartScreen onDone={() => setStartOpen(false)} />}
+        {(startOpen || !e.active) && <StartScreen onDone={() => { setClouds({}); setActiveCloud("sparse"); setStartOpen(false); }} />}
       </main>
     </Tooltip.Provider>
   );

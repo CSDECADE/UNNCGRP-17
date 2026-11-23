@@ -6,12 +6,14 @@
 //   project.json        current scene (Project, version 1)
 //   history.json        undo/redo timeline, up to HISTORY_LIMIT entries on each side
 //   checkpoints.json    named snapshots, unlimited
-//   assets/<sha256>.<ext>  binary assets referenced by any state (background images), deduplicated
+//   reconstruction.json optional: reference/proxy models (by asset path) and capture settings
+//   assets/<sha256>.<ext>  binary assets referenced by any state (background images, .glb models), deduplicated
 // Inside the package, scene background images reference `assets/...` instead of embedding data URLs.
 import { validateProject } from "../project.ts";
 import { ProjectValidationError } from "../feedback.ts";
 import { HISTORY_LIMIT, type Checkpoint, type History, type HistoryEntry, type Session } from "../history.ts";
 import type { Project } from "../types.ts";
+import { serializeReconstruction, validateReconstruction, type MeshAsset } from "../reconstruction.ts";
 import { readZip, writeZip } from "./zip.ts";
 
 export const AEPROJ_EXTENSION = "aeproj";
@@ -159,6 +161,14 @@ export async function packSession(
       ),
     ),
   );
+  if (session.reconstruction) {
+    const ref = (a: MeshAsset) => {
+      const path = `assets/${a.sha256}.glb`;
+      assets.files.set(path, a.bytes);
+      return { name: a.name, asset: path };
+    };
+    files.set("reconstruction.json", json(serializeReconstruction(session.reconstruction, ref)));
+  }
   for (const [path, bytes] of [...assets.files].sort(([a], [b]) => a.localeCompare(b))) files.set(path, bytes);
   const manifest: Manifest = {
     format: AEPROJ_FORMAT,
@@ -221,9 +231,20 @@ export async function unpackSession(bytes: Uint8Array): Promise<{ session: Sessi
     return { id: text(c.id, "检查点标识"), name: text(c.name, "检查点名称"), createdAt: time(c.createdAt), project: reader.project(c.project) };
   });
   if (new Set(checkpoints.map((c) => c.id)).size !== checkpoints.length) fail("检查点标识重复");
+  const session: Session = { history, checkpoints };
+  if (files.has("reconstruction.json")) {
+    session.reconstruction = validateReconstruction(parse(files.get("reconstruction.json"), "reconstruction.json"), (ref, what) => {
+      const r = record(ref, what);
+      const path = typeof r.asset === "string" ? r.asset : "";
+      const match = /^assets\/([0-9a-f]{64})\.glb$/.exec(path) ?? fail(`${what}引用无效`);
+      // The manifest hash was verified above; the file name must name the same content.
+      if (record(listed[path], what).sha256 !== match[1]) fail(`${what}校验失败`);
+      return { name: text(r.name, `${what}名称`), sha256: match[1], bytes: files.get(path)! };
+    });
+  }
   const generator = record(manifest.generator, "生成信息");
   return {
-    session: { history, checkpoints },
+    session,
     info: {
       name: presentProject.name,
       createdAt: String(manifest.createdAt ?? ""),

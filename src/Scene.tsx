@@ -44,6 +44,9 @@ import { cameraUp } from "./scene/dragMath";
 import { DEFAULT_SCENE_BACKGROUND } from "./core/background";
 import { SceneBackground } from "./scene/SceneBackground";
 import { fitBackground } from "./scene/backgroundTexture";
+import type { SparseCloud } from "./core/capture/sparseCloud";
+import { SparsePoints } from "./scene/SparsePoints";
+import { BuildingModels } from "./scene/BuildingModels";
 
 function Label({
   text,
@@ -474,7 +477,7 @@ function CameraRig() {
     />
   );
 }
-function World() {
+function World({ buildingMode }: { buildingMode?: "scene" | "reference" | "hidden" }) {
   const e = useEditor(), input = useSceneInput();
   return (
     <>
@@ -497,6 +500,7 @@ function World() {
         />
       )}
       <CameraRig />
+      <BuildingModels mode={buildingMode} />
       <ambientLight intensity={1.2} />
       <hemisphereLight args={["#d6e5ff", "#505562", 1.3]} />
       <directionalLight
@@ -637,7 +641,7 @@ class CanvasBoundary extends Component<
     );
   }
 }
-export function Scene({ Controls = Fragment }: { Controls?: ComponentType<{ children: ReactNode }> }) {
+export function Scene({ Controls = Fragment, sparseCloud, buildingMode }: { Controls?: ComponentType<{ children: ReactNode }>; sparseCloud?: SparseCloud | null; buildingMode?: "scene" | "reference" | "hidden" }) {
   const { active } = useProgress();
   const e = useEditor();
   const currentTool = useRef(e.tool);
@@ -660,7 +664,7 @@ export function Scene({ Controls = Fragment }: { Controls?: ComponentType<{ chil
           return hits.sort((a, b) => priority(b.object) - priority(a.object) || a.distance - b.distance);
         },
       })}>
-        <Controls><World /><CameraPreview /></Controls>
+        <Controls><World buildingMode={buildingMode} />{sparseCloud && <SparsePoints cloud={sparseCloud} />}<CameraPreview /></Controls>
       </Canvas>
       {e.selection?.type === "viewpoint" && !e.preview && e.view !== "drone" && (
         <><div className="camera-preview-label">拍摄点取景 · 16:9</div>

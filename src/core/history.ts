@@ -1,4 +1,5 @@
 import type { Project } from "./types.ts";
+import type { ReconstructionSetup } from "./reconstruction.ts";
 
 /** Undo depth kept in memory and in .aeproj packages. */
 export const HISTORY_LIMIT = 50;
@@ -26,6 +27,8 @@ export type Checkpoint = {
 export type Session = {
   history: History;
   checkpoints: Checkpoint[];
+  /** Reference/proxy models and capture settings; not part of undo history. */
+  reconstruction?: ReconstructionSetup;
 };
 
 export function entry(project: Project, label = DEFAULT_HISTORY_LABEL, at = Date.now()): HistoryEntry {

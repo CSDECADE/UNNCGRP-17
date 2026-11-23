@@ -85,14 +85,14 @@ function useDocumentState() {
     if (!e.active) return;
     e.setAutosaveStatus("saving");
     pending.current = {
-      session: { history: e.history, checkpoints: e.checkpoints },
+      session: e.exportSession(),
       savedAt: Date.now(),
       fileName: fileNameRef.current,
       createdAt: createdAt.current,
     };
     const id = setTimeout(flush, 450);
     return () => clearTimeout(id);
-  }, [e.active, e.history, e.checkpoints, fileName]);
+  }, [e.active, e.history, e.checkpoints, e.reconstruction, fileName]);
   // Start the pending write before the page goes away so the last edit is not lost.
   useEffect(() => {
     const onHide = () => flush();

@@ -8,8 +8,10 @@ const {
   net,
   protocol,
   session,
+  shell,
 } = require("electron");
-const { mkdirSync } = require("node:fs");
+const fs = require("node:fs");
+const { mkdirSync } = fs;
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { randomUUID } = require("node:crypto");
@@ -22,6 +24,7 @@ const {
   writeFileAtomic,
   validatePackage,
 } = require("./files.cjs");
+const captureWorkflow = require("./capture-workflow.cjs");
 const { createRecentStore } = require("./recent.cjs");
 const { fileError, publicErrorCode } = require("./errors.cjs");
 
@@ -226,6 +229,54 @@ handle("p15:save-package", async (request) => {
     fileOperation = false;
   }
 });
+// ---- photo packages (aero-capture) -------------------------------------------
+// The renderer streams files into a new folder chosen by the user; paths are whitelisted.
+const captures = new Map();
+let lastCapture = null;
+let captureJobRunning = false;
+async function captureJob(operation) {
+  if (captureJobRunning) return { error: "已有计算任务正在运行。" };
+  captureJobRunning = true;
+  try { return await operation(); }
+  finally { captureJobRunning = false; }
+}
+handle("p15:capture-capabilities", () => captureWorkflow.capabilities());
+handle("p15:capture-plan", (request) => captureJob(() => captureWorkflow.plan(request)));
+handle("p15:capture-reconstruct", (token) => captureJob(() => {
+  const folder = lastCapture?.token === token ? lastCapture.folder : null;
+  return captureWorkflow.reconstruct(folder);
+}));
+const CAPTURE_PATH = /^(capture\.json|images\/[A-Za-z0-9_.-]{1,80}\.(jpg|jpeg|png)|ground_truth\/(poses\.json|reference\.glb|reference_frame\.json|colmap\/(cameras|images|points3D)\.txt))$/;
+handle("p15:capture-begin", async (name) => {
+  if (typeof name !== "string" || name.length > 120) throw new Error("无效的照片包名称");
+  const result = await dialog.showOpenDialog(win, {
+    title: "选择照片包的保存位置",
+    properties: ["openDirectory", "createDirectory"],
+  });
+  if (result.canceled || !result.filePaths[0]) return null;
+  const base = name.replace(/[\\/:*?"<>|]/g, "-").trim() || "capture";
+  let folder = path.join(result.filePaths[0], base);
+  for (let i = 2; fs.existsSync(folder); i++) folder = path.join(result.filePaths[0], `${base}-${i}`);
+  mkdirSync(folder, { recursive: true });
+  const token = randomUUID();
+  captures.set(token, folder);
+  return { token, folderName: path.basename(folder) };
+});
+handle("p15:capture-write", async (token, relative, bytes) => {
+  const folder = captures.get(token);
+  if (!folder) throw fileError("EXPIRED");
+  if (typeof relative !== "string" || !CAPTURE_PATH.test(relative)) throw new Error("不允许的照片包文件");
+  if (!(bytes instanceof Uint8Array) || bytes.byteLength > 256 * 1024 * 1024) throw fileError("TOO_LARGE");
+  const filename = path.join(folder, ...relative.split("/"));
+  mkdirSync(path.dirname(filename), { recursive: true });
+  await writeFileAtomic(filename, bytes);
+});
+handle("p15:capture-end", async (token, reveal, completed) => {
+  const folder = captures.get(token);
+  captures.delete(token);
+  if (folder && completed === true && fs.existsSync(path.join(folder, "capture.json"))) lastCapture = { token, folder };
+  if (folder && reveal) shell.showItemInFolder(path.join(folder, "capture.json"));
+});
 handle("p15:recent-list", () => recent.list());
 handle("p15:recent-remove", async (id) => {
   if (typeof id !== "string") throw new Error("无效的最近项目");
@@ -256,6 +307,8 @@ function createWindow() {
   win.webContents.on("will-navigate", (event) => event.preventDefault());
   win.once("ready-to-show", () => win.show());
   win.on("closed", () => {
+    lastCapture = null;
+    captures.clear();
     win = null;
   });
   void win.loadURL("p15://app/");
@@ -282,7 +335,7 @@ app
         const headers = new Headers(response.headers);
         headers.set(
           "Content-Security-Policy",
-          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' blob:; worker-src 'self' blob:; font-src 'self'; object-src 'none'; base-uri 'none'; frame-src 'none'",
+          "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' blob:; worker-src 'self' blob:; font-src 'self'; object-src 'none'; base-uri 'none'; frame-src 'none'",
         );
         return new Response(response.body, {
           status: response.status,

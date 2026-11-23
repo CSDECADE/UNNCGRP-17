@@ -1,0 +1,13 @@
+{
+  "app": "http://127.0.0.1:5173/",
+  "name": "flat-roof",
+  "reference": "/_local/flat-roof.glb",
+  "frame": { "upAxis": "z", "offset": [-2.735, 2.25, 1.37] },
+  "bounds": { "min": [-18.3, 0, -25.8], "max": [18.3, 7.4, 25.8] },
+  "orbit": { "rings": 3, "perRing": 24, "standoff": 12, "minHeight": 3, "topRing": true },
+  "fov": 58,
+  "capture": { "width": 2048, "height": 1536 },
+  "attribution": "Drone Building Scans — Matthew Guertin, 2026. CC BY 4.0. https://github.com/Matt1Up/drone-building-scans-dataset",
+  "out": "../GRP-data/captures",
+  "gpu": false
+}

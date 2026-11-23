@@ -21,6 +21,10 @@ npm run dev
 
 项目保存为 `.aeproj` 项目包，包含场景、最近 50 步撤销 / 重做、全部检查点和背景图片，可以直接复制到其他电脑继续编辑。启动时的开始页列出最近项目，也可以继续上次自动暂存的工作。格式说明见 `docs/aeproj.md`；各成员模块的对接事项见 `docs/handoff-history-aeproj.md`。
 
+## 三维重建：模拟拍摄
+
+左侧「采集」页：加载高精度参考模型（代表真实建筑）和白模，生成临时环绕航线，然后用模拟相机拍摄，输出照片包（`capture.json` + 照片 + 真值）。照片包是真机和模拟共用的接口，后续由 COLMAP 重建。设计见 `docs/reconstruction-capture.md`，交接见 `docs/reconstruction-handover.md`。
+
 ## 加入成员模块
 
 把成员 ZIP 的内容解压到此目录，使 `src/features/`、`docs/` 和 `tests/` 与同名目录合并。每个包只提供自己负责的文件。重新运行 `npm run dev` 后，存在的功能入口会自动启用。

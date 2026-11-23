@@ -16,6 +16,12 @@ contextBridge.exposeInMainWorld("p15Desktop", {
   savePackage: (request) => invoke("p15:save-package", request),
   recentProjects: () => invoke("p15:recent-list"),
   removeRecent: (id) => invoke("p15:recent-remove", id),
+  captureBegin: (name) => invoke("p15:capture-begin", name),
+  captureWrite: (token, path, bytes) => invoke("p15:capture-write", token, path, bytes),
+  captureEnd: (token, reveal, completed) => invoke("p15:capture-end", token, reveal, completed),
+  captureCapabilities: () => invoke("p15:capture-capabilities"),
+  capturePlan: (request) => invoke("p15:capture-plan", request),
+  captureReconstruct: (token) => invoke("p15:capture-reconstruct", token),
   onCommand: (callback) => {
     const listener = (_event, command) => callback(command);
     ipcRenderer.on("p15:command", listener);
