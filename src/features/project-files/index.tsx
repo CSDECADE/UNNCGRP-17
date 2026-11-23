@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useEditor } from "../../core/editor";
-import { parseProject } from "../../core/project";
-import { fileErrorMessage, projectForSave, UserInputError, type FileOperation } from "../../core/feedback";
+import { useDocuments } from "../../core/documents";
+import { fileErrorMessage, UserInputError, type FileOperation } from "../../core/feedback";
 import type { ProjectFileControls } from "../contracts";
 
 async function download(
@@ -30,40 +30,38 @@ async function download(
 }
 export function useProjectFiles(close: () => void, acceptPlan: (text: string) => void): ProjectFileControls {
   const e = useEditor();
+  const docs = useDocuments();
   const fileInput = useRef<HTMLInputElement>(null),
     fileMode = useRef<"project" | "plan">("project");
 
-  const [fileError, setFileError] = useState("");
+  const [fileError, setLocalError] = useState("");
+  function setFileError(message: string) {
+    setLocalError(message);
+    docs.setError("");
+  }
   function fileFailure(err: unknown, operation: FileOperation) {
     console.error(operation, err);
     const message = fileErrorMessage(err, operation);
     setFileError(message);
     e.setMessage("");
   }
-  async function applyFile(
-    text: string,
-    mode: "project" | "plan",
-    token?: string,
-  ) {
-    if (mode === "project") {
-      const project = parseProject(text);
-      if (token) await window.p15Desktop?.acceptOpen(token);
-      e.replace(project);
-      e.setMessage("项目已打开。");
-    } else {
-      acceptPlan(text);
-    }
+  function applyPlan(text: string) {
+    acceptPlan(text);
     close();
   }
   async function openFile(mode: "project" | "plan") {
     e.cancelTransform();
     setFileError("");
+    if (mode === "project") {
+      if (await docs.open()) close();
+      return;
+    }
     if (window.p15Desktop) {
       try {
         const file = await window.p15Desktop.openFile(mode);
-        if (file) await applyFile(file.text, mode, file.token);
+        if (file) applyPlan(file.text);
       } catch (err) {
-        fileFailure(err, mode === "project" ? "open" : "import");
+        fileFailure(err, "import");
       }
       return;
     }
@@ -72,12 +70,16 @@ export function useProjectFiles(close: () => void, acceptPlan: (text: string) =>
   }
   async function readFile(file?: File) {
     if (!file) return;
+    if (fileMode.current === "project") {
+      if (await docs.readFile(file)) close();
+      return;
+    }
     try {
       if (file.size > 5_000_000) throw new UserInputError("文件超过 5 MB，请选择较小的文件。");
       const text = await file.text();
-      await applyFile(text, fileMode.current);
+      applyPlan(text);
     } catch (err) {
-      fileFailure(err, fileMode.current === "project" ? "open" : "import");
+      fileFailure(err, "import");
     } finally {
       if (fileInput.current) fileInput.current.value = "";
     }
@@ -86,16 +88,7 @@ export function useProjectFiles(close: () => void, acceptPlan: (text: string) =>
     setFileError("");
     try {
       if (e.isTransforming) throw new UserInputError("请先松开鼠标完成移动，或按 Esc 取消，再保存项目。");
-      const result = await download(
-        projectForSave(e.committedProject, e.candidate),
-        `${e.project.name.replace(/[\\/:*?"<>|]/g, "-")}.p15.json`,
-        "project",
-        saveAs,
-      );
-      if (result)
-        e.setMessage(
-          window.p15Desktop ? `已保存：${result.name}` : "项目文件已下载。",
-        );
+      await docs.save(saveAs);
     } catch (err) {
       fileFailure(err, "save");
     }
@@ -114,12 +107,11 @@ export function useProjectFiles(close: () => void, acceptPlan: (text: string) =>
     e.cancelTransform();
     setFileError("");
     try {
-      await window.p15Desktop?.resetDocument();
-      example ? e.example() : e.newProject();
+      await docs.start(example);
       close();
     } catch (err) {
       fileFailure(err, "new");
     }
   }
-  return { fileInput, fileError, setFileError, openFile, readFile, save, exportFile, startProject };
+  return { fileInput, fileError: fileError || docs.error, setFileError, openFile, readFile, save, exportFile, startProject };
 }

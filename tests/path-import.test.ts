@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { emptyProject, exampleProject, importPlan, PATH_TARGET_DISTANCE } from "../src/core/project.ts";
+import { emptyProject, exampleProject, exportPath, importPlan, PATH_TARGET_DISTANCE } from "../src/core/project.ts";
 import { ProjectValidationError, UserInputError } from "../src/core/feedback.ts";
 
 const path = [
@@ -43,4 +43,32 @@ test("still accepts the versioned plan format", () => {
   const project = exampleProject();
   const result = importPlan(JSON.stringify({ version: 1, viewpoints: project.viewpoints }), project);
   assert.equal(result.viewpoints.length, project.viewpoints.length);
+});
+
+test("exports the chosen drone route in portable path-array format", () => {
+  const project = exampleProject();
+  const drone = project.drones[1];
+  const route = project.viewpoints.filter(point => point.droneId === drone.id);
+  const original = JSON.stringify(project);
+  const path = exportPath(project, drone.id);
+  assert.equal(path.length, route.length);
+  assert.deepEqual(path.map(point => point.id), route.map((_, index) => index + 1));
+  const imported = importPlan(JSON.stringify(path), emptyProject());
+  imported.viewpoints.forEach((point, index) => {
+    assert.deepEqual(point.position, route[index].position);
+    const expected = route[index].target.map((value, axis) => value - route[index].position[axis]);
+    const length = Math.hypot(...expected);
+    point.target.forEach((value, axis) => {
+      assert.ok(Math.abs(value - point.position[axis] - expected[axis] / length * PATH_TARGET_DISTANCE) < 1e-9);
+    });
+  });
+  assert.equal(JSON.stringify(project), original);
+});
+
+test("path export rejects missing drones, empty routes and coincident targets", () => {
+  const project = exampleProject();
+  assert.throws(() => exportPath(project, "missing"), UserInputError);
+  assert.throws(() => exportPath({ ...project, viewpoints: [] }, project.drones[0].id), UserInputError);
+  project.viewpoints[0].target = [...project.viewpoints[0].position];
+  assert.throws(() => exportPath(project, project.drones[0].id), /镜头目标与位置重合/);
 });

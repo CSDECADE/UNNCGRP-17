@@ -49,11 +49,11 @@ test("暂存失败明确返回失败状态，重试成功后恢复正常", () =>
   assert.deepEqual(parseProject(stored), project);
 });
 
-test("项目校验细节隐藏，方案导入保留与无人机匹配有关的可操作原因", () => {
+test("项目打开提示校验原因，方案导入提供无人机匹配说明", () => {
   try { parseProject('{"version":1,"models":[]}'); assert.fail("must reject"); }
   catch (error) {
     assert.ok(error instanceof ProjectValidationError);
-    assert.doesNotMatch(fileErrorMessage(error, "open"), /对象数量|列表格式|标识/);
+    assert.match(fileErrorMessage(error, "open"), /对象数量或列表格式无效/);
   }
   const project = exampleProject();
   try {

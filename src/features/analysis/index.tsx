@@ -1,126 +1,100 @@
+import { useMemo, useRef, useState } from "react";
 import { useEditor } from "../../core/editor";
-import { importPlan, routeFor } from "../../core/project";
-import { Icon } from "../../ui/Icon";
+import { fileErrorMessage, UserInputError } from "../../core/feedback";
+import { exportPath, importPlan, routeFor } from "../../core/project";
 import type { AnalysisPanelProps, Editor } from "../contracts";
+import { analyzeRoutes } from "./route-analysis";
+import "./analysis.css";
 
 export function acceptPlan(text: string, e: Editor, playbackAvailable: boolean) {
-      e.setCandidate(importPlan(text, e.project));
-      e.select(null);
-      e.setPreview(playbackAvailable);
-      e.setProgress(0);
-      e.setPlaying(false);
-      e.setTool("select");
-      e.setMessage("方案已载入预览。应用后将替换当前拍摄点。");
+  const candidate = importPlan(text, e.committedProject);
+  if (!candidate.viewpoints.length) throw new UserInputError("方案中没有拍摄点。");
+  e.setPlaying(false);
+  e.setProgress(0);
+  e.setPreview(playbackAvailable);
+  e.setTool("select");
+  e.setCandidate(candidate);
 }
 
-export function AnalysisPanel({ openFile, exportFile, filesAvailable }: AnalysisPanelProps) {
+export function AnalysisPanel({ filesAvailable, openFile, exportFile }: AnalysisPanelProps) {
   const e = useEditor();
-  return (<>
-    <section aria-label="各无人机的拍摄点">
-      <h3>各无人机的拍摄点</h3>
-      <ul>{e.project.drones.map(drone => (
-        <li key={drone.id}>{drone.name} · {routeFor(e.project, drone.id).length} 个拍摄点</li>
-      ))}</ul>
-    </section>
-    {!filesAvailable && <p>加载导出和文档模块后可交换方案文件。</p>}
-<div className="algorithm-content">
-                  <div className="algorithm-step">
-                    <span>01</span>
-                    <div>
-                      <h3>导出场景</h3>
-                      <p>包含模型、无人机设置和拍摄点。</p>
-                    </div>
-                    <button
-                      className="secondary-button" disabled={!filesAvailable}
-                      onClick={() =>
-                        exportFile(
-                          {
-                            ...e.project,
-                            coordinateSystem: { unit: "meter", up: "Y" },
-                          },
-                          "Aero-scene.json",
-                        )
-                      }
-                    >
-                      <Icon name="download" />
-                      导出
-                    </button>
-                  </div>
-                  <div className="algorithm-step">
-                    <span>02</span>
-                    <div>
-                      <h3>导入航拍方案</h3>
-                      <p>先预览，应用后替换当前拍摄点。</p>
-                    </div>
-                    <button
-                      className="secondary-button" disabled={!filesAvailable}
-                      onClick={() => openFile("plan")}
-                    >
-                      <Icon name="upload" />
-                      导入
-                    </button>
-                  </div>
-                  <details className="format-note">
-                    <summary>文件格式说明</summary>
-                    <p>支持 JSON 文件，大小不超过 5 MB。坐标单位为米，Y 轴为高度。</p>
-                    <p>
-                      JSON 包含 version: 1 和 viewpoints 列表。每个拍摄点包含
-                      id、name、droneId、position、target。droneId
-                      对应当前场景中的无人机标识。
-                    </p>
-                    <p>
-                      time 为从方案开始计的秒数，可省略；同一航线应全部提供且严格递增。所有拍摄点都包含时间时按方案时间播放，否则按顺序示意播放。
-                    </p>
-                    <button
-                      className="text-button" disabled={!filesAvailable}
-                      onClick={() =>
-                        exportFile(
-                          { version: 1, viewpoints: e.project.viewpoints },
-                          "Aero-plan.json",
-                        )
-                      }
-                    >
-                      导出当前方案{" "}
-                      <Icon name="download" size={13} />
-                    </button>
-                  </details>
-                  <p className="note">
-                    导入不会自动规划航线或检查碰撞。预演仅用于模拟，不控制真实无人机。
-                  </p>
-                </div>
-  </>);
+  const source = e.candidate ?? e.committedProject;
+  const result = useMemo(() => analyzeRoutes(source), [source]);
+  const current = useMemo(() => analyzeRoutes(e.committedProject), [e.committedProject]);
+  const input = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState("");
+  const [threshold, setThreshold] = useState(5);
+  const drone = e.chosenDrone(e.committedProject);
+
+  async function savePath() {
+    setError("");
+    try {
+      if (!drone) throw new UserInputError("请选择要导出路径的无人机。");
+      const path = exportPath(e.committedProject, drone.id);
+      await exportFile(path, `${drone.name.replace(/[\\/:*?"<>|]/g, "-")}-path.json`);
+    } catch (reason) { setError(fileErrorMessage(reason, "export")); }
+  }
+
+  async function openPlan() {
+    setError("");
+    try {
+      if (filesAvailable) await openFile("plan");
+      else if (window.p15Desktop) {
+        const file = await window.p15Desktop.openFile("plan");
+        if (file) acceptPlan(file.text, e, false);
+      } else input.current?.click();
+    } catch (reason) { setError(fileErrorMessage(reason, "import")); }
+  }
+
+  return <section className="route-analysis" aria-label="多机路径分析">
+    <input ref={input} type="file" accept=".json,application/json" hidden onChange={async (event) => {
+      const element = event.currentTarget;
+      const file = element.files?.[0];
+      if (!file) return;
+      setError("");
+      try {
+        if (file.size > 5_000_000) throw new UserInputError("文件超过 5 MB，请选择较小的文件。");
+        acceptPlan(await file.text(), e, false);
+      } catch (reason) { setError(fileErrorMessage(reason, "import")); }
+      finally { element.value = ""; }
+    }} />
+    <div className="analysis-actions">
+      <button className="primary-button" onClick={() => void openPlan()}>导入候选航线 JSON</button>
+      <button
+        disabled={!filesAvailable || !!e.candidate || !drone || !routeFor(e.committedProject, drone.id).length}
+        onClick={() => void savePath()}
+      >导出{drone ? `「${drone.name}」` : "当前无人机"}路径 JSON</button>
+      {e.candidate && <><button onClick={() => { if (e.candidate) e.replace(e.candidate); }}>应用候选方案</button>
+        <button onClick={() => { e.setCandidate(null); e.setPreview(false); setError(""); }}>取消候选方案</button></>}
+    </div>
+    {error && <p className="file-error" role="alert">{error}</p>}
+    <p className="analysis-note">选择无人机或其拍摄点后，可单独导出该无人机的路径。未选择时使用第一架无人机。</p>
+    <p>{e.candidate ? `候选方案 · 原总长 ${current.totalDistance.toFixed(1)} m` : "当前方案"} · 总长 {result.totalDistance.toFixed(1)} m</p>
+    <div className="analysis-table"><table>
+      <thead><tr><th>无人机</th><th>拍摄点</th><th>航线长度 (m)</th><th>时长 (s)</th></tr></thead>
+      <tbody>{result.routes.map((route) => <tr key={route.id}><th scope="row">{route.name}</th><td>{route.count}</td>
+        <td>{route.distance.toFixed(1)}</td><td>{route.count ? route.duration.toFixed(1) : "—"}</td></tr>)}</tbody>
+    </table></div>
+    {!result.routes.length && <p>请先在场景中添加无人机。</p>}
+    <label className="analysis-threshold">模拟间距提示阈值 (m)
+      <input type="number" min={0} max={1000} step={0.5} value={threshold}
+        onChange={(event) => setThreshold(Math.min(1000, Math.max(0, Number(event.currentTarget.value) || 0)))} />
+    </label>
+    {result.pairs.length ? <div className="analysis-table"><table>
+      <thead><tr><th>无人机组合</th><th>最近间距 (m)</th><th>时刻 (s)</th><th>模拟提示</th></tr></thead>
+      <tbody>{result.pairs.map((pair) => <tr key={pair.id}><th scope="row">{pair.a} / {pair.b}</th>
+        <td>{pair.distance.toFixed(2)}</td><td>{pair.time.toFixed(1)}</td><td>{pair.distance < threshold ? "低于阈值" : "未低于阈值"}</td></tr>)}</tbody>
+    </table></div> : <p>至少两架无人机各有一个拍摄点，才能比较间距。</p>}
+    <p className="analysis-note">{result.timed ? "使用方案时间" : "使用模拟时间（相邻拍摄点间隔 6 秒）"}。按直线插值计算，只用于场景分析。</p>
+  </section>;
 }
 
 export function CandidateBanner({ clearError }: { clearError: () => void }) {
   const e = useEditor();
-  return (<> 
-          {e.candidate && (
-            <div className="candidate-banner">
-              <Icon name="flask" />
-              <span>预览导入方案</span>
-              <button
-                onClick={() => {
-                  const p = e.candidate!;
-                  e.setCandidate(null);
-                  e.commit(p, false);
-                  clearError();
-                  e.setMessage("方案已应用。可撤销以恢复原方案。");
-                }}
-              >
-                应用方案
-              </button>
-              <button
-                onClick={() => {
-                  e.setCandidate(null);
-                  clearError();
-                  e.setPlaying(false);
-                  e.setProgress(0);
-                  e.select(null);
-                }}
-              >
-                取消
-              </button>
-            </div>
-          )}
-  </>);
+  if (!e.candidate) return null;
+  return <div className="candidate-banner" role="status">
+    <span>候选航线 · 尚未替换当前项目</span>
+    <button onClick={() => { if (e.candidate) e.replace(e.candidate); clearError(); }}>应用</button>
+    <button onClick={() => { e.setCandidate(null); e.setPreview(false); clearError(); }}>取消</button>
+  </div>;
 }

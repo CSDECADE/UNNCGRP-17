@@ -6,6 +6,7 @@ import { runInNewContext } from "node:vm";
 import ts from "typescript";
 import * as projectCore from "../src/core/project.ts";
 import * as transformCore from "../src/core/transform.ts";
+import * as historyCore from "../src/core/history.ts";
 import * as feedback from "../src/core/feedback.ts";
 import type { Project } from "../src/core/types.ts";
 import type { useEditor } from "../src/core/editor.tsx";
@@ -50,13 +51,22 @@ function editorWithDeferredRender(initial: Project) {
       if (name === "./project") return projectCore;
       if (name === "./transform") return transformCore;
       if (name === "./feedback") return feedback;
+      if (name === "./history") return historyCore;
       return require(name);
     },
   };
   runInNewContext(compiled + "\nexports.testHook = useEditorState;", sandbox);
+  let initialized = false;
   return () => {
     cursor = 0;
-    return (sandbox.exports.testHook as () => Editor)();
+    const editor = (sandbox.exports.testHook as () => Editor)();
+    if (!initialized) {
+      initialized = true;
+      editor.loadSession({ history: historyCore.startHistory(initial), checkpoints: [] });
+      cursor = 0;
+      return (sandbox.exports.testHook as () => Editor)();
+    }
+    return editor;
   };
 }
 

@@ -262,6 +262,23 @@ export function clearTiming(p: Project): Project {
 }
 // Distance in metres from each path point to its camera target along the normal.
 export const PATH_TARGET_DISTANCE = 10;
+export function exportPath(project: Project, droneId: string) {
+  if (!project.drones.some((drone) => drone.id === droneId))
+    throw new UserInputError("请选择要导出路径的无人机。");
+  const route = routeFor(project, droneId);
+  if (!route.length) throw new UserInputError("这架无人机还没有拍摄点。");
+  return route.map((point, index) => {
+    const direction = point.target.map((value, axis) => value - point.position[axis]);
+    const length = Math.hypot(...direction);
+    if (length < 1e-6)
+      throw new UserInputError(`「${point.name}」的镜头目标与位置重合，请先调整镜头目标。`);
+    return {
+      id: index + 1,
+      x: point.position[0], y: point.position[1], z: point.position[2],
+      normal: { x: direction[0] / length, y: direction[1] / length, z: direction[2] / length },
+    };
+  });
+}
 // Path files are a bare array of { id, x, y, z, normal: { x, y, z } } points, ordered by id.
 // They carry no drone, so the route goes to the first drone (created if the scene has none);
 // other drones keep their routes.

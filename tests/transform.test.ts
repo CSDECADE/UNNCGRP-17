@@ -7,6 +7,7 @@ import {
   finishTransformSession,
   commitTransformHistory,
 } from "../src/core/transform.ts";
+import { startHistory, entry } from "../src/core/history.ts";
 import type { Project, Selection, Vec3 } from "../src/core/types.ts";
 
 const options = { target: "position" as const, snap: 0, lockHeight: false };
@@ -36,22 +37,22 @@ test("拖动草稿实时改变拍摄点及航线，原项目和已导入时间�
 
 test("一次拖动只加入一条撤销记录；重复或过期 mouseUp 不会再次提交", () => {
   const project = timedProject();
-  const history = { past: [] as Project[], present: project, future: [exampleProject()] };
+  const history = { ...startHistory(project), future: [entry(exampleProject())] };
   let session = beginTransformSession(project, pointSelection(project), options)!;
   for (let i = 0; i < 100; i++) session = updateTransformSession(session, { position: [i, 20, 6] });
   const next = commitTransformHistory(history, session);
   assert.equal(next.past.length, 1);
-  assert.equal(next.past[0], project);
+  assert.equal(next.past[0].project, project);
   assert.equal(next.future.length, 0);
   assert.equal(commitTransformHistory(next, session), next);
-  const replacement = { ...history, present: exampleProject() };
+  const replacement = { ...history, present: entry(exampleProject()) };
   assert.equal(commitTransformHistory(replacement, session), replacement);
   assert.equal(commitTransformHistory(history, null), history);
 });
 
 test("点下即松开或拖回原处，不生成历史、不清时间、不改变方案来源", () => {
   const project = timedProject();
-  const history = { past: [], present: project, future: [] };
+  const history = startHistory(project);
   let session = beginTransformSession(project, pointSelection(project), options)!;
   assert.equal(finishTransformSession(session), null);
   session = updateTransformSession(session, { position: [30, 40, 50] });
