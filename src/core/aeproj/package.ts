@@ -8,7 +8,10 @@
 //   checkpoints.json    named snapshots, unlimited
 //   reconstruction.json optional: reference/proxy models (by asset path) and capture settings
 //   assets/<sha256>.<ext>  binary assets referenced by any state (background images, .glb models), deduplicated
-// Inside the package, scene background images reference `assets/...` instead of embedding data URLs.
+//   resources/<sha256>.json  OBJ mesh resources (project version 2), deduplicated; formatVersion 2 only
+// Inside the package, scene background images reference `assets/...` instead of embedding data URLs, and each
+// `objResources` element is replaced by `{ "resource": "resources/..." }`, so a mesh shared by every history
+// state and checkpoint is stored once.
 import { validateProject } from "../project.ts";
 import { ProjectValidationError } from "../feedback.ts";
 import { HISTORY_LIMIT, type Checkpoint, type History, type HistoryEntry, type Session } from "../history.ts";
@@ -19,19 +22,21 @@ import { readZip, writeZip } from "./zip.ts";
 export const AEPROJ_EXTENSION = "aeproj";
 export const AEPROJ_MIME = "application/vnd.aero.project+zip";
 export const AEPROJ_FORMAT = "aeproj";
-export const AEPROJ_FORMAT_VERSION = 1;
+/** Newest format this build reads and writes. Packages without OBJ resources are still written as version 1. */
+export const AEPROJ_FORMAT_VERSION = 2;
+const SUPPORTED_FORMAT_VERSIONS = [1, 2];
 export const MAX_PACKAGE_BYTES = 256 * 1024 * 1024;
 const MAX_CHECKPOINTS = 10_000;
 const LIMITS = { maxEntries: 20_000, maxEntryBytes: 256 * 1024 * 1024, maxTotalBytes: 1024 * 1024 * 1024 };
 
 export type Manifest = {
   format: typeof AEPROJ_FORMAT;
-  formatVersion: typeof AEPROJ_FORMAT_VERSION;
+  formatVersion: 1 | 2;
   generator: { name: string; version: string };
   name: string;
   createdAt: string;
   savedAt: string;
-  projectVersion: 1;
+  projectVersion: number;
   history: { limit: number; past: number; future: number };
   checkpoints: number;
   files: Record<string, { sha256: string; bytes: number }>;
@@ -64,7 +69,10 @@ function bytesToBase64(bytes: Uint8Array): string {
 /** Collects assets while serializing, deduplicated by content hash. */
 class AssetWriter {
   files = new Map<string, Uint8Array>();
+  usesResources = false;
   private byDataUrl = new Map<string, string>();
+  // Unchanged resources are the same object across states, so this skips re-serializing them.
+  private byResource = new WeakMap<object, string>();
   async ref(dataUrl: string): Promise<string> {
     const known = this.byDataUrl.get(dataUrl);
     if (known) return known;
@@ -75,10 +83,25 @@ class AssetWriter {
     this.byDataUrl.set(dataUrl, path);
     return path;
   }
+  private async resource(r: unknown): Promise<{ resource: string }> {
+    const known = r && typeof r === "object" ? this.byResource.get(r) : undefined;
+    if (known) return { resource: known };
+    const bytes = encoder.encode(JSON.stringify(r));
+    const path = `resources/${await sha256(bytes)}.json`;
+    this.files.set(path, bytes);
+    this.usesResources = true;
+    if (r && typeof r === "object") this.byResource.set(r, path);
+    return { resource: path };
+  }
   async project(p: Project): Promise<unknown> {
-    if (!p.background?.image) return p;
-    const { dataUrl, ...image } = p.background.image;
-    return { ...p, background: { ...p.background, image: { ...image, asset: await this.ref(dataUrl) } } };
+    let out: Record<string, unknown> = p;
+    if (p.background?.image) {
+      const { dataUrl, ...image } = p.background.image;
+      out = { ...out, background: { ...p.background, image: { ...image, asset: await this.ref(dataUrl) } } };
+    }
+    const resources = (p as { objResources?: unknown }).objResources;
+    if (Array.isArray(resources)) out = { ...out, objResources: await Promise.all(resources.map((r) => this.resource(r))) };
+    return out;
   }
 }
 
@@ -92,12 +115,39 @@ function time(x: unknown): number {
   return typeof x === "number" && Number.isFinite(x) && x >= 0 ? x : fail("时间信息无效");
 }
 
-/** Resolves `assets/...` references back to data URLs, then applies full project validation. */
+/** Resolves `assets/...` and `resources/...` references, then applies full project validation. */
 class AssetReader {
   private cache = new Map<string, string>();
+  private resources = new Map<string, unknown>();
+  private validated = new Map<string, unknown>();
   private files: Map<string, Uint8Array>;
-  constructor(files: Map<string, Uint8Array>) {
+  private listed: Record<string, unknown>;
+  constructor(files: Map<string, Uint8Array>, listed: Record<string, unknown>) {
     this.files = files;
+    this.listed = listed;
+  }
+  private resource(path: unknown): unknown {
+    if (typeof path !== "string") return fail("OBJ 资源引用无效");
+    if (this.resources.has(path)) return this.resources.get(path);
+    const match = /^resources\/([0-9a-f]{64})\.json$/.exec(path) ?? fail("OBJ 资源引用无效");
+    const bytes = this.files.get(path) ?? fail("项目包缺少引用的 OBJ 资源");
+    // The manifest hash was verified on open; the file name must name the same content.
+    if (record(this.listed[path], "OBJ 资源").sha256 !== match[1]) fail("OBJ 资源校验失败");
+    const value = parse(bytes, path);
+    this.resources.set(path, value);
+    return value;
+  }
+  /** Validation copies resources; states that referenced the same file get the same validated object back. */
+  private share(project: Project, paths: (string | undefined)[]): Project {
+    const list = (project as { objResources?: unknown[] }).objResources;
+    if (!list || !paths.some(Boolean)) return project;
+    const shared = list.map((r, i) => {
+      const path = paths[i];
+      if (!path) return r;
+      if (!this.validated.has(path)) this.validated.set(path, r);
+      return this.validated.get(path);
+    });
+    return { ...project, objResources: shared } as Project;
   }
   private dataUrl(path: unknown): string {
     if (typeof path !== "string") return fail("资源引用无效");
@@ -111,12 +161,21 @@ class AssetReader {
   }
   project(input: unknown): Project {
     const p = record(input, "场景");
+    const raw: Record<string, unknown> = { ...p };
     const background = p.background === undefined ? undefined : record(p.background, "背景设置");
     if (background?.image !== undefined) {
       const { asset, ...image } = record(background.image, "背景图片");
-      return validateProject({ ...p, background: { ...background, image: { ...image, dataUrl: this.dataUrl(asset) } } });
+      raw.background = { ...background, image: { ...image, dataUrl: this.dataUrl(asset) } };
     }
-    return validateProject(p);
+    const paths: (string | undefined)[] = [];
+    if (Array.isArray(p.objResources)) {
+      raw.objResources = p.objResources.map((x, i) => {
+        if (!x || typeof x !== "object" || !Object.hasOwn(x, "resource")) return x;
+        paths[i] = (x as { resource: string }).resource;
+        return this.resource(paths[i]);
+      });
+    }
+    return this.share(validateProject(raw), paths);
   }
   entry(input: unknown): HistoryEntry {
     const e = record(input, "历史记录");
@@ -172,12 +231,13 @@ export async function packSession(
   for (const [path, bytes] of [...assets.files].sort(([a], [b]) => a.localeCompare(b))) files.set(path, bytes);
   const manifest: Manifest = {
     format: AEPROJ_FORMAT,
-    formatVersion: AEPROJ_FORMAT_VERSION,
+    // Older builds can still open packages that do not need version 2 features.
+    formatVersion: assets.usesResources ? 2 : 1,
     generator: options.generator,
     name: history.present.project.name,
     createdAt: options.createdAt ?? now.toISOString(),
     savedAt: now.toISOString(),
-    projectVersion: 1,
+    projectVersion: history.present.project.version,
     history: { limit: HISTORY_LIMIT, past: history.past.length, future: history.future.length },
     checkpoints: checkpoints.length,
     files: {},
@@ -204,7 +264,7 @@ export async function unpackSession(bytes: Uint8Array): Promise<{ session: Sessi
   if (new TextDecoder().decode(files.get("mimetype") ?? new Uint8Array()) !== AEPROJ_MIME) fail("文件不是 Aero 项目包");
   const manifest = record(parse(files.get("manifest.json"), "manifest.json"), "清单");
   if (manifest.format !== AEPROJ_FORMAT) fail("文件不是 Aero 项目包");
-  if (manifest.formatVersion !== AEPROJ_FORMAT_VERSION) fail("不支持此项目包版本，请更新应用");
+  if (!SUPPORTED_FORMAT_VERSIONS.includes(manifest.formatVersion as number)) fail("不支持此项目包版本，请更新应用");
   const listed = record(manifest.files, "清单文件列表");
   for (const [path, meta] of Object.entries(listed)) {
     const data = files.get(path) ?? fail("项目包缺少文件");
@@ -213,7 +273,7 @@ export async function unpackSession(bytes: Uint8Array): Promise<{ session: Sessi
   for (const path of files.keys())
     if (path !== "mimetype" && path !== "manifest.json" && !(path in listed)) fail("项目包包含未登记的文件");
 
-  const reader = new AssetReader(files);
+  const reader = new AssetReader(files, listed);
   const presentProject = reader.project(parse(files.get("project.json"), "project.json"));
   const h = record(parse(files.get("history.json"), "history.json"), "历史记录");
   const presentMeta = record(h.present, "历史记录");
