@@ -23,7 +23,7 @@ function cube(id = "obj-1", lift = 0) {
 function withObj(base: Project, resources: unknown[]): Project {
   const models = [...base.models, ...resources.map((r, i) => ({
     id: `obj-model-${i}`, kind: "obj", name: "cube", resourceId: (r as { id: string }).id,
-    position: [0, 0, 0], rotationXYZ: [0, 0, 0], scale: [1, 1, 1],
+    position: [0, 0, 0], rotation: 0, size: [1, 1, 1], color: "#888888", visible: true, locked: false,
   }))];
   return { ...base, version: 2, models, objResources: resources } as unknown as Project;
 }
