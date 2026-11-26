@@ -3,6 +3,7 @@
 import { validateProject } from "./project.ts";
 import { startHistory, type Session } from "./history.ts";
 import { serializeReconstruction, validateReconstruction, type MeshAsset } from "./reconstruction.ts";
+import { cloudAsset, type SparseCloud } from "./capture/sparseCloud.ts";
 
 const DB_NAME = "aero-p15";
 const DB_VERSION = 2;
@@ -45,7 +46,7 @@ async function run<T>(store: string, mode: IDBTransactionMode, action: (s: IDBOb
 }
 
 const storedAssets = new Set<string>();
-async function storeAsset(a: MeshAsset) {
+async function storeAsset(a: { sha256: string; bytes: Uint8Array }) {
   if (storedAssets.has(a.sha256)) return;
   await run(ASSET_STORE, "readwrite", (s) => s.put(a.bytes, a.sha256));
   storedAssets.add(a.sha256);
@@ -53,14 +54,24 @@ async function storeAsset(a: MeshAsset) {
 export async function saveAutosave(record: AutosaveRecord): Promise<void> {
   const r = record.session.reconstruction;
   let stored: unknown = record;
+  const keep = new Set<string | undefined>([r?.reference?.sha256, r?.proxy?.sha256]);
   if (r) {
     for (const a of [r.reference, r.proxy]) if (a) await storeAsset(a);
+    // Point data is stored like model files, so each autosave only writes the small JSON part.
+    const clouds = new Map<SparseCloud, string>();
+    for (const c of Object.values(r.clouds ?? {})) {
+      if (!c) continue;
+      const a = await cloudAsset(c.cloud);
+      await storeAsset(a);
+      clouds.set(c.cloud, a.sha256);
+      keep.add(a.sha256);
+    }
     const ref = (a: MeshAsset) => ({ name: a.name, sha256: a.sha256 });
-    stored = { ...record, session: { ...record.session, reconstruction: serializeReconstruction(r, ref) } };
+    const cloudRef = (c: SparseCloud) => ({ sha256: clouds.get(c) });
+    stored = { ...record, session: { ...record.session, reconstruction: serializeReconstruction(r, ref, cloudRef) } };
   }
   await run(SESSION_STORE, "readwrite", (s) => s.put(stored, "current"));
-  // Drop model files the autosaved session no longer references.
-  const keep = new Set([r?.reference?.sha256, r?.proxy?.sha256]);
+  // Drop model and cloud files the autosaved session no longer references.
   const keys = await run<IDBValidKey[]>(ASSET_STORE, "readonly", (s) => s.getAllKeys());
   for (const key of keys)
     if (!keep.has(String(key))) {
@@ -87,8 +98,8 @@ export async function loadAutosave(): Promise<AutosaveRecord | null> {
     if (stored.session.reconstruction) {
       const assets = new Map<string, Uint8Array>();
       const raw = stored.session.reconstruction as unknown as Record<string, { sha256?: string } | undefined>;
-      for (const key of ["reference", "proxy"]) {
-        const sha = raw[key]?.sha256;
+      const cloudShas = Object.values((raw.clouds ?? {}) as Record<string, { data?: { sha256?: string } }>).map((c) => c?.data?.sha256);
+      for (const sha of [raw.reference?.sha256, raw.proxy?.sha256, ...cloudShas]) {
         if (typeof sha !== "string") continue;
         const bytes = await run<Uint8Array | undefined>(ASSET_STORE, "readonly", (s) => s.get(sha));
         if (bytes) {
@@ -101,6 +112,9 @@ export async function loadAutosave(): Promise<AutosaveRecord | null> {
         const bytes = typeof r?.sha256 === "string" ? assets.get(r.sha256) : undefined;
         // A missing asset (storage cleared) drops the model rather than the whole session.
         return bytes ? { name: String(r.name ?? "model.glb"), sha256: r.sha256 as string, bytes } : undefined;
+      }, (ref) => {
+        const sha = (ref as { sha256?: unknown } | undefined)?.sha256;
+        return typeof sha === "string" ? assets.get(sha) : undefined;
       });
     }
     return { ...stored, session };

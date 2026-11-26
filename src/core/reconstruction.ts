@@ -3,6 +3,8 @@
 // See docs/reconstruction-capture.md.
 import { ProjectValidationError } from "./feedback.ts";
 import type { Vec3 } from "./types.ts";
+import { cloudMeta, decodeCloudPoints, type SparseCloud } from "./capture/sparseCloud.ts";
+import { validatePhotoSet, type PhotoSet } from "./capture/photoSet.ts";
 
 export const MAX_MESH_BYTES = 128 * 1024 * 1024;
 
@@ -21,6 +23,9 @@ export type CaptureSettings = {
   origin: GeoOrigin;
   gpsNoise: { horizontal: number; vertical: number; seed: number };
 };
+export type CloudKind = SparseCloud["kind"];
+/** A reconstruction result. `photos` fingerprints the photo package it was computed from, when known. */
+export type CloudResult = { cloud: SparseCloud; photos?: PhotoSet; createdAt: number };
 export type ReconstructionSetup = {
   reference?: MeshAsset;
   proxy?: MeshAsset;
@@ -28,7 +33,15 @@ export type ReconstructionSetup = {
   attribution: string;
   showReference: boolean;
   capture: CaptureSettings;
+  /** Latest sparse / dense point cloud. Saved in .aeproj; the photos are not, only their fingerprint. */
+  clouds?: Partial<Record<CloudKind, CloudResult>>;
 };
+
+/** A stored cloud computed from exactly these photos, if any. */
+export function cloudForPhotos(r: ReconstructionSetup | undefined, kind: CloudKind, photos: PhotoSet | undefined): CloudResult | undefined {
+  const stored = r?.clouds?.[kind];
+  return stored?.photos && photos && stored.photos.digest === photos.digest ? stored : undefined;
+}
 
 export const DEFAULT_CAPTURE: CaptureSettings = {
   width: 2048,
@@ -76,10 +89,17 @@ const num = (x: unknown, min: number, max: number, what: string) =>
 const obj = (x: unknown, what: string) =>
   x && typeof x === "object" && !Array.isArray(x) ? (x as Record<string, unknown>) : fail(`${what}格式无效`);
 
-/** Validate the JSON part; `asset` resolves stored references (sha256) to bytes. */
+const KINDS: CloudKind[] = ["sparse", "dense"];
+const int = (x: unknown, min: number, max: number, what: string) => Math.round(num(x, min, max, what));
+
+/**
+ * Validate the JSON part; `asset` resolves stored model references to bytes, `cloudBytes` resolves the
+ * `data` reference of a stored point cloud (undefined drops that cloud, e.g. cleared storage).
+ */
 export function validateReconstruction(
   input: unknown,
   asset: (ref: unknown, what: string) => MeshAsset | undefined,
+  cloudBytes: (ref: unknown, what: string) => Uint8Array | undefined = () => undefined,
 ): ReconstructionSetup {
   const r = obj(input, "重建设置");
   const f = obj(r.frame, "建筑放置");
@@ -89,7 +109,33 @@ export function validateReconstruction(
   const o = obj(c.origin, "坐标原点");
   const g = obj(c.gpsNoise, "GPS 噪声");
   const attribution = typeof r.attribution === "string" && r.attribution.length <= 500 ? r.attribution : fail("署名信息无效");
-  return {
+  let clouds: ReconstructionSetup["clouds"];
+  if (r.clouds !== undefined) {
+    const raw = obj(r.clouds, "点云");
+    for (const kind of KINDS) {
+      if (raw[kind] === undefined) continue;
+      const what = kind === "sparse" ? "稀疏点云" : "稠密点云";
+      const c = obj(raw[kind], what);
+      const bytes = cloudBytes(c.data, what);
+      if (!bytes) continue;
+      const totalImages = int(c.totalImages, 1, 1_000_000, what);
+      const meta = {
+        kind,
+        sourcePointCount: int(c.sourcePointCount, 1, 1e12, what),
+        registeredImages: int(c.registeredImages, 1, totalImages, what),
+        totalImages,
+      };
+      let result: CloudResult;
+      try {
+        result = { cloud: decodeCloudPoints(bytes, meta), createdAt: num(c.createdAt, 0, 1e15, "点云时间") };
+        if (c.photos !== undefined) result.photos = validatePhotoSet(c.photos);
+      } catch (error) {
+        return fail(`${what}：${(error as Error).message}`);
+      }
+      (clouds ??= {})[kind] = result;
+    }
+  }
+  const setup: ReconstructionSetup = {
     reference: r.reference === undefined ? undefined : asset(r.reference, "参考模型"),
     proxy: r.proxy === undefined ? undefined : asset(r.proxy, "白模"),
     frame: { upAxis: f.upAxis as BuildingFrame["upAxis"], offset },
@@ -107,12 +153,25 @@ export function validateReconstruction(
       },
     },
   };
+  if (clouds) setup.clouds = clouds;
+  return setup;
 }
-/** JSON form with mesh bytes replaced by `ref(asset)`; used by packages and autosave. */
-export function serializeReconstruction(r: ReconstructionSetup, ref: (a: MeshAsset) => unknown) {
-  return {
-    ...r,
-    reference: r.reference && ref(r.reference),
-    proxy: r.proxy && ref(r.proxy),
-  };
+/**
+ * JSON form with mesh bytes replaced by `ref(asset)` and point data by `cloudRef(cloud)` (see
+ * cloudAsset in capture/sparseCloud.ts); used by packages and autosave.
+ */
+export function serializeReconstruction(r: ReconstructionSetup, ref: (a: MeshAsset) => unknown, cloudRef: (c: SparseCloud) => unknown) {
+  const { clouds, ...rest } = r;
+  const out: Record<string, unknown> = { ...rest, reference: r.reference && ref(r.reference), proxy: r.proxy && ref(r.proxy) };
+  if (clouds) {
+    const stored: Record<string, unknown> = {};
+    for (const kind of KINDS) {
+      const c = clouds[kind];
+      if (!c) continue;
+      const { kind: _, ...meta } = cloudMeta(c.cloud);
+      stored[kind] = { ...meta, points: c.cloud.positions.length / 3, createdAt: c.createdAt, ...(c.photos ? { photos: c.photos } : {}), data: cloudRef(c.cloud) };
+    }
+    out.clouds = stored;
+  }
+  return out;
 }

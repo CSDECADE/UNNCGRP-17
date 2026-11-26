@@ -6,8 +6,10 @@
 //   project.json        current scene (Project, version 1)
 //   history.json        undo/redo timeline, up to HISTORY_LIMIT entries on each side
 //   checkpoints.json    named snapshots, unlimited
-//   reconstruction.json optional: reference/proxy models (by asset path) and capture settings
-//   assets/<sha256>.<ext>  binary assets referenced by any state (background images, .glb models), deduplicated
+//   reconstruction.json optional: reference/proxy models and point clouds (by asset path), capture settings
+//   assets/<sha256>.<ext>  binary assets referenced by any state (background images, .glb models,
+//                          .cloud point data), deduplicated. Photo packages are never included; a cloud
+//                          only keeps the fingerprint of the photos it was computed from.
 //   resources/<sha256>.json  OBJ mesh resources (project version 2), deduplicated; formatVersion 2 only
 // Inside the package, scene background images reference `assets/...` instead of embedding data URLs, and each
 // `objResources` element is replaced by `{ "resource": "resources/..." }`, so a mesh shared by every history
@@ -17,6 +19,7 @@ import { ProjectValidationError } from "../feedback.ts";
 import { HISTORY_LIMIT, type Checkpoint, type History, type HistoryEntry, type Session } from "../history.ts";
 import type { Project } from "../types.ts";
 import { serializeReconstruction, validateReconstruction, type MeshAsset } from "../reconstruction.ts";
+import { cloudAsset, type SparseCloud } from "../capture/sparseCloud.ts";
 import { readZip, writeZip } from "./zip.ts";
 
 export const AEPROJ_EXTENSION = "aeproj";
@@ -226,7 +229,16 @@ export async function packSession(
       assets.files.set(path, a.bytes);
       return { name: a.name, asset: path };
     };
-    files.set("reconstruction.json", json(serializeReconstruction(session.reconstruction, ref)));
+    const clouds = new Map<SparseCloud, string>();
+    for (const c of Object.values(session.reconstruction.clouds ?? {})) {
+      if (!c) continue;
+      const { sha256: sha, bytes } = await cloudAsset(c.cloud);
+      const path = `assets/${sha}.cloud`;
+      assets.files.set(path, bytes);
+      clouds.set(c.cloud, path);
+    }
+    const cloudRef = (c: SparseCloud) => ({ asset: clouds.get(c) });
+    files.set("reconstruction.json", json(serializeReconstruction(session.reconstruction, ref, cloudRef)));
   }
   for (const [path, bytes] of [...assets.files].sort(([a], [b]) => a.localeCompare(b))) files.set(path, bytes);
   const manifest: Manifest = {
@@ -300,6 +312,11 @@ export async function unpackSession(bytes: Uint8Array): Promise<{ session: Sessi
       // The manifest hash was verified above; the file name must name the same content.
       if (record(listed[path], what).sha256 !== match[1]) fail(`${what}校验失败`);
       return { name: text(r.name, `${what}名称`), sha256: match[1], bytes: files.get(path)! };
+    }, (ref, what) => {
+      const path = typeof record(ref, what).asset === "string" ? (ref as { asset: string }).asset : "";
+      const match = /^assets\/([0-9a-f]{64})\.cloud$/.exec(path) ?? fail(`${what}引用无效`);
+      if (record(listed[path], what).sha256 !== match[1]) fail(`${what}校验失败`);
+      return files.get(path)!;
     });
   }
   const generator = record(manifest.generator, "生成信息");
