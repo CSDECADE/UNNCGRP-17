@@ -1,5 +1,6 @@
 """Reconstruct a single-camera Aero photo package with PyCOLMAP on the CPU."""
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path, PurePosixPath
@@ -9,6 +10,8 @@ from shutil import copyfile
 
 import numpy as np
 import pycolmap as colmap
+
+from photo_set import photo_set
 
 
 @contextmanager
@@ -36,6 +39,7 @@ def load_capture(source, output):
             raise ValueError("Expected one PINHOLE camera")
         camera = cameras[0]
         priors = {}
+        photo_sha = {}
         for frame in metadata["frames"]:
             file = PurePosixPath(frame["file"])
             if (file.parts != ("images", file.name) or file.suffix.lower() != ".jpg"
@@ -43,14 +47,15 @@ def load_capture(source, output):
                 raise ValueError("Invalid photo entry")
             priors[file.name] = frame["position"]
             copy_photo(str(file), images / file.name)
+            photo_sha[str(file)] = hashlib.sha256((images / file.name).read_bytes()).hexdigest()
     if len(priors) < 4 or not np.isfinite(np.asarray(list(priors.values()), dtype=float)).all():
         raise ValueError("Expected at least four photos with finite position priors")
-    return images, camera, priors
+    return images, camera, priors, photo_set(metadata, photo_sha)
 
 
 def reconstruct(archive, output):
     output.mkdir(parents=True)
-    images, camera, priors = load_capture(archive, output)
+    images, camera, priors, photos = load_capture(archive, output)
     database = output / "features.db"
     sparse = output / "sparse"
     sparse.mkdir()
@@ -109,11 +114,13 @@ def reconstruct(archive, output):
         "registeredImages": len(names), "totalImages": len(priors),
         "meanReprojectionErrorPx": model.compute_mean_reprojection_error(),
         "priorRmseM": float(np.sqrt(np.mean(np.square(errors)))),
+        # Lets Aero reuse this cloud when the same photos are reconstructed again.
+        "photos": photos,
         "points": points,
     }
     result_file = output / "aero-sparse-cloud.json"
     result_file.write_text(json.dumps(result, allow_nan=False, separators=(",", ":")), encoding="utf-8")
-    print(json.dumps({k: v for k, v in result.items() if k != "points"}, indent=2))
+    print(json.dumps({k: (v["digest"] if k == "photos" else v) for k, v in result.items() if k != "points"}, indent=2))
     print(f"{len(points)} sparse points -> {result_file}")
 
 

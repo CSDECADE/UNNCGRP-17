@@ -114,3 +114,34 @@ test("a stored cloud is reused only for the same photos", async () => {
   assert.equal(cloudForPhotos(r, "sparse", other), undefined);
   assert.equal(cloudForPhotos(undefined, "sparse", same), undefined);
 });
+
+test("tools/colmap/photo_set.py computes the same fingerprint as the app", async (t) => {
+  const { spawnSync } = await import("node:child_process");
+  const { mkdtempSync, mkdirSync, writeFileSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const { buildCapturePackage } = await import("../src/core/capture/format.ts");
+  const { DEFAULT_CAPTURE } = await import("../src/core/reconstruction.ts");
+  const { sha256Bytes } = await import("../src/core/capture/photoSet.ts");
+  if (spawnSync("python3", ["--version"]).status !== 0) return t.skip("python3 not available");
+  const { capture, frames } = buildCapturePackage(exampleProject(), DEFAULT_CAPTURE, {
+    createdAt: "2026-01-01T00:00:00Z", generator, attribution: "", hasReferenceModel: true,
+  });
+  assert.ok(frames.length > 3);
+  const dir = mkdtempSync(join(tmpdir(), "aero-photo-set-"));
+  try {
+    mkdirSync(join(dir, "images"));
+    const shas = new Map<string, string>();
+    for (const f of frames) {
+      const bytes = new Uint8Array(64).map((_, i) => (i * 31 + f.index * 7) % 256);
+      writeFileSync(join(dir, f.file), bytes);
+      shas.set(f.file, await sha256Bytes(bytes));
+    }
+    writeFileSync(join(dir, "capture.json"), JSON.stringify(capture, null, 2));
+    const py = spawnSync("python3", ["-I", "tools/colmap/photo_set.py", dir], { encoding: "utf8" });
+    assert.equal(py.status, 0, py.stderr);
+    assert.deepEqual(JSON.parse(py.stdout), await photoSet(capture, shas));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
