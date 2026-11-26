@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { MAX_SPARSE_CLOUD_BYTES, parseSparseCloud, type SparseCloud } from "../core/capture/sparseCloud";
+import { MAX_SPARSE_CLOUD_BYTES, parseCloudFile, type SparseCloud } from "../core/capture/sparseCloud";
+import type { PhotoSet } from "../core/capture/photoSet";
 
 export function SparseCloudPanel({ clouds, active, hasReference, primaryImport, onSelect, onImport, onRemove }: {
   clouds: Partial<Record<SparseCloud["kind"], SparseCloud>>;
@@ -7,7 +8,7 @@ export function SparseCloudPanel({ clouds, active, hasReference, primaryImport, 
   hasReference: boolean;
   primaryImport: boolean;
   onSelect: (kind: SparseCloud["kind"] | "reference") => void;
-  onImport: (cloud: SparseCloud) => void;
+  onImport: (cloud: SparseCloud, photos?: PhotoSet) => void;
   onRemove: () => void;
 }) {
   const cloud = active === "reference" ? undefined : clouds[active];
@@ -20,7 +21,8 @@ export function SparseCloudPanel({ clouds, active, hasReference, primaryImport, 
     setLoading(true);
     try {
       if (file.size > MAX_SPARSE_CLOUD_BYTES) throw new Error("点云文件超过 12 MB。");
-      onImport(parseSparseCloud(await file.text()));
+      const { cloud, photos } = parseCloudFile(await file.text());
+      onImport(cloud, photos);
     } catch (err) {
       setError(err instanceof SyntaxError ? "无法读取点云 JSON。" :
         err instanceof Error ? err.message : "无法导入点云。");

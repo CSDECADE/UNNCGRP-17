@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useEditor } from "../core/editor";
 import { fileErrorMessage } from "../core/feedback";
-import { centredOffset, meshAsset, modelToApp, type ReconstructionSetup } from "../core/reconstruction";
+import { centredOffset, cloudForPhotos, meshAsset, modelToApp, type ReconstructionSetup } from "../core/reconstruction";
+import type { PhotoSet } from "../core/capture/photoSet";
 import { applyRoute, DEFAULT_ORBIT, orbitShots, type Bounds, type OrbitOptions } from "../core/capture/orbit";
 import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter.js";
 import { applyNuavCaptureRoute, buildNuavOverlapRoute } from "../core/capture/nuav";
@@ -53,7 +54,7 @@ export function CapturePanel({ hidden, hasCloud, sparsePanel, onCloud }: {
   hidden: boolean;
   hasCloud: boolean;
   sparsePanel: (primaryImport: boolean) => ReactNode;
-  onCloud: (cloud: SparseCloud) => void;
+  onCloud: (cloud: SparseCloud, photos?: PhotoSet) => void;
 }) {
   const e = useEditor();
   const r = e.reconstruction;
@@ -83,7 +84,7 @@ export function CapturePanel({ hidden, hasCloud, sparsePanel, onCloud }: {
   const [coverage, setCoverage] = useState(100);
   const [demoLimits, setDemoLimits] = useState(false);
   const [overlap, setOverlap] = useState(true);
-  const [ready, setReady] = useState<{ token?: string; signature: string; count: number } | null>(null);
+  const [ready, setReady] = useState<{ token?: string; signature: string; count: number; photos: PhotoSet } | null>(null);
   const [registered, setRegistered] = useState<{ token: string; images: number; total: number } | null>(null);
   const currentSetup = (setup: ReconstructionSetup | undefined) =>
     setup && [setup.reference?.sha256, setup.proxy?.sha256, setup.frame, setup.capture, setup.attribution];
@@ -129,8 +130,17 @@ export function CapturePanel({ hidden, hasCloud, sparsePanel, onCloud }: {
   }
 
   async function reconstruct() {
-    if (!desktop || !currentCapture?.token || job) return;
-    const { token, signature: snapshot } = currentCapture;
+    if (!currentCapture || job) return;
+    const { token, signature: snapshot, photos } = currentCapture;
+    // Same photos, priors and intrinsics as a stored result: reuse it instead of running COLMAP again.
+    const stored = cloudForPhotos(r, "sparse", photos);
+    if (stored) {
+      onCloud(stored.cloud, stored.photos);
+      setRegistered({ token: photos.digest, images: stored.cloud.registeredImages, total: stored.cloud.totalImages });
+      e.setMessage("照片与已保存的点云相同，已直接使用该结果。");
+      return;
+    }
+    if (!desktop || !token) return;
     setError("");
     setJob("sparse");
     try {
@@ -138,8 +148,8 @@ export function CapturePanel({ hidden, hasCloud, sparsePanel, onCloud }: {
       if (result.error || !result.text) throw new Error(result.error ?? "重建没有返回点云。");
       if (signature() !== snapshot) throw new Error("场景已更改，请重新生成照片。");
       const cloud = parseSparseCloud(result.text);
-      onCloud(cloud);
-      setRegistered({ token, images: cloud.registeredImages, total: cloud.totalImages });
+      onCloud(cloud, photos);
+      setRegistered({ token: photos.digest, images: cloud.registeredImages, total: cloud.totalImages });
     } catch (err) {
       setError(err instanceof Error ? err.message : "无法完成稀疏重建。");
     } finally {
@@ -214,9 +224,9 @@ export function CapturePanel({ hidden, hasCloud, sparsePanel, onCloud }: {
     try {
       const result = await exportCapture(e.committedProject, r, setProgress, controller.signal, capabilities.sparse ? (value) => { token = value; } : undefined);
       if (result) {
-        setReady({ token, signature: snapshot, count: frames });
-        if (token) goTo("result");
-        e.setMessage(`照片包已生成：${result}`);
+        setReady({ token, signature: snapshot, count: frames, photos: result.photos });
+        if (token || cloudForPhotos(r, "sparse", result.photos)) goTo("result");
+        e.setMessage(`照片包已生成：${result.name}`);
       }
     } catch (err) {
       if ((err as Error)?.name === "AbortError") e.setMessage("已取消生成照片包。");
@@ -241,8 +251,9 @@ export function CapturePanel({ hidden, hasCloud, sparsePanel, onCloud }: {
   const scrollRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const canPlan = capabilities.plan && !!r?.proxy && r.frame.upAxis === "z" && e.project.drones.length <= 1;
-  const rebuilt = !!registered && registered.token === currentCapture?.token;
-  const readyToRebuild = capabilities.sparse && !!currentCapture?.token;
+  const rebuilt = !!registered && registered.token === currentCapture?.photos.digest;
+  const reusable = !!cloudForPhotos(r, "sparse", currentCapture?.photos);
+  const readyToRebuild = !!currentCapture && (reusable || (capabilities.sparse && !!currentCapture.token));
 
   useEffect(() => {
     if (hidden || pendingFocus.current !== step) return;
@@ -444,7 +455,8 @@ export function CapturePanel({ hidden, hasCloud, sparsePanel, onCloud }: {
             </button>
           }
           {sparsePanel(!readyToRebuild && !hasCloud)}
-          {readyToRebuild && hasCloud && <button className="capture-text-action" disabled={blocked}
+          {reusable && <p className="note">当前稀疏点云由这组照片生成，已随项目保存，无需重新计算。</p>}
+          {readyToRebuild && hasCloud && !reusable && <button className="capture-text-action" disabled={blocked}
             onClick={() => void reconstruct()}>{job === "sparse" ? "正在重建…" : rebuilt ? "重新生成点云" : "生成点云"}</button>}
         </section>
       </div>

@@ -7,6 +7,7 @@ import type { ReconstructionSetup } from "../core/reconstruction";
 import type { Project } from "../core/types";
 import { writeZip, type ZipEntry } from "../core/aeproj/zip";
 import { createCaptureRenderer } from "../scene/captureRenderer";
+import { photoSet, sha256Bytes, type PhotoSet } from "../core/capture/photoSet";
 
 export type CaptureProgress = { done: number; total: number; stage: "prepare" | "render" | "finish" };
 type Sink = { write(path: string, bytes: Uint8Array): Promise<void>; finish(): Promise<string>; abort(): Promise<void> };
@@ -48,14 +49,17 @@ async function openSink(name: string, onDesktopComplete?: (token: string) => voi
   };
 }
 
-/** Returns the folder / file name written, or null when the user cancelled the location dialog. */
+/**
+ * Returns the folder / file name written and the fingerprint of the photos (see core/capture/photoSet),
+ * or null when the user cancelled the location dialog.
+ */
 export async function exportCapture(
   project: Project,
   setup: ReconstructionSetup,
   onProgress: (p: CaptureProgress) => void,
   signal: AbortSignal,
   onDesktopComplete?: (token: string) => void,
-): Promise<string | null> {
+): Promise<{ name: string; photos: PhotoSet } | null> {
   if (!setup.reference) throw new UserInputError("请先加载参考模型（代表真实建筑）。");
   if (!project.viewpoints.length) throw new UserInputError("当前没有拍摄点，请先生成或导入航线。");
   const { capture, groundTruth, colmap, frames } = buildCapturePackage(project, setup.capture, {
@@ -69,12 +73,14 @@ export async function exportCapture(
   if (!sink) return null;
   const { width, height, jpegQuality } = setup.capture;
   let renderer: Awaited<ReturnType<typeof createCaptureRenderer>> | null = null;
+  const shas = new Map<string, string>();
   try {
     onProgress({ done: 0, total: frames.length, stage: "prepare" });
     renderer = await createCaptureRenderer(setup.reference, setup.frame, width, height);
     for (const frame of frames) {
       if (signal.aborted) throw new DOMException("cancelled", "AbortError");
       const bytes = await renderer.shoot({ position: frame.viewpoint.position, target: frame.viewpoint.target, fov: frame.drone.fov }, jpegQuality);
+      shas.set(frame.file, await sha256Bytes(bytes));
       await sink.write(frame.file, bytes);
       onProgress({ done: frame.index + 1, total: frames.length, stage: "render" });
     }
@@ -97,7 +103,8 @@ export async function exportCapture(
       }),
     );
     await sink.write("capture.json", encode(capture));
-    return await sink.finish();
+    const photos = await photoSet(capture, shas);
+    return { name: await sink.finish(), photos };
   } catch (error) {
     await sink.abort().catch(() => {});
     throw error;

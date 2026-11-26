@@ -72,8 +72,8 @@ const script = `(async () => {
   let project = applyRoute(emptyProject(), orbitShots(cfg.bounds, { ...DEFAULT_ORBIT, ...(cfg.orbit ?? {}) }));
   project = { ...project, name: cfg.name ?? "capture", drones: project.drones.map((d) => ({ ...d, fov: cfg.fov ?? d.fov })) };
   const t0 = performance.now();
-  const name = await exportCapture(project, setup, (p) => p.stage === "render" && console.log("[capture]", p.done + "/" + p.total), new AbortController().signal);
-  return { name, frames: project.viewpoints.length, seconds: Math.round((performance.now() - t0) / 1000) };
+  const result = await exportCapture(project, setup, (p) => p.stage === "render" && console.log("[capture]", p.done + "/" + p.total), new AbortController().signal);
+  return { name: result.name, photos: result.photos.digest, frames: project.viewpoints.length, seconds: Math.round((performance.now() - t0) / 1000) };
 })()`;
 
 try {
@@ -96,7 +96,7 @@ try {
   const result = res.result.result.value;
   const file = path.join(out, result.name);
   for (let i = 0; i < 120 && !(readdirSync(out).includes(result.name) && statSync(file).size > 0); i++) await sleep(1000);
-  console.log(`done: ${file} (${result.frames} photos, ${result.seconds} s)`);
+  console.log(`done: ${file} (${result.frames} photos, ${result.seconds} s, photo fingerprint ${result.photos})`);
   page.close();
   browser.close();
 } finally {

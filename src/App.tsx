@@ -13,6 +13,7 @@ import { Scene } from "./Scene";
 import { Inspector as SceneInspector } from "./Inspector";
 import { HistoryPanel } from "./HistoryPanel";
 import type { SparseCloud } from "./core/capture/sparseCloud";
+import type { PhotoSet } from "./core/capture/photoSet";
 import { SparseCloudPanel } from "./capture/SparseCloudPanel";
 import { CapturePanel } from "./capture/CapturePanel";
 import { StartScreen } from "./StartScreen";
@@ -59,13 +60,16 @@ export function App() {
   useEffect(() => {
     document.title = `${e.project.name} — ${productName}`;
   }, [e.project.name]);
-  const [clouds, setClouds] = useState<Partial<Record<SparseCloud["kind"], SparseCloud>>>({});
+  // Point clouds live in the session (saved in .aeproj and autosave); only the selection is UI state.
+  const stored = e.reconstruction?.clouds;
+  const clouds: Partial<Record<SparseCloud["kind"], SparseCloud>> = { sparse: stored?.sparse?.cloud, dense: stored?.dense?.cloud };
   const [activeCloud, setActiveCloud] = useState<SparseCloud["kind"] | "reference">("sparse");
   const displayedCloud = activeCloud === "reference" ? undefined : clouds[activeCloud];
   const hasCloud = !!(clouds.sparse || clouds.dense);
   const hasObjects = e.project.models.length > 0 || e.project.drones.length > 0;
-  function importCloud(cloud: SparseCloud) {
-    setClouds((current) => ({ ...current, [cloud.kind]: cloud }));
+  function importCloud(cloud: SparseCloud, photos?: PhotoSet) {
+    e.setReconstruction((r) => r.clouds?.[cloud.kind]?.cloud === cloud ? r :
+      { ...r, clouds: { ...r.clouds, [cloud.kind]: { cloud, createdAt: Date.now(), ...(photos ? { photos } : {}) } } });
     setActiveCloud(cloud.kind);
   }
   const [tab, setTab] = useState<"layers" | "assets" | "history" | "capture">("layers"),
@@ -640,7 +644,11 @@ export function App() {
                 onImport={importCloud}
                 onRemove={() => {
                   if (activeCloud === "reference") return;
-                  setClouds((current) => ({ ...current, [activeCloud]: undefined }));
+                  const kind = activeCloud;
+                  e.setReconstruction((r) => {
+                    const { [kind]: _removed, ...rest } = r.clouds ?? {};
+                    return { ...r, clouds: rest };
+                  });
                   setActiveCloud(activeCloud === "sparse" ? "dense" : "sparse");
                 }} />
             )} />
@@ -978,7 +986,7 @@ export function App() {
             </Dialog.Content>
           </Dialog.Portal>
         </Dialog.Root>
-        {(startOpen || !e.active) && <StartScreen onDone={() => { setClouds({}); setActiveCloud("sparse"); setStartOpen(false); }} />}
+        {(startOpen || !e.active) && <StartScreen onDone={() => { setActiveCloud("sparse"); setStartOpen(false); }} />}
       </main>
     </Tooltip.Provider>
   );
