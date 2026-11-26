@@ -20,11 +20,40 @@
 | `project.json` | 当前场景（`Project` version 1，含 OBJ 时为 version 2） |
 | `history.json` | `{ limit, present: {label, at}, past: [...], future: [...] }`，每条记录为 `{ label, at, project }` |
 | `checkpoints.json` | `[{ id, name, createdAt, project }]` |
-| `reconstruction.json` | 可选：重建设置，参考模型 / 白模以 `asset: "assets/<sha256>.glb"` 引用 |
-| `assets/<sha256>.<png\|jpg\|webp\|glb>` | 被任一状态引用的二进制资源（背景图片、重建模型），按内容去重 |
+| `reconstruction.json` | 可选：重建设置，参考模型 / 白模以 `asset: "assets/<sha256>.glb"` 引用；稀疏 / 稠密点云以 `data.asset: "assets/<sha256>.cloud"` 引用 |
+| `assets/<sha256>.<png\|jpg\|webp\|glb\|cloud>` | 被任一状态引用的二进制资源（背景图片、重建模型、点云），按内容去重 |
 | `resources/<sha256>.json` | OBJ 网格资源（`objResources` 的单个元素），按内容去重；仅 `formatVersion: 2` |
 
 包内场景的 `background.image` 用 `asset: "assets/…"` 引用资源，不内嵌 data URL；`objResources` 的每个元素写成 `{ "resource": "resources/…" }`。读取时再还原。所有内容都在包内，不引用包外的文件。
+
+### 点云与照片指纹
+
+重建得到的稀疏、稠密点云各保存最新一份，写在 `reconstruction.json` 的 `clouds` 里：
+
+```json
+"clouds": {
+  "sparse": {
+    "sourcePointCount": 52612, "registeredImages": 64, "totalImages": 64, "points": 52612,
+    "createdAt": 1795000000000,
+    "photos": { "digest": "<sha256>", "files": [{ "file": "images/0001.jpg", "sha256": "<sha256>" }] },
+    "data": { "asset": "assets/<sha256>.cloud" }
+  }
+}
+```
+
+- **点数据**：`.cloud` 是小端二进制，`"AECL"`、版本 1、点数 n（各 4 字节），然后是 n 组 float32 xyz（Aero 坐标，米，Y 朝上），最后是 n 组 sRGB 颜色字节。每点 15 字节。5.3 万点的稀疏点云约 0.8 MB。
+- **照片不进包**，只保存指纹 `photos`。`digest` 是下面这段文本的 SHA-256，它覆盖了重建实际读取的全部输入：每张照片的字节、位置先验和相机内参。
+
+  ```
+  aero-photo-set 1
+  camera <id> <model> <width> <height> <params，6 位小数，逗号分隔>      （按 id 排序）
+  frame <file> <camera> <照片 sha256> <位置 x,y,z，3 位小数>            （按 file 排序）
+  ```
+
+  应用（`src/core/capture/photoSet.ts`）和 `tools/colmap/photo_set.py` 按同一规则计算，测试会核对两边结果一致。
+- **复用**：在「采集」页生成照片后，如果它们的指纹和已保存的稀疏点云相同，就直接使用该点云，不再运行 COLMAP。浏览器版也可以复用。命令行重建输出的 `aero-sparse-cloud.json` 也带有指纹，导入后同样可以复用。没有指纹的点云（例如稠密点云、旧文件）只用于显示，不参与复用。
+- `clouds` 是可选字段，旧包照常打开。不认识它的旧版本会忽略点云，所以 `formatVersion` 不变。
+- 自动暂存时，点数据和模型一样按 SHA-256 单独存进 IndexedDB 的 `assets` 表，每次编辑只重写 JSON 部分。
 
 ### OBJ 资源去重
 

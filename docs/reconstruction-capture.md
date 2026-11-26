@@ -64,6 +64,7 @@ type Session = { history; checkpoints; reconstruction?: ReconstructionSetup };
 
 - **`.aeproj`**：新增 `reconstruction.json`，模型文件写入 `assets/<sha256>.glb`，并登记在清单中。不认识这个文件的旧版本会忽略它（清单校验只检查已登记的文件是否一致），因此 `formatVersion` 保持为 1。
 - **自动暂存**：模型字节按 sha256 单独存进 IndexedDB 的 `assets` 表，只写一次。会话记录中只保存 sha256，避免每次编辑都重写几十 MB。
+- **点云**：稀疏 / 稠密点云保存在 `ReconstructionSetup.clouds` 中，随 `.aeproj` 和自动暂存一起保存（`assets/<sha256>.cloud`）。照片不进包，只保存照片指纹；用相同照片再次重建时直接复用。格式见 `aeproj.md`「点云与照片指纹」。
 
 ### 3.2 渲染
 

@@ -11,7 +11,9 @@ python tools/colmap/reconstruct-sparse.py /path/to/photos.zip /path/to/new-outpu
 对齐到场景坐标。`ground_truth/` 不参与计算。
 
 在 Aero 的「采集 → 导入点云」选择输出目录的 `aero-sparse-cloud.json`。
-点云用于当前应用会话预览。输出还包含 ENU 坐标下的 `sparse-enu.ply`、
+点云随项目保存。文件里的 `photos` 是照片指纹（见 `docs/aeproj.md`），之后在 Aero 里用相同照片
+「生成点云」时会直接复用这个结果。单独查看某个照片包的指纹：
+`python tools/colmap/photo_set.py /path/to/photos.zip`。输出还包含 ENU 坐标下的 `sparse-enu.ply`、
 COLMAP 原生模型 `sparse-enu/` 和原始稀疏模型 `sparse/`。
 
 ## CUDA 稠密重建与对比

@@ -213,6 +213,16 @@ export function useProjectFiles(close: () => void, acceptPlan: (text: string) =>
 
 `MAX_PROJECT_BYTES`（5 MB）只限制单个场景，项目包本身的上限仍是 256 MB。
 
+### 4.7 Vinto · 采集与重建 `src/capture/`
+
+点云已经移进会话（`e.reconstruction.clouds`），随 `.aeproj` 和自动暂存保存。改动的地方：
+
+- `App.tsx`：不再用 `useState` 保存点云，`clouds` 从 `e.reconstruction.clouds` 读取；导入和移除都通过 `e.setReconstruction`。关闭开始页不再清空点云，打开其他项目时显示那个项目的点云。
+- `exportCapture` 的返回值改为 `{ name, photos }`，`photos` 是照片指纹。`tools/capture-headless/capture.mjs` 已同步修改。
+- `CapturePanel`：照片指纹与已保存的稀疏点云相同时，「生成点云」直接复用该结果，不调用 COLMAP；结果页会提示「当前稀疏点云由这组照片生成」。
+- `SparseCloudPanel` 导入文件时改用 `parseCloudFile`，读取文件中的 `photos`。
+- `reconstruct-sparse.py` 在输出里写入 `photos`（实现在 `tools/colmap/photo_set.py`，只用标准库）。`export-dense-preview.py` 还没有写指纹，所以稠密点云只保存、不复用。
+
 ---
 
 ## 5. 文件地图
